@@ -1,0 +1,107 @@
+[gd_scene load_steps=19 format=3 uid="uid://bknsvnl4pk2d8"]
+
+[ext_resource type="Script" path="res://object/Player/Player.gd" id="1_7ilod"]
+[ext_resource type="Script" path="res://object/Player/PlayerCamera.gd" id="2_a05x7"]
+[ext_resource type="Texture2D" uid="uid://ca1vaw7kamxti" path="res://assets/shotgun/idle.png" id="3_i7lgi"]
+[ext_resource type="Texture2D" uid="uid://ifrxuxuuvaq4" path="res://assets/shotgun/reload_empty_0.png" id="4_mch6u"]
+[ext_resource type="Script" path="res://object/Player/FpsSprite.gd" id="4_qf7lk"]
+[ext_resource type="Texture2D" uid="uid://b831x5fu0ymjo" path="res://assets/shotgun/shoot_0.png" id="4_vq4i1"]
+[ext_resource type="Texture2D" uid="uid://be2n6j287806k" path="res://assets/shotgun/shoot_1.png" id="5_1h2qf"]
+[ext_resource type="Texture2D" uid="uid://o2v1iq341k8k" path="res://assets/shotgun/reload_empty_1.png" id="5_da35b"]
+[ext_resource type="Texture2D" uid="uid://cgsbm7gl4q3fr" path="res://assets/shotgun/shoot_2.png" id="6_e38de"]
+[ext_resource type="Texture2D" uid="uid://dijckqhfge0ur" path="res://assets/shotgun/reload_empty_2.png" id="6_wad8i"]
+[ext_resource type="Texture2D" uid="uid://cjpi4r0tr2tr4" path="res://assets/shotgun/reload_full_0.png" id="7_02aff"]
+[ext_resource type="Texture2D" uid="uid://cnuiq538nfn72" path="res://assets/shotgun/shoot_3.png" id="7_pqfuf"]
+[ext_resource type="Texture2D" uid="uid://88svdgd8kf0b" path="res://assets/shotgun/reload_full_1.png" id="8_nms6p"]
+[ext_resource type="Texture2D" uid="uid://b5njsykme8ue1" path="res://assets/shotgun/shoot_4.png" id="8_pgdcx"]
+[ext_resource type="Texture2D" uid="uid://c6uyeqn8k40mb" path="res://assets/shotgun/reload_full_2.png" id="9_cuw46"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_wxu3q"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_eulw6"]
+points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6cy43"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_i7lgi")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_mch6u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_da35b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_wad8i")
+}],
+"loop": false,
+"name": &"reload_empty",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_02aff")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_nms6p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_cuw46")
+}],
+"loop": false,
+"name": &"reload_full",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_vq4i1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_1h2qf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_e38de")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_pqfuf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_pgdcx")
+}],
+"loop": true,
+"name": &"shoot",
+"speed": 15.0
+}]
+
+[node name="Player" type="CharacterBody3D"]
+disable_mode = 1
+input_ray_pickable = false
+slide_on_ceiling = false
+script = ExtResource("1_7ilod")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.399986, 0, 0.00328816, 0, 0.4, 0, -0.00328816, 0, 0.399986, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_wxu3q")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.399986, 0, 0.00328816, 0, 0.4, 0, -0.00328816, 0, 0.399986, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_eulw6")
+
+[node name="PlayerCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21579, 0)
+fov = 90.0
+script = ExtResource("2_a05x7")
+
+[node name="FpsSprite" type="AnimatedSprite3D" parent="PlayerCamera"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.59, -0.34, -0.516733)
+visible = false
+sprite_frames = SubResource("SpriteFrames_6cy43")
+animation = &"idle"
+script = ExtResource("4_qf7lk")
