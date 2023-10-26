@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3 uid="uid://lnpivlwrqxen"]
+
+[ext_resource type="Texture2D" uid="uid://s1prrsne3acm" path="res://assets/revolver/revolver_0.png" id="1_63ab8"]
+[ext_resource type="Texture2D" uid="uid://8awsj6mm7n8s" path="res://assets/revolver/revolver_1.png" id="2_gk0kj"]
+[ext_resource type="Texture2D" uid="uid://b0pbjoct2k3cd" path="res://assets/revolver/revolver_2.png" id="3_7ijsc"]
+[ext_resource type="Texture2D" uid="uid://c8n0g6nphk216" path="res://assets/revolver/revolver_3.png" id="4_120y3"]
+[ext_resource type="Texture2D" uid="uid://de00d0xxogh31" path="res://assets/revolver/revolver_4.png" id="5_cqcl5"]
+[ext_resource type="Texture2D" uid="uid://cv3ho7a8cme4u" path="res://assets/revolver/revolver_6.png" id="6_s3c8d"]
+[ext_resource type="Texture2D" uid="uid://bsxv7px0syawf" path="res://assets/revolver/revolver_5.png" id="7_4qs76"]
+[ext_resource type="Script" path="res://object/Player/FpsSprite/FpsSprite.gd" id="8_r2qff"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6cy43"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": ExtResource("1_63ab8")
+}, {
+"duration": 0.5,
+"texture": ExtResource("2_gk0kj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7ijsc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_120y3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_cqcl5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_s3c8d")
+}, {
+"duration": 6.0,
+"texture": ExtResource("7_4qs76")
+}, {
+"duration": 3.0,
+"texture": ExtResource("5_cqcl5")
+}, {
+"duration": 3.0,
+"texture": ExtResource("2_gk0kj")
+}, {
+"duration": 3.0,
+"texture": ExtResource("1_63ab8")
+}, {
+"duration": 3.0,
+"texture": ExtResource("1_63ab8")
+}, {
+"duration": 3.0,
+"texture": ExtResource("1_63ab8")
+}, {
+"duration": 3.0,
+"texture": ExtResource("1_63ab8")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 30.0
+}]
+
+[node name="FpsSprite" type="AnimatedSprite3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0827065, -0.410561, -0.631732)
+sprite_frames = SubResource("SpriteFrames_6cy43")
+animation = &"shoot"
+script = ExtResource("8_r2qff")

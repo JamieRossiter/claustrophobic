@@ -1,11 +1,35 @@
-[gd_scene load_steps=3 format=3 uid="uid://bi70an8m3t0hn"]
+[gd_scene load_steps=4 format=3 uid="uid://bi70an8m3t0hn"]
 
-[ext_resource type="PackedScene" uid="uid://c5r88x7enciwu" path="res://object/Cell.tscn" id="2_wqfs2"]
+[ext_resource type="PackedScene" uid="uid://c5r88x7enciwu" path="res://object/Cell/Cell.tscn" id="2_0u2lv"]
 [ext_resource type="PackedScene" uid="uid://bknsvnl4pk2d8" path="res://object/Player/Player.tscn" id="2_yg7e6"]
+[ext_resource type="Script" path="res://object/CanvasLayer.gd" id="3_j4tn3"]
 
 [node name="Level" type="Node3D"]
 
-[node name="Player" parent="." instance=ExtResource("2_yg7e6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.540344, 1.77441, 0.572961)
+[node name="Cell" parent="." instance=ExtResource("2_0u2lv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.56829, 0.0926661)
 
-[node name="Cell" parent="." instance=ExtResource("2_wqfs2")]
+[node name="Player" parent="." instance=ExtResource("2_yg7e6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.07001, 1.56499, 0.583151)
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+script = ExtResource("3_j4tn3")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HUDLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GunSubViewport" type="SubViewport" parent="HUDLayer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="GunCamera" type="Camera3D" parent="HUDLayer/SubViewportContainer/GunSubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09698, 1.55491, 0.823957)
+cull_mask = 1047554
+current = true
+fov = 90.0

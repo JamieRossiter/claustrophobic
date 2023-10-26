@@ -1,3 +1,8 @@
+AudioStreamPlayer3D
+Camera3D
+SubViewport
+SubViewportContainer
+CanvasLayer
 CollisionShape3D
 StaticBody3D
 Area3D

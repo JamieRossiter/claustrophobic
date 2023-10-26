@@ -1,8 +1,8 @@
 class_name Player extends CharacterBody3D
 
 const JUMP_VELOCITY: float = 4.5;
-const WALK_SPEED: float = 2.0;
-const DASH_SPEED: float = 3.0;
+const WALK_SPEED: float = 0.5;
+const DASH_SPEED: float = 1.0;
 
 @onready var speed: float = WALK_SPEED;
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity");
