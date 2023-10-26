@@ -43,4 +43,3 @@ bus = &"SFX"
 
 [node name="Sfx_Tinnitus" type="AudioStreamPlayer3D" parent="PlayerCamera/FpsSprite"]
 stream = ExtResource("5_u4yj3")
-bus = &"SFX"

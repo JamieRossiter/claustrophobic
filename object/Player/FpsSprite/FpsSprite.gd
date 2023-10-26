@@ -10,10 +10,8 @@ var elapsed_shake_time: float = 0.0;
 var shake_power: float = 5.0;
 var shake_time: float = 0.10;
 
-var is_tinnitus: bool = false;
-var tinnitus_delay: float = 1.0;
-var elapsed_tinnitus_delay: float = 0.0;
 var has_tinnitus_deactivated: bool = false;
+var low_pass_filter: AudioEffectLowPassFilter = AudioServer.get_bus_effect(AudioServer.get_bus_index("SFX"), 0)
 
 func _process(delta: float) -> void:
 	
@@ -23,24 +21,19 @@ func _process(delta: float) -> void:
 	if(is_shaking):
 		shake_camera(delta);
 	
-	if(is_tinnitus):
-		activate_tinnitus(delta);
-		has_tinnitus_deactivated = false;
-	
-	if(!is_tinnitus and !tinnitus_sfx.playing and !has_tinnitus_deactivated):
+	if(!tinnitus_sfx.playing and !has_tinnitus_deactivated):
 		has_tinnitus_deactivated = true;
-		AudioServer.set_bus_effect_enabled(AudioServer.get_bus_index("SFX"), 0, false); # Deactivate low pass filter
+		deactivate_tinnitus();
 
 func handle_shoot() -> void:
-	# Activate tinnitus after gunshot
-	if(!is_tinnitus and !tinnitus_sfx.playing):
-		is_tinnitus = true;
 	is_shaking = true; 
-	gunshot_sfx.play();
 	play_shoot_animation();
+	if(!tinnitus_sfx.playing):
+		activate_tinnitus();
 
 
 func play_shoot_animation() -> void:
+	gunshot_sfx.play();
 	animation = "shoot";
 	frame = 0;
 	play();
@@ -56,12 +49,12 @@ func shake_camera(delta: float) -> void:
 		camera.h_offset = original_shake_pos.x;
 		camera.v_offset = original_shake_pos.y;
 		
-func activate_tinnitus(delta: float) -> void:
-	if(elapsed_tinnitus_delay < tinnitus_delay):
-		elapsed_tinnitus_delay += delta;
-		return;
-	else:
-		tinnitus_sfx.play();
-		AudioServer.set_bus_effect_enabled(AudioServer.get_bus_index("SFX"), 0, true); # Activate low pass filter
-		elapsed_tinnitus_delay = 0;
-		is_tinnitus = false;
+func activate_tinnitus() -> void:
+	tinnitus_sfx.play();
+	has_tinnitus_deactivated = false;
+	var tween: Tween = get_tree().create_tween();
+	tween.tween_property(low_pass_filter, "cutoff_hz", 2000, 1);
+
+func deactivate_tinnitus() -> void:
+	var tween: Tween = get_tree().create_tween();
+	tween.tween_property(low_pass_filter, "cutoff_hz", 20400, 0.5);
