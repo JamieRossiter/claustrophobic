@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4ah5f3ix58od"]
+
+[ext_resource type="Script" path="res://object/VentCell/VentCell.gd" id="1_an0dw"]
+
+[node name="VentCell" type="Node3D"]
+script = ExtResource("1_an0dw")

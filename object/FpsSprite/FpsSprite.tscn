@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://lnpivlwrqxen"]
+[gd_scene load_steps=11 format=3 uid="uid://lnpivlwrqxen"]
 
 [ext_resource type="Texture2D" uid="uid://s1prrsne3acm" path="res://assets/revolver/revolver_0.png" id="1_63ab8"]
 [ext_resource type="Texture2D" uid="uid://8awsj6mm7n8s" path="res://assets/revolver/revolver_1.png" id="2_gk0kj"]
@@ -7,7 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://de00d0xxogh31" path="res://assets/revolver/revolver_4.png" id="5_cqcl5"]
 [ext_resource type="Texture2D" uid="uid://cv3ho7a8cme4u" path="res://assets/revolver/revolver_6.png" id="6_s3c8d"]
 [ext_resource type="Texture2D" uid="uid://bsxv7px0syawf" path="res://assets/revolver/revolver_5.png" id="7_4qs76"]
-[ext_resource type="Script" path="res://object/Player/FpsSprite/FpsSprite.gd" id="8_r2qff"]
+[ext_resource type="AudioStream" uid="uid://smst0mma8svt" path="res://sfx/revolver/revolver_shot.wav" id="9_el2ll"]
+[ext_resource type="AudioStream" uid="uid://bkpc5pcfdh72m" path="res://sfx/player/tinnitus.wav" id="10_d3orm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6cy43"]
 animations = [{
@@ -60,4 +61,11 @@ animations = [{
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0827065, -0.410561, -0.631732)
 sprite_frames = SubResource("SpriteFrames_6cy43")
 animation = &"shoot"
-script = ExtResource("8_r2qff")
+
+[node name="Sfx_Gunshot" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.165413, 0.821122, 1.26346)
+stream = ExtResource("9_el2ll")
+bus = &"SFX"
+
+[node name="Sfx_Tinnitus" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("10_d3orm")

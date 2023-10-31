@@ -1,19 +1,16 @@
 [gd_scene load_steps=4 format=3 uid="uid://bi70an8m3t0hn"]
 
-[ext_resource type="PackedScene" uid="uid://c5r88x7enciwu" path="res://object/Cell/Cell.tscn" id="2_0u2lv"]
+[ext_resource type="Script" path="res://object/HUDLayer.gd" id="2_ehndr"]
 [ext_resource type="PackedScene" uid="uid://bknsvnl4pk2d8" path="res://object/Player/Player.tscn" id="2_yg7e6"]
-[ext_resource type="Script" path="res://object/CanvasLayer.gd" id="3_j4tn3"]
+[ext_resource type="PackedScene" uid="uid://c4ah5f3ix58od" path="res://object/VentCell/VentCell.tscn" id="3_2dasg"]
 
 [node name="Level" type="Node3D"]
 
-[node name="Cell" parent="." instance=ExtResource("2_0u2lv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.56829, 0.0926661)
-
 [node name="Player" parent="." instance=ExtResource("2_yg7e6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.07001, 1.56499, 0.583151)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.07001, 0.512794, 0.364503)
 
 [node name="HUDLayer" type="CanvasLayer" parent="."]
-script = ExtResource("3_j4tn3")
+script = ExtResource("2_ehndr")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="HUDLayer"]
 anchors_preset = 15
@@ -33,3 +30,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09698, 1.55491, 0.823957)
 cull_mask = 1047554
 current = true
 fov = 90.0
+
+[node name="VentCell" parent="." instance=ExtResource("3_2dasg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.10872, 0.4, 0.308411)

@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bknsvnl4pk2d8"]
+[gd_scene load_steps=7 format=3 uid="uid://bknsvnl4pk2d8"]
 
 [ext_resource type="Script" path="res://object/Player/Player.gd" id="1_7ilod"]
 [ext_resource type="Script" path="res://object/Player/PlayerCamera.gd" id="2_a05x7"]
-[ext_resource type="PackedScene" uid="uid://lnpivlwrqxen" path="res://object/Player/FpsSprite/FpsSprite.tscn" id="3_m8bwg"]
-[ext_resource type="AudioStream" uid="uid://smst0mma8svt" path="res://sfx/revolver/revolver_shot.wav" id="4_2ceke"]
-[ext_resource type="AudioStream" uid="uid://bkpc5pcfdh72m" path="res://sfx/player/tinnitus.wav" id="5_u4yj3"]
+[ext_resource type="PackedScene" uid="uid://lnpivlwrqxen" path="res://object/FpsSprite/FpsSprite.tscn" id="3_ykyae"]
+[ext_resource type="Script" path="res://object/FpsSprite/FpsSprite.gd" id="4_h3k4a"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_wxu3q"]
 
@@ -26,20 +25,12 @@ transform = Transform3D(0.299989, -0.00261796, -1.14435e-10, 0, -1.31134e-08, 0.
 shape = SubResource("ConvexPolygonShape3D_m7ncn")
 
 [node name="PlayerCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0311936, 0.119008)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0311936, -0.159634)
 cull_mask = 1048573
 fov = 90.0
 script = ExtResource("2_a05x7")
 
-[node name="FpsSprite" parent="PlayerCamera" instance=ExtResource("3_m8bwg")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0827065, -0.441755, -0.647637)
+[node name="FpsSprite" parent="PlayerCamera" instance=ExtResource("3_ykyae")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0827065, -0.441755, -0.656191)
 layers = 2
-frame = 9
-frame_progress = 1.0
-
-[node name="Sfx_Gunshot" type="AudioStreamPlayer3D" parent="PlayerCamera/FpsSprite"]
-stream = ExtResource("4_2ceke")
-bus = &"SFX"
-
-[node name="Sfx_Tinnitus" type="AudioStreamPlayer3D" parent="PlayerCamera/FpsSprite"]
-stream = ExtResource("5_u4yj3")
+script = ExtResource("4_h3k4a")

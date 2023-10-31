@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://cfvt5khdtmm1b"]
+
+[ext_resource type="Script" path="res://object/VentCell/VentSection.gd" id="1_2ec46"]
+[ext_resource type="Texture2D" uid="uid://bb376gpurd3hf" path="res://assets/textures/vent.png" id="1_2fcdr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2k2jm"]
+albedo_texture = ExtResource("1_2fcdr")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lxo2r"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_2k2jm")
+size = Vector2(1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l8fcq"]
+resource_local_to_scene = true
+margin = 0.0
+size = Vector3(1, 0, 1)
+
+[node name="VentSection" type="StaticBody3D"]
+script = ExtResource("1_2ec46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_lxo2r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_l8fcq")
