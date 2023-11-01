@@ -31,6 +31,6 @@ fov = 90.0
 script = ExtResource("2_a05x7")
 
 [node name="FpsSprite" parent="PlayerCamera" instance=ExtResource("3_ykyae")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0827065, -0.793964, -0.656191)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0827065, -0.892168, -0.656191)
 layers = 2
 script = ExtResource("4_h3k4a")
