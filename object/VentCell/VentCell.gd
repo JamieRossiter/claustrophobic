@@ -64,8 +64,6 @@ func setup_wall(wall: VentSection, direction: String) -> void:
 			wall.rotate_y(deg_to_rad(90));
 			mesh.size.x = FLOOR_WIDTH;
 			mesh.flip_faces = true;
-			mesh.subdivide_depth = 100;
-			mesh.subdivide_width = 100;
 		"west":
 			wall.position.x = -FLOOR_WIDTH / 2;
 			mesh.size.x = FLOOR_WIDTH;
@@ -76,13 +74,36 @@ func setup_wall(wall: VentSection, direction: String) -> void:
 	collisionShape.rotate_x(deg_to_rad(90));
 	
 func update_walls(map_data: Array[Vector2i]) -> void:
-	# FIXME: The walls only update correctly if a Vector2i is used with integers. As soon as we multiply or divide the position values by a float, the walls don't update correctly. Is there a way we can convert the Vector2i to a Vector2? The Vector2i originates from the TileMap.get_used_cells() method in Level.gd.
-	var current_grid_pos: Vector2i = Vector2i(position.x, position.z);
-	if(map_data.has(current_grid_pos + Vector2i.UP)):
+	# Convert Vector2i array to Vector2 array
+	var map_data_v2: Array[Vector2] = [];
+	for datum in map_data:
+		var floated_x: float = snapped(datum.x * 0.6, 0.1);
+		var floated_y: float = snapped(datum.y * 0.6, 0.1);
+		map_data_v2.append(Vector2(floated_x, floated_y));
+		
+	var current_grid_pos: Vector2 = Vector2(snapped(position.x, 0.1), snapped(position.z, 0.1));
+	
+	if(current_grid_pos == Vector2(1.8, 1.2)):
+		var left = current_grid_pos + Vector2(-0.6, 0);
+		var has = map_data_has_approx(map_data_v2, left);
+		pass;
+	
+	if(map_data_has_approx(map_data_v2, current_grid_pos + Vector2(0, -0.6))):
+		# Up
 		north_wall.queue_free();
-	if(map_data.has(current_grid_pos + Vector2i.DOWN)):
+	if(map_data_has_approx(map_data_v2, current_grid_pos + Vector2(0, 0.6))):
+		# Down
 		south_wall.queue_free();
-	if(map_data.has(current_grid_pos + Vector2i.LEFT)):
+	if(map_data_has_approx(map_data_v2, current_grid_pos + Vector2(-0.6, 0))):
+		# Left
 		west_wall.queue_free();
-	if(map_data.has(current_grid_pos + Vector2i.RIGHT)):
+	if(map_data_has_approx(map_data_v2, current_grid_pos + Vector2(0.6, 0))):
+		# Right
 		east_wall.queue_free();
+
+func map_data_has_approx(map_data: Array[Vector2], target: Vector2) -> bool:
+	var has: bool = false;
+	for datum in map_data:
+		has = datum.is_equal_approx(target);
+		if(has): break;
+	return has;
