@@ -23,8 +23,6 @@ func generate_map(map_data: Array[Vector2i]) -> void:
 		add_child(vent_cell);
 		vent_cell.position = Vector3((tile.x * 0.6), 0, (tile.y * 0.6));
 		vent_cells.append(vent_cell);
-		print("Current Vent Cell Pos ", Vector2(vent_cell.position.x, vent_cell.position.z));
-		print("Original Vent Cell Pos ", Vector2(vent_cell.position.x / 0.6, vent_cell.position.z / 0.6));
 		for cell in vent_cells:
 			cell.update_walls(map_data);
 	

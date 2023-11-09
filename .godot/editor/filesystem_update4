@@ -1,3 +1,7 @@
 res://default_bus_layout.tres
 res://object/Level.tscn
-res://object/VentCell/VentCell.gd
+res://object/Map/Map.tscn
+res://object/VentCell/VentCell.tscn
+res://object/Player/Player.tscn
+res://object/Player/PlayerCamera.gd
+res://object/Player/Player.gd

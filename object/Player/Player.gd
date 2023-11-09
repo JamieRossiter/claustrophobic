@@ -36,3 +36,6 @@ func _physics_process(delta: float):
 		velocity.z = move_toward(velocity.z, 0, speed);
 	velocity.y = velocity_y;
 	move_and_slide();
+	
+func is_moving() -> bool:
+	return velocity.x != 0 or velocity.y != 0 or velocity.z != 0
