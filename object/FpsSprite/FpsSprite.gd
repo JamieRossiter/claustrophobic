@@ -1,3 +1,5 @@
+# TODO: FpsSprite clips through walls. Figure out how tf to stop that. Rendering a subviewport does not work because it is not affected by lighting and it is independent of camera bobble.
+
 class_name FpsSprite extends AnimatedSprite3D
 
 const INITIAL_POS: float = -0.892;
@@ -43,12 +45,12 @@ func _process(delta: float) -> void:
 		deactivate_tinnitus();
 
 func handle_aim() -> void:
-	var aim_tween: Tween = get_tree().create_tween();
+	var aim_tween: Tween = create_tween();
 	aim_tween.tween_property(self, "position:y", TARGET_POS, 0.2);
 	gun_shake_data.is_shaking = true;
 	
 func handle_lower() -> void:
-	var lower_tween: Tween = get_tree().create_tween();
+	var lower_tween: Tween = create_tween();
 	lower_tween.tween_property(self, "position:y", INITIAL_POS, 0.2);
 	gun_shake_data.is_shaking = false;
 
@@ -96,9 +98,9 @@ func start_gun_shake(gun: FpsSprite, shake_power: float) -> void:
 func activate_tinnitus() -> void:
 	tinnitus_sfx.play();
 	has_tinnitus_deactivated = false;
-	var tinnitus_onset_tween: Tween = get_tree().create_tween();
+	var tinnitus_onset_tween: Tween = create_tween();
 	tinnitus_onset_tween.tween_property(low_pass_filter, "cutoff_hz", 2000, 1);
 
 func deactivate_tinnitus() -> void:
-	var tinnitus_offset_tween: Tween = get_tree().create_tween();
+	var tinnitus_offset_tween: Tween = create_tween();
 	tinnitus_offset_tween.tween_property(low_pass_filter, "cutoff_hz", 20400, 0.5);

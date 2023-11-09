@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" path="res://object/Level.gd" id="1_ilwlf"]
 [ext_resource type="PackedScene" uid="uid://j4s07atbdw1w" path="res://object/Map/Map.tscn" id="2_5cq4m"]
-[ext_resource type="Script" path="res://object/HUDLayer.gd" id="2_ehndr"]
 [ext_resource type="PackedScene" uid="uid://bknsvnl4pk2d8" path="res://object/Player/Player.tscn" id="2_yg7e6"]
 [ext_resource type="Script" path="res://util/FPSCounter/FPSCounter.gd" id="5_w3any"]
+
+[sub_resource type="Environment" id="Environment_77wus"]
+background_mode = 1
+background_color = Color(0.0313726, 0.0313726, 0.0313726, 1)
 
 [node name="Level" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16159, 0)
@@ -14,26 +17,8 @@ CurrentMap = ExtResource("2_5cq4m")
 [node name="Player" parent="." instance=ExtResource("2_yg7e6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0266459, -0.79979)
 
-[node name="HUDLayer" type="CanvasLayer" parent="Player"]
-script = ExtResource("2_ehndr")
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Player/HUDLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GunSubViewport" type="SubViewport" parent="Player/HUDLayer/SubViewportContainer"]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1152, 648)
-render_target_update_mode = 4
-
-[node name="GunCamera" type="Camera3D" parent="Player/HUDLayer/SubViewportContainer/GunSubViewport"]
-cull_mask = 1047554
-current = true
-fov = 90.0
-
 [node name="FPSCounter" type="Label" parent="."]
 script = ExtResource("5_w3any")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_77wus")
