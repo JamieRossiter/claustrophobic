@@ -7,7 +7,7 @@
 
 [sub_resource type="Environment" id="Environment_77wus"]
 background_mode = 1
-background_color = Color(0.0313726, 0.0313726, 0.0313726, 1)
+background_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
 
 [node name="Level" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16159, 0)

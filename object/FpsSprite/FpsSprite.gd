@@ -2,19 +2,20 @@
 
 class_name FpsSprite extends AnimatedSprite3D
 
-const INITIAL_POS: float = -0.892;
-const TARGET_POS: float = -0.442;
+const INITIAL_POS: float = -0.21;
+const TARGET_POS: float = -0.06;
 
 @onready var gunshot_sfx: AudioStreamPlayer3D = $Sfx_Gunshot;
 @onready var tinnitus_sfx: AudioStreamPlayer3D = $Sfx_Tinnitus;
-@onready var camera_shake_data: ShakeData = ShakeData.new(get_parent(), false, 0.0, 0.10, 5.0, Vector2(get_parent().position.x, get_parent().position.y));;
-@onready var gun_shake_data: ShakeData = ShakeData.new(self, false, 0.0, 1.0, 0.5, Vector2(self.position.x, self.position.y));
+@onready var camera_shake_data: ShakeData = ShakeData.new(get_parent(), false, 0.0, 0.10, 5.0, Vector2(get_parent().position.x, get_parent().position.y));
+@onready var gun_shake_data: ShakeData = ShakeData.new(self, false, 0.0, 1.0, 0.8, Vector2(self.position.x, self.position.y));
 
 var has_tinnitus_deactivated: bool = false;
 var low_pass_filter: AudioEffectLowPassFilter = AudioServer.get_bus_effect(AudioServer.get_bus_index("SFX"), 0)
 
 func _ready() -> void:
 	self.position.y = INITIAL_POS;
+	pass;
 
 func _process(delta: float) -> void:
 	
@@ -45,13 +46,14 @@ func _process(delta: float) -> void:
 		deactivate_tinnitus();
 
 func handle_aim() -> void:
+	play_aim_animation();
 	var aim_tween: Tween = create_tween();
-	aim_tween.tween_property(self, "position:y", TARGET_POS, 0.2);
+	aim_tween.tween_property(self, "position:y", TARGET_POS, 0.5);
 	gun_shake_data.is_shaking = true;
 	
 func handle_lower() -> void:
 	var lower_tween: Tween = create_tween();
-	lower_tween.tween_property(self, "position:y", INITIAL_POS, 0.2);
+	lower_tween.tween_property(self, "position:y", INITIAL_POS, 0.5);
 	gun_shake_data.is_shaking = false;
 
 func handle_shoot() -> void:
@@ -59,6 +61,12 @@ func handle_shoot() -> void:
 	play_shoot_animation();
 	if(!tinnitus_sfx.playing):
 		activate_tinnitus();
+
+func play_aim_animation() -> void:
+	animation = "aim";
+	frame = 0;
+	play();
+		
 
 func play_shoot_animation() -> void:
 	gunshot_sfx.play();
