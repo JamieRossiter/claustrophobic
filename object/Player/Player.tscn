@@ -34,8 +34,6 @@ script = ExtResource("2_a05x7")
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.092537, -0.0861719, -0.0993316)
 shaded = true
 double_sided = false
-frame = 0
-frame_progress = 0.0
 script = ExtResource("4_h3k4a")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="PlayerCamera"]

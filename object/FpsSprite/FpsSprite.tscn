@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://lnpivlwrqxen"]
+[gd_scene load_steps=33 format=3 uid="uid://lnpivlwrqxen"]
 
 [ext_resource type="Texture2D" uid="uid://dbv1mk80u5i6i" path="res://assets/shotgun/aim/aim_0.png" id="1_mlfd0"]
 [ext_resource type="Texture2D" uid="uid://bwsqmnrks65gn" path="res://assets/shotgun/aim/aim_1.png" id="2_8pckv"]
@@ -13,14 +13,24 @@
 [ext_resource type="Texture2D" uid="uid://iy3b6yjlsoq" path="res://assets/shotgun/aim/aim_9.png" id="10_bvlht"]
 [ext_resource type="AudioStream" uid="uid://bkpc5pcfdh72m" path="res://sfx/player/tinnitus.wav" id="10_d3orm"]
 [ext_resource type="Texture2D" uid="uid://b0277gsw3ker" path="res://assets/shotgun/shoot/shotgun_0.png" id="11_oaure"]
+[ext_resource type="Texture2D" uid="uid://oy3uny72u183" path="res://assets/shotgun/pump/pump_0.png" id="11_widau"]
+[ext_resource type="Texture2D" uid="uid://b654nl8lsglnc" path="res://assets/shotgun/pump/pump_1.png" id="12_gjj0t"]
 [ext_resource type="Texture2D" uid="uid://c3cp3qrivus4a" path="res://assets/shotgun/shoot/shotgun_1.png" id="12_iecav"]
 [ext_resource type="Texture2D" uid="uid://bvtlvwaj0ugyk" path="res://assets/shotgun/shoot/shotgun_2.png" id="13_fqjjm"]
+[ext_resource type="Texture2D" uid="uid://b06dgj2b014o" path="res://assets/shotgun/pump/pump_2.png" id="13_rsjjv"]
 [ext_resource type="Texture2D" uid="uid://ciwc2vr61lrej" path="res://assets/shotgun/shoot/shotgun_3.png" id="14_80s3e"]
+[ext_resource type="Texture2D" uid="uid://b6566wq3u1mny" path="res://assets/shotgun/pump/pump_3.png" id="14_d2pax"]
 [ext_resource type="Texture2D" uid="uid://vwxdgmrynl1t" path="res://assets/shotgun/shoot/shotgun_4.png" id="15_epxh8"]
+[ext_resource type="Texture2D" uid="uid://pqbmwqcowrld" path="res://assets/shotgun/pump/pump_4.png" id="15_vgk2x"]
 [ext_resource type="Texture2D" uid="uid://dk71drvtgte2a" path="res://assets/shotgun/shoot/shotgun_5.png" id="16_efcyq"]
+[ext_resource type="Texture2D" uid="uid://cr2ekbm8ybr8r" path="res://assets/shotgun/pump/pump_5.png" id="16_u7lt8"]
+[ext_resource type="Texture2D" uid="uid://w0ueipv0uqtv" path="res://assets/shotgun/pump/pump_6.png" id="17_myfou"]
 [ext_resource type="Texture2D" uid="uid://cl31vvepwjq8r" path="res://assets/shotgun/shoot/shotgun_6.png" id="17_qce6u"]
+[ext_resource type="Texture2D" uid="uid://byirej7jld0sq" path="res://assets/shotgun/pump/pump_7.png" id="18_ljmjk"]
 [ext_resource type="Texture2D" uid="uid://gai4j4urgjs8" path="res://assets/shotgun/shoot/shotgun_7.png" id="18_y2lq3"]
 [ext_resource type="Texture2D" uid="uid://8k56i7gdr5j" path="res://assets/shotgun/shoot/shotgun_8.png" id="19_56gvf"]
+[ext_resource type="AudioStream" uid="uid://dywq8qv6m737k" path="res://sfx/shotgun/dry.wav" id="30_qwqj0"]
+[ext_resource type="AudioStream" uid="uid://c5fsjukya7pba" path="res://sfx/shotgun/pump.wav" id="30_wo7b2"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6cy43"]
 animations = [{
@@ -60,6 +70,35 @@ animations = [{
 "speed": 15.0
 }, {
 "frames": [{
+"duration": 3.0,
+"texture": ExtResource("18_ljmjk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_widau")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_gjj0t")
+}, {
+"duration": 2.0,
+"texture": ExtResource("13_rsjjv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_d2pax")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_vgk2x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_u7lt8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_myfou")
+}],
+"loop": false,
+"name": &"pump",
+"speed": 18.0
+}, {
+"frames": [{
 "duration": 1.0,
 "texture": ExtResource("11_oaure")
 }, {
@@ -95,9 +134,8 @@ animations = [{
 [node name="FpsSprite" type="AnimatedSprite3D"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0827065, -0.410561, -0.631732)
 sprite_frames = SubResource("SpriteFrames_6cy43")
-animation = &"aim"
-frame = 9
-frame_progress = 1.0
+animation = &"shoot"
+frame = 1
 
 [node name="Sfx_Gunshot" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.165413, 0.821122, 1.26346)
@@ -106,3 +144,18 @@ bus = &"SFX"
 
 [node name="Sfx_Tinnitus" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("10_d3orm")
+
+[node name="Sfx_Dry" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+stream = ExtResource("30_qwqj0")
+
+[node name="Sfx_Pump" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("30_wo7b2")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="MuzzleFlash" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.164, 1, 0.065)
+light_color = Color(1, 0.792157, 0.356863, 1)
+light_energy = 5.0
+omni_range = 1.0

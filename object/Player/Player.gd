@@ -10,6 +10,8 @@ const DASH_SPEED: float = 1.0;
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity");
 var velocity_y: float = 0.0;
 
+var ammo: int = 1;
+
 func _physics_process(delta: float):
 	
 	if(Input.is_action_pressed("dash")):

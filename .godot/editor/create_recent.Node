@@ -1,3 +1,5 @@
+AudioStreamPlayer3D
+OmniLight3D
 SpotLight3D
 WorldEnvironment
 Label
@@ -7,7 +9,6 @@ CollisionShape3D
 MeshInstance3D
 StaticBody3D
 AnimatedSprite3D
-AudioStreamPlayer3D
 Camera3D
 SubViewport
 SubViewportContainer
