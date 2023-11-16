@@ -1,16 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://bi70an8m3t0hn"]
+[gd_scene load_steps=10 format=3 uid="uid://bi70an8m3t0hn"]
 
 [ext_resource type="Script" path="res://object/Level.gd" id="1_ilwlf"]
 [ext_resource type="PackedScene" uid="uid://j4s07atbdw1w" path="res://object/Map/Map.tscn" id="2_5cq4m"]
 [ext_resource type="PackedScene" uid="uid://bknsvnl4pk2d8" path="res://object/Player/Player.tscn" id="2_yg7e6"]
+[ext_resource type="PackedScene" uid="uid://lc10jf1gpxxk" path="res://object/Monster/Monster.tscn" id="4_ub5rh"]
 [ext_resource type="Script" path="res://object/Monster/Monster.gd" id="5_mvshg"]
-[ext_resource type="Script" path="res://object/Monster/Pathfinding.gd" id="5_omfdy"]
 [ext_resource type="Shader" path="res://shaders/NTSC.gdshader" id="5_svvf4"]
 [ext_resource type="Script" path="res://util/FPSCounter/FPSCounter.gd" id="5_w3any"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_jrqrj"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ad3ta"]
 
 [sub_resource type="Environment" id="Environment_77wus"]
 background_mode = 1
@@ -27,23 +23,13 @@ shader_parameter/bottom_strenth = 3.0
 [node name="Level" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16159, 0)
 script = ExtResource("1_ilwlf")
-map_scene = ExtResource("2_5cq4m")
+current_map = ExtResource("2_5cq4m")
 
 [node name="Player" parent="Level" instance=ExtResource("2_yg7e6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0266459, -0.79979)
 
-[node name="Monster" type="CharacterBody3D" parent="Level"]
-transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0, 0)
+[node name="Monster" parent="Level" instance=ExtResource("4_ub5rh")]
 script = ExtResource("5_mvshg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/Monster"]
-mesh = SubResource("CapsuleMesh_jrqrj")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Monster"]
-shape = SubResource("CapsuleShape3D_ad3ta")
-
-[node name="Pathfinding" type="Node3D" parent="Level/Monster"]
-script = ExtResource("5_omfdy")
 
 [node name="FPSCounter" type="Label" parent="."]
 offset_right = 1.0

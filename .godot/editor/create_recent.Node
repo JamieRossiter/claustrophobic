@@ -1,3 +1,10 @@
+Pathfinding
+Node3D
+CollisionShape3D
+MeshInstance3D
+CharacterBody3D
+BackBufferCopy
+ColorRect
 AudioStreamPlayer3D
 OmniLight3D
 SpotLight3D
@@ -5,8 +12,6 @@ WorldEnvironment
 Label
 Label3D
 TileMap
-CollisionShape3D
-MeshInstance3D
 StaticBody3D
 AnimatedSprite3D
 Camera3D
@@ -16,5 +21,4 @@ CanvasLayer
 Area3D
 GridMap
 TextureRect
-Node3D
 RayCast3D

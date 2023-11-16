@@ -1,7 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://bi70an8m3t0hn"]
+[gd_scene load_steps=11 format=3 uid="uid://bi70an8m3t0hn"]
 
 [ext_resource type="Script" path="res://object/Level.gd" id="1_ilwlf"]
-[ext_resource type="PackedScene" uid="uid://j4s07atbdw1w" path="res://object/Map/Map.tscn" id="2_5cq4m"]
 [ext_resource type="PackedScene" uid="uid://bknsvnl4pk2d8" path="res://object/Player/Player.tscn" id="2_yg7e6"]
 [ext_resource type="Script" path="res://object/Monster/Monster.gd" id="5_mvshg"]
 [ext_resource type="Script" path="res://object/Monster/Pathfinding.gd" id="5_omfdy"]
@@ -27,7 +26,6 @@ shader_parameter/bottom_strenth = 3.0
 [node name="Level" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16159, 0)
 script = ExtResource("1_ilwlf")
-map_scene = ExtResource("2_5cq4m")
 
 [node name="Player" parent="Level" instance=ExtResource("2_yg7e6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0266459, -0.79979)
