@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bi70an8m3t0hn"]
+[gd_scene load_steps=21 format=3 uid="uid://bi70an8m3t0hn"]
 
 [ext_resource type="Script" path="res://object/Level.gd" id="1_ilwlf"]
 [ext_resource type="PackedScene" uid="uid://j4s07atbdw1w" path="res://object/Map/Map.tscn" id="2_5cq4m"]
@@ -7,10 +7,43 @@
 [ext_resource type="Script" path="res://object/Monster/Pathfinding.gd" id="5_omfdy"]
 [ext_resource type="Shader" path="res://shaders/NTSC.gdshader" id="5_svvf4"]
 [ext_resource type="Script" path="res://util/FPSCounter/FPSCounter.gd" id="5_w3any"]
+[ext_resource type="AudioStream" uid="uid://doj0m2pqrl6jk" path="res://sfx/monster/footstep_distant/monster_footstep_distant_0.wav" id="6_0nkht"]
+[ext_resource type="AudioStream" uid="uid://bn8yfebe7frs" path="res://sfx/monster/footstep_distant/monster_footstep_distant_1.wav" id="7_410t7"]
+[ext_resource type="AudioStream" uid="uid://d3ifqveddvv7v" path="res://sfx/monster/footstep_distant/monster_footstep_distant_2.wav" id="8_g6qfg"]
+[ext_resource type="AudioStream" uid="uid://ck5yipgtnsbqv" path="res://sfx/monster/footstep_close/monster_footstep_close_1.wav" id="10_7lsln"]
+[ext_resource type="AudioStream" uid="uid://dhnafme4k0jpd" path="res://sfx/monster/breathing/regen_breath_0.wav" id="10_cd25b"]
+[ext_resource type="AudioStream" uid="uid://csltb44sk864j" path="res://sfx/monster/breathing/regen_breath_1.wav" id="11_si5cl"]
+[ext_resource type="AudioStream" uid="uid://ux6uwn3atns8" path="res://sfx/monster/breathing/regen_breath_2.wav" id="12_87euf"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_jrqrj"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ad3ta"]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_oboo1"]
+streams_count = 3
+random_pitch = 1.5
+stream_0/stream = ExtResource("6_0nkht")
+stream_0/weight = 10.0
+stream_1/stream = ExtResource("7_410t7")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("8_g6qfg")
+stream_2/weight = 10.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_6bqsl"]
+streams_count = 1
+random_pitch = 1.5
+random_volume_offset_db = 10.0
+stream_0/stream = ExtResource("10_7lsln")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_relqx"]
+streams_count = 3
+random_pitch = 1.0
+random_volume_offset_db = 15.0
+stream_0/stream = ExtResource("10_cd25b")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("11_si5cl")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("12_87euf")
+stream_2/weight = 1.0
 
 [sub_resource type="Environment" id="Environment_77wus"]
 background_mode = 1
@@ -33,17 +66,37 @@ map_scene = ExtResource("2_5cq4m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0266459, -0.79979)
 
 [node name="Monster" type="CharacterBody3D" parent="Level"]
-transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0, 0)
 script = ExtResource("5_mvshg")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Level/Monster"]
+transform = Transform3D(1.5, 0, 0, 0, 0.3, 0, 0, 0, 1.5, 0, 0, 0)
+visible = false
 mesh = SubResource("CapsuleMesh_jrqrj")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Monster"]
-shape = SubResource("CapsuleShape3D_ad3ta")
 
 [node name="Pathfinding" type="Node3D" parent="Level/Monster"]
 script = ExtResource("5_omfdy")
+
+[node name="FootstepDistant" type="AudioStreamPlayer3D" parent="Level/Monster"]
+stream = SubResource("AudioStreamRandomizer_oboo1")
+unit_size = 2.0
+bus = &"SFX"
+
+[node name="FootstepClose" type="AudioStreamPlayer3D" parent="Level/Monster"]
+stream = SubResource("AudioStreamRandomizer_6bqsl")
+volume_db = 80.0
+unit_size = 2.0
+max_db = 6.0
+max_distance = 2.0
+
+[node name="Breathing" type="AudioStreamPlayer3D" parent="Level/Monster"]
+stream = SubResource("AudioStreamRandomizer_relqx")
+volume_db = 5.0
+unit_size = 2.0
+max_db = 6.0
+pitch_scale = 0.8
+autoplay = true
+max_distance = 2.0
+bus = &"SFX"
 
 [node name="FPSCounter" type="Label" parent="."]
 offset_right = 1.0

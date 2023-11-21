@@ -14,6 +14,7 @@ func _process(delta: float) -> void:
 		print("Player", Vector2(player.position.x, player.position.z));
 		astar_grid.size = tile_map.get_used_rect().size;
 		astar_grid.cell_size = Vector2(tile_map.cell_quadrant_size, tile_map.cell_quadrant_size);
+		astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER;''
 		astar_grid.update();
 
 func get_astar_path() -> Array[Vector2i]:

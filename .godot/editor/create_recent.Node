@@ -1,3 +1,5 @@
+AudioStreamPlayer3D
+AudioStreamPlayer
 Pathfinding
 Node3D
 CollisionShape3D
@@ -5,7 +7,6 @@ MeshInstance3D
 CharacterBody3D
 BackBufferCopy
 ColorRect
-AudioStreamPlayer3D
 OmniLight3D
 SpotLight3D
 WorldEnvironment

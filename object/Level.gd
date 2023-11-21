@@ -29,12 +29,12 @@ func generate_map(map_data: Array[Vector2i]) -> void:
 			cell.update_walls(map_data);
 
 func set_player_position() -> void:
-	player.position.x = vent_cells[2].position.x;
-	player.position.y = vent_cells[2].position.y;
-	player.position.z = vent_cells[2].position.z;
+	player.position.x = vent_cells[15].position.x;
+	player.position.y = vent_cells[15].position.y;
+	player.position.z = vent_cells[15].position.z;
 
 func set_monster_position() -> void:
 	monster.position.x = vent_cells[5].position.x;
-	monster.position.y = vent_cells[5].position.y;
+	monster.position.y = vent_cells[5].position.y + 0.15;
 	monster.position.z = vent_cells[5].position.z;
 
