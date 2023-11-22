@@ -140,6 +140,7 @@ frame = 1
 [node name="Sfx_Gunshot" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.165413, 0.821122, 1.26346)
 stream = ExtResource("10_036dy")
+max_db = -3.0
 bus = &"SFX"
 
 [node name="Sfx_Tinnitus" type="AudioStreamPlayer3D" parent="."]

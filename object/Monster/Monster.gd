@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func start_path_find_timer() -> void:
 	var timer: Timer = Timer.new();
-	timer.wait_time = 3;
+	timer.wait_time = 1;
 	add_child(timer);
 	timer.timeout.connect(on_path_find_timeout);
 	timer.start();
@@ -40,17 +40,18 @@ func start_breathing_timer() -> void:
 func on_path_find_timeout() -> void:
 	if(not path):
 		path = pathfinder.get_astar_path();
-		print(path);
+		print("Path: ", path); 
 	else:
 		if(path_index >= path.size() - 1):
 			path_index = 0;
 			path = pathfinder.get_astar_path();
-			print(path);
+			print("Path: ", path); 
 		else:
 			path_index += 1;
-		position.x = path[path_index].x;
-		position.z = path[path_index].y;
-		print(Vector2(position.x, position.z));
+		if(path.size() > 0):
+			position.x = path[path_index].x * 0.6;
+			position.z = path[path_index].y * 0.6;
+			print("Monster Coords: ", Vector2(path[path_index].x, path[path_index].y));
 
 func play_footstep_sound() -> void:
 	footstep_distant.play();
