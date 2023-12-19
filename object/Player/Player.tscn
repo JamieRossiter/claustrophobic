@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bknsvnl4pk2d8"]
+[gd_scene load_steps=8 format=3 uid="uid://bknsvnl4pk2d8"]
 
 [ext_resource type="Script" path="res://object/Player/Player.gd" id="1_7ilod"]
 [ext_resource type="Script" path="res://object/Player/PlayerCamera.gd" id="2_a05x7"]
 [ext_resource type="PackedScene" uid="uid://lnpivlwrqxen" path="res://object/FpsSprite/FpsSprite.tscn" id="3_ykyae"]
 [ext_resource type="Script" path="res://object/FpsSprite/FpsSprite.gd" id="4_h3k4a"]
+[ext_resource type="Script" path="res://object/Player/Hitscan.gd" id="5_jkgjn"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_wxu3q"]
 
@@ -46,3 +47,6 @@ spot_range = 2.0
 spot_attenuation = 0.0253828
 spot_angle = 20.0
 spot_angle_attenuation = 2.0
+
+[node name="Hitscan" type="Node3D" parent="PlayerCamera"]
+script = ExtResource("5_jkgjn")

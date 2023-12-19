@@ -3,7 +3,7 @@ class_name Player extends CharacterBody3D
 @export var god_mode_active: bool = false;
 
 const JUMP_VELOCITY: float = 4.5;
-const WALK_SPEED: float = 0.5;
+const WALK_SPEED: float = 0.2;
 const DASH_SPEED: float = 1.0;
 
 @onready var speed: float = WALK_SPEED;
@@ -17,10 +17,7 @@ func _physics_process(delta: float):
 	if(Input.is_action_pressed("dash")):
 		speed = DASH_SPEED;
 	else:
-		if(god_mode_active):
-			speed = 3.0;
-		else:
-			speed = WALK_SPEED;
+		speed = WALK_SPEED;
 	
 #	if(is_on_floor()):
 #		velocity_y = 0;

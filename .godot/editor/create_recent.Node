@@ -1,7 +1,8 @@
 AudioStreamPlayer3D
+TextureRect
+Node3D
 AudioStreamPlayer
 Pathfinding
-Node3D
 CollisionShape3D
 MeshInstance3D
 CharacterBody3D
@@ -21,5 +22,4 @@ SubViewportContainer
 CanvasLayer
 Area3D
 GridMap
-TextureRect
 RayCast3D
