@@ -15,7 +15,6 @@ func _process(delta: float) -> void:
 		astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER;
 		astar_grid.update();
 		make_cells_impassable(get_empty_cells());
-		print(get_empty_cells());
 
 func get_astar_path() -> Array[Vector2i]:
 	# HACK: Monster's true position does not correlate to TileMap position. Dividing the monster and player positions by 0.6 appears to fix the issue, however because get_id_path requires Vector2i, the floats in the supplied Vector2s are being implicitly cast to ints, which adds some error and makes this fix imperfect.

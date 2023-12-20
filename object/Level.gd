@@ -12,7 +12,7 @@ func _ready() -> void:
 	var map_data: Array[Vector2i] = get_map_data(); 
 	generate_map(map_data);
 	set_player_position();
-	set_monster_position();
+	randomize_monster_position();
 
 func get_map_data() -> Array[Vector2i]:
 	if(not map_scene is PackedScene): return [];
@@ -33,8 +33,8 @@ func set_player_position() -> void:
 	player.position.y = vent_cells[15].position.y;
 	player.position.z = vent_cells[15].position.z;
 
-func set_monster_position() -> void:
-	monster.position.x = vent_cells[5].position.x;
-	monster.position.y = vent_cells[5].position.y + 0.15;
-	monster.position.z = vent_cells[5].position.z;
+func randomize_monster_position() -> void:
+	monster.position.x = vent_cells[randi() % vent_cells.size()].position.x;
+	monster.position.y = vent_cells[randi() % vent_cells.size()].position.y + 0.15;
+	monster.position.z = vent_cells[randi() % vent_cells.size()].position.z;
 
