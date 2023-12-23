@@ -4,9 +4,10 @@ const SPEED: float = 2.0;
 
 var path_index: int = 0;
 var path: Array[Vector2i];
-var footstep_period: int = 0;
-var footsteps: int = 0;
+var footsteps_in_period: int = 0;
+var footstep_delay: float = 0;
 
+@onready var parent: Level = get_parent();
 @onready var pathfinder: Pathfinding = $Pathfinding;
 @onready var hitscan: Hitscan = get_node("../Player/PlayerCamera/Hitscan");
 
@@ -30,7 +31,7 @@ func _ready() -> void:
 	footstep_timer.start();
 	
 	init_footstep_delay_timer();
-	randomize_footstep_period();
+	randomize_footsteps_in_period();
 	
 	init_breathing_timer();
 	breathing_timer.start();
@@ -44,7 +45,7 @@ func init_path_find_timer() -> void:
 	path_find_timer.timeout.connect(on_path_find_timeout);
 	
 func init_footstep_timer() -> void:
-	footstep_timer.wait_time = 0.6;
+	randomize_footstep_delay();
 	add_child(footstep_timer);
 	footstep_timer.timeout.connect(play_footstep_sound);
 	
@@ -54,7 +55,6 @@ func init_breathing_timer() -> void:
 	breathing_timer.timeout.connect(play_breathing_sound);
 	
 func init_footstep_delay_timer() -> void:
-#	footstep_delay_timer.autostart = false;
 	add_child(footstep_delay_timer);
 	footstep_delay_timer.timeout.connect(play_footstep_sound);
 
@@ -83,9 +83,12 @@ func is_hit_by_bullet(collider: Object) -> void:
 		breathing_timer.stop();
 
 # How many iterations of the footstep timer before there is a pause
-func randomize_footstep_period() -> void:
-	footstep_period = randi_range(1, 10);
-	footsteps = footstep_period;
+func randomize_footsteps_in_period() -> void:
+	footsteps_in_period = randi_range(1, 10);
+	
+func randomize_footstep_delay() -> void:
+	footstep_delay = randf_range(0.2, 1.0);
+	footstep_timer.wait_time = footstep_delay;
 	
 func play_footstep_sound() -> void:
 	footstep_timer.start();
@@ -94,17 +97,18 @@ func play_footstep_sound() -> void:
 	footstep_distant.play();
 	footstep_close.play();
 	
-	footsteps -= 1;
-	print(footsteps);
+	footsteps_in_period -= 1;
+	print(footsteps_in_period);
 	
 	# TODO: If the monster is near the player, don't run this
 	# TODO: Make this its own function
 	# Check to see if the footstep period is over
-	if(footsteps == 0):
+	if(footsteps_in_period == 0):
 		footstep_timer.stop();
 		footstep_delay_timer.wait_time = randi_range(5, 10);
 		footstep_delay_timer.start();
-		randomize_footstep_period();
+		randomize_footsteps_in_period();
+		randomize_footstep_delay();
 
 func play_breathing_sound() -> void:
 	breathing.play();

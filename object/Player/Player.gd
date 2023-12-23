@@ -3,7 +3,7 @@ class_name Player extends CharacterBody3D
 @export var god_mode_active: bool = false;
 
 const JUMP_VELOCITY: float = 4.5;
-const WALK_SPEED: float = 0.2;
+const WALK_SPEED: float = 0.5;
 const DASH_SPEED: float = 1.0;
 
 @onready var speed: float = WALK_SPEED;
