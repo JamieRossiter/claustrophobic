@@ -1,3 +1,4 @@
+GridMap
 AudioStreamPlayer3D
 TextureRect
 Node3D
@@ -21,5 +22,4 @@ SubViewport
 SubViewportContainer
 CanvasLayer
 Area3D
-GridMap
 RayCast3D

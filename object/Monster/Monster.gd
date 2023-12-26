@@ -24,8 +24,8 @@ var footstep_delay: float = 0;
 @onready var breathing_timer: Timer = Timer.new();
 
 func _ready() -> void:
-	init_path_find_timer();
-	path_find_timer.start();
+#	init_path_find_timer();
+#	path_find_timer.start();
 	
 	init_footstep_timer();
 	footstep_timer.start();

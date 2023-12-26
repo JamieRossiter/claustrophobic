@@ -31,6 +31,14 @@ func generate_map(map_data: Array[Vector2i]) -> void:
 		for cell in vent_cells:
 			cell.update_walls(map_data);
 
+func get_vent_cell_from_position(position: Vector3) -> VentCell:
+	var target_cell: VentCell = null;
+	for cell in vent_cells:
+		if(cell.position == position):
+			target_cell = cell;
+			break;
+	return target_cell;
+
 # Returns the closest valid vent cell position to the position provided as an argument
 func get_closest_vent_cell_position_to_position(position: Vector3) -> Vector3:
 	var snapped_position: Vector3 = Vector3(snapped(position.x, 0.1), snapped(position.y, 0), snapped(position.z, 0.1))
@@ -39,18 +47,6 @@ func get_closest_vent_cell_position_to_position(position: Vector3) -> Vector3:
 	# Separate vent cell z values
 	var vent_cell_zs: Array = vent_cells.map(func(vc): return vc.position.z);
 	return Vector3(find_closest(snapped_position.x, vent_cell_xs), snapped_position.y, find_closest(snapped_position.z, vent_cell_zs));
-
-# Get the position of the vent cell in its array based on the provided position
-func get_vent_cell_arraypos_by_position(position: Vector3) -> int:
-	# Sanitise the provided position by getting the position of the vent cell closest to it.												
-	var valid_vent_cell_pos: Vector3 = get_closest_vent_cell_position_to_position(position);
-	var arraypos: int = -1;
-	if(not valid_vent_cell_pos): return arraypos; # if not valid vent cell, gtfo
-	
-	for i in range(vent_cells.size()):
-		if(valid_vent_cell_pos == vent_cells[i].position):
-			arraypos = i;
-	return arraypos;	
 
 # TODO: Move this function to a utility script
 func find_closest(num, array):
@@ -75,9 +71,33 @@ func randomize_monster_position() -> void:
 	monster.position.y = vent_cells[randi() % vent_cells.size()].position.y + 0.15;
 	monster.position.z = vent_cells[randi() % vent_cells.size()].position.z;
 
-# FIXME: Why are the vent cell arraypos's random? Adjacent cells jump from 15 to 29?
+func get_nearby_valid_cell_pos(current_cell_pos: Vector3, distance: int) -> Vector3:
+	var valid_curr_cell_pos: Vector3 = get_closest_vent_cell_position_to_position(current_cell_pos);
+	var current_vent_cell: VentCell = get_vent_cell_from_position(valid_curr_cell_pos);
+	var target_vent_cell_pos: Vector3 = Vector3(0,0,0);
+	
+	# Check if vent cell is going in north/south direction or east/west direction
+	if(current_vent_cell.direction == "east-west"): 
+		# Check if player is moving in east or west direction
+		if(player.direction == "west"):
+			target_vent_cell_pos = valid_curr_cell_pos + Vector3(distance, 0, 0);
+		elif(player.direction == "east"):
+			target_vent_cell_pos = valid_curr_cell_pos + Vector3(-distance, 0, 0);
+		else:
+			#TODO: Randomize the position the monster is in when looking sideways
+			target_vent_cell_pos = valid_curr_cell_pos + Vector3(distance, 0, 0);
+	else:
+		# Check if player is moving in north or south direction
+		if(player.direction == "north"):
+			target_vent_cell_pos = valid_curr_cell_pos + Vector3(0, 0, distance);
+		elif(player.direction == "south"):
+			target_vent_cell_pos = valid_curr_cell_pos + Vector3(0, 0, -distance);
+		else:
+			#TODO: Randomize the position the monster is in when looking sideways
+			target_vent_cell_pos = valid_curr_cell_pos + Vector3(0, 0, distance);
+	return target_vent_cell_pos;
+
 func teleport_monster_near_player() -> void:
-	var vent_cell_arraypos: int = get_vent_cell_arraypos_by_position(player.position);
-	print("arraypos ", vent_cell_arraypos);
-#	if(target_pos):
-#		monster.position = Vector3(target_pos.x, target_pos.y, target_pos.z);
+	var nearby_cell_pos: Vector3 = get_nearby_valid_cell_pos(player.position, 1);
+	monster.position = nearby_cell_pos;
+	pass;

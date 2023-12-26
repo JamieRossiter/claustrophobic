@@ -6,6 +6,8 @@ const LOOK_SENSITIVITY: float = 5.0;
 
 func _process(delta: float) -> void:
 	
+	determine_camera_direction(); # Determined player's direction (north or south) based on camera global transform z
+	
 	# Handle camera bobble
 	if(player.is_moving()):
 		if(not is_bobbling):
@@ -42,3 +44,16 @@ func bobble_down() -> void:
 	else:
 		if(bobble_down_tween.is_connected("finished", bobble_up)):
 			bobble_down_tween.disconnect("finished", bobble_up);
+
+func determine_camera_direction() -> void:
+	var rounded_camera_x = round(global_transform.basis.z.x)
+	var rounded_camera_z = round(global_transform.basis.z.z);
+	# Determine direction
+	if(rounded_camera_x == 0 and rounded_camera_z == 1):
+		player.direction = "north";
+	elif(rounded_camera_x == -1 and rounded_camera_z == 0):
+		player.direction = "east";
+	elif(rounded_camera_x == 0 and rounded_camera_z == -1):
+		player.direction = "south";
+	elif(rounded_camera_x == 1 and rounded_camera_z == 0):
+		player.direction = "west";
