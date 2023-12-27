@@ -50,10 +50,10 @@ func determine_camera_direction() -> void:
 	var rounded_camera_z = round(global_transform.basis.z.z);
 	# Determine direction
 	if(rounded_camera_x == 0 and rounded_camera_z == 1):
-		player.direction = "north";
+		player.dir = Enum.Direction.NORTH;
 	elif(rounded_camera_x == -1 and rounded_camera_z == 0):
-		player.direction = "east";
+		player.dir = Enum.Direction.WEST;
 	elif(rounded_camera_x == 0 and rounded_camera_z == -1):
-		player.direction = "south";
+		player.dir = Enum.Direction.SOUTH;
 	elif(rounded_camera_x == 1 and rounded_camera_z == 0):
-		player.direction = "west";
+		player.dir = Enum.Direction.EAST;

@@ -10,7 +10,7 @@ const DASH_SPEED: float = 1.0;
 #var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity");
 var velocity_y: float = 0.0;
 
-var direction: String = "";
+var dir: Enum.Direction = Enum.Direction.NONE; # Direction enum
 var ammo: int = 1;
 
 func _physics_process(delta: float):

@@ -1,5 +1,10 @@
 class_name Level extends Node3D
 
+enum MonsterTeleportOrientation {
+	IN_FRONT,
+	BEHIND
+}
+
 var vent_cells: Array[VentCell] = [];
 var tile_map: TileMap;
 
@@ -71,33 +76,37 @@ func randomize_monster_position() -> void:
 	monster.position.y = vent_cells[randi() % vent_cells.size()].position.y + 0.15;
 	monster.position.z = vent_cells[randi() % vent_cells.size()].position.z;
 
-func get_nearby_valid_cell_pos(current_cell_pos: Vector3, distance: int) -> Vector3:
-	var valid_curr_cell_pos: Vector3 = get_closest_vent_cell_position_to_position(current_cell_pos);
-	var current_vent_cell: VentCell = get_vent_cell_from_position(valid_curr_cell_pos);
-	var target_vent_cell_pos: Vector3 = Vector3(0,0,0);
+func teleport_monster_to_player(distance: int, orientation: MonsterTeleportOrientation) -> void:
+	var valid_player_pos: Vector3 = get_closest_vent_cell_position_to_position(player.position);
+	var current_vent_cell: VentCell = get_vent_cell_from_position(valid_player_pos);
+	var target_vent_cell_pos: Vector3 = Vector3.ZERO;
 	
 	# Check if vent cell is going in north/south direction or east/west direction
-	if(current_vent_cell.direction == "east-west"): 
-		# Check if player is moving in east or west direction
-		if(player.direction == "west"):
-			target_vent_cell_pos = valid_curr_cell_pos + Vector3(distance, 0, 0);
-		elif(player.direction == "east"):
-			target_vent_cell_pos = valid_curr_cell_pos + Vector3(-distance, 0, 0);
-		else:
-			#TODO: Randomize the position the monster is in when looking sideways
-			target_vent_cell_pos = valid_curr_cell_pos + Vector3(distance, 0, 0);
-	else:
-		# Check if player is moving in north or south direction
-		if(player.direction == "north"):
-			target_vent_cell_pos = valid_curr_cell_pos + Vector3(0, 0, distance);
-		elif(player.direction == "south"):
-			target_vent_cell_pos = valid_curr_cell_pos + Vector3(0, 0, -distance);
-		else:
-			#TODO: Randomize the position the monster is in when looking sideways
-			target_vent_cell_pos = valid_curr_cell_pos + Vector3(0, 0, distance);
-	return target_vent_cell_pos;
+	match(current_vent_cell.direction):
+		Enum.VentDirection.NORTH_SOUTH:		
+			target_vent_cell_pos = get_target_vent_cell_pos(orientation, valid_player_pos, Vector3(0, 0, distance));
+		Enum.VentDirection.EAST_WEST:
+			target_vent_cell_pos = get_target_vent_cell_pos(orientation, valid_player_pos, Vector3(distance, 0, 0));
+					
+	monster.position = target_vent_cell_pos;
+
+func get_target_vent_cell_pos(orientation: MonsterTeleportOrientation, valid_pos: Vector3, offset_vector: Vector3) -> Vector3:
+	var target_vector: Vector3 = Vector3.ZERO;
+	
+	match(player.dir):
+		Enum.Direction.NORTH, Enum.Direction.EAST:
+			if(orientation == MonsterTeleportOrientation.IN_FRONT):
+				target_vector = valid_pos + -offset_vector;
+			elif(orientation == MonsterTeleportOrientation.BEHIND):
+				target_vector = valid_pos + offset_vector;
+			
+		Enum.Direction.SOUTH, Enum.Direction.WEST:
+			if(orientation == MonsterTeleportOrientation.IN_FRONT):
+				target_vector = valid_pos + offset_vector;
+			elif(orientation == MonsterTeleportOrientation.BEHIND):
+				target_vector = valid_pos + -offset_vector;		
+			
+	return target_vector;
 
 func teleport_monster_near_player() -> void:
-	var nearby_cell_pos: Vector3 = get_nearby_valid_cell_pos(player.position, 1);
-	monster.position = nearby_cell_pos;
-	pass;
+	teleport_monster_to_player(1, MonsterTeleportOrientation.BEHIND);

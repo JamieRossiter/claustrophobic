@@ -1,0 +1,343 @@
+[gd_scene load_steps=60 format=3 uid="uid://bi70an8m3t0hn"]
+
+[ext_resource type="Script" path="res://object/Level.gd" id="1_ilwlf"]
+[ext_resource type="PackedScene" uid="uid://j4s07atbdw1w" path="res://object/Map/Map.tscn" id="2_5cq4m"]
+[ext_resource type="Script" path="res://object/Player/Player.gd" id="3_ry55s"]
+[ext_resource type="Script" path="res://object/Player/PlayerCamera.gd" id="4_cgkcr"]
+[ext_resource type="Texture2D" uid="uid://dbv1mk80u5i6i" path="res://assets/shotgun/aim/aim_0.png" id="5_aplul"]
+[ext_resource type="Script" path="res://object/Monster/Monster.gd" id="5_mvshg"]
+[ext_resource type="Script" path="res://object/Monster/Pathfinding.gd" id="5_omfdy"]
+[ext_resource type="Shader" path="res://shaders/NTSC.gdshader" id="5_svvf4"]
+[ext_resource type="Script" path="res://util/FPSCounter/FPSCounter.gd" id="5_w3any"]
+[ext_resource type="Script" path="res://object/FpsSprite/FpsSprite.gd" id="6_aki4w"]
+[ext_resource type="Texture2D" uid="uid://bwsqmnrks65gn" path="res://assets/shotgun/aim/aim_1.png" id="6_r4p5v"]
+[ext_resource type="Script" path="res://object/Player/Hitscan.gd" id="7_53guh"]
+[ext_resource type="Texture2D" uid="uid://cp7uo3vq4232k" path="res://assets/shotgun/aim/aim_2.png" id="7_ndedg"]
+[ext_resource type="Texture2D" uid="uid://c7v2hmc833ugi" path="res://assets/shotgun/aim/aim_3.png" id="8_cgp1a"]
+[ext_resource type="Texture2D" uid="uid://ip852uxcsdn2" path="res://assets/shotgun/aim/aim_4.png" id="9_2fovx"]
+[ext_resource type="AudioStream" uid="uid://dhnafme4k0jpd" path="res://sfx/monster/breathing/regen_breath_0.wav" id="10_cd25b"]
+[ext_resource type="Texture2D" uid="uid://d01xnmm18qnyb" path="res://assets/shotgun/aim/aim_5.png" id="10_viig4"]
+[ext_resource type="Texture2D" uid="uid://bpugiwdxulp40" path="res://assets/shotgun/aim/aim_6.png" id="11_7fuvv"]
+[ext_resource type="AudioStream" uid="uid://csltb44sk864j" path="res://sfx/monster/breathing/regen_breath_1.wav" id="11_si5cl"]
+[ext_resource type="AudioStream" uid="uid://ux6uwn3atns8" path="res://sfx/monster/breathing/regen_breath_2.wav" id="12_87euf"]
+[ext_resource type="Texture2D" uid="uid://0s7cfwoxs2mg" path="res://assets/shotgun/aim/aim_7.png" id="12_hfort"]
+[ext_resource type="AudioStream" uid="uid://ctx63rnr6u3k7" path="res://sfx/monster/hurt/hurt_0.wav" id="13_fp056"]
+[ext_resource type="Texture2D" uid="uid://dcp6u6ah0p5s4" path="res://assets/shotgun/aim/aim_8.png" id="13_wg8ns"]
+[ext_resource type="Texture2D" uid="uid://iy3b6yjlsoq" path="res://assets/shotgun/aim/aim_9.png" id="14_dlc08"]
+[ext_resource type="AudioStream" uid="uid://bf13y3nbunssi" path="res://sfx/monster/hurt/hurt_1.wav" id="14_ycxkk"]
+[ext_resource type="Texture2D" uid="uid://byirej7jld0sq" path="res://assets/shotgun/pump/pump_7.png" id="15_l42dq"]
+[ext_resource type="AudioStream" uid="uid://bhttt3in8pgkt" path="res://sfx/monster/hurt/hurt_2.wav" id="15_p20se"]
+[ext_resource type="Texture2D" uid="uid://oy3uny72u183" path="res://assets/shotgun/pump/pump_0.png" id="16_ins4o"]
+[ext_resource type="Texture2D" uid="uid://b654nl8lsglnc" path="res://assets/shotgun/pump/pump_1.png" id="17_tw2by"]
+[ext_resource type="Texture2D" uid="uid://b06dgj2b014o" path="res://assets/shotgun/pump/pump_2.png" id="18_h73bx"]
+[ext_resource type="Texture2D" uid="uid://b6566wq3u1mny" path="res://assets/shotgun/pump/pump_3.png" id="19_7ouvl"]
+[ext_resource type="Texture2D" uid="uid://pqbmwqcowrld" path="res://assets/shotgun/pump/pump_4.png" id="20_n3r5s"]
+[ext_resource type="Texture2D" uid="uid://cr2ekbm8ybr8r" path="res://assets/shotgun/pump/pump_5.png" id="21_eyy7a"]
+[ext_resource type="Texture2D" uid="uid://w0ueipv0uqtv" path="res://assets/shotgun/pump/pump_6.png" id="22_76ulh"]
+[ext_resource type="Texture2D" uid="uid://b0277gsw3ker" path="res://assets/shotgun/shoot/shotgun_0.png" id="23_v56e7"]
+[ext_resource type="Texture2D" uid="uid://c3cp3qrivus4a" path="res://assets/shotgun/shoot/shotgun_1.png" id="24_7478w"]
+[ext_resource type="Texture2D" uid="uid://bvtlvwaj0ugyk" path="res://assets/shotgun/shoot/shotgun_2.png" id="25_xmx23"]
+[ext_resource type="Texture2D" uid="uid://ciwc2vr61lrej" path="res://assets/shotgun/shoot/shotgun_3.png" id="26_b3pof"]
+[ext_resource type="Texture2D" uid="uid://vwxdgmrynl1t" path="res://assets/shotgun/shoot/shotgun_4.png" id="27_u7iva"]
+[ext_resource type="Texture2D" uid="uid://dk71drvtgte2a" path="res://assets/shotgun/shoot/shotgun_5.png" id="28_cn35s"]
+[ext_resource type="Texture2D" uid="uid://cl31vvepwjq8r" path="res://assets/shotgun/shoot/shotgun_6.png" id="29_87ek5"]
+[ext_resource type="Texture2D" uid="uid://gai4j4urgjs8" path="res://assets/shotgun/shoot/shotgun_7.png" id="30_babxf"]
+[ext_resource type="Texture2D" uid="uid://8k56i7gdr5j" path="res://assets/shotgun/shoot/shotgun_8.png" id="31_5hns5"]
+[ext_resource type="AudioStream" uid="uid://b8j2wkfy7ku5g" path="res://sfx/shotgun/shotgun.wav" id="33_4chuk"]
+[ext_resource type="AudioStream" uid="uid://bkpc5pcfdh72m" path="res://sfx/player/tinnitus.wav" id="34_2p6as"]
+[ext_resource type="AudioStream" uid="uid://dywq8qv6m737k" path="res://sfx/shotgun/dry.wav" id="35_27uxu"]
+[ext_resource type="AudioStream" uid="uid://c5fsjukya7pba" path="res://sfx/shotgun/pump.wav" id="36_s33y1"]
+[ext_resource type="AudioStream" uid="uid://bea1l61lnd041" path="res://sfx/monster/footstep_close/monster_footstep.wav" id="43_yha3l"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_wxu3q"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_m7ncn"]
+points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6cy43"]
+animations = [{
+"frames": [{
+"duration": 2.0,
+"texture": ExtResource("5_aplul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_r4p5v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ndedg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_cgp1a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_2fovx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_viig4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_7fuvv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_hfort")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_wg8ns")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_dlc08")
+}],
+"loop": false,
+"name": &"aim",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 3.0,
+"texture": ExtResource("15_l42dq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_ins4o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_tw2by")
+}, {
+"duration": 2.0,
+"texture": ExtResource("18_h73bx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_7ouvl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_n3r5s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_eyy7a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_76ulh")
+}],
+"loop": false,
+"name": &"pump",
+"speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_v56e7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_7478w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_xmx23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_b3pof")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_u7iva")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_cn35s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_87ek5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_babxf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_5hns5")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 15.0
+}]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_jrqrj"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hy7yq"]
+points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_oboo1"]
+streams_count = 1
+random_volume_offset_db = 0.0
+stream_0/stream = ExtResource("43_yha3l")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_67fss"]
+streams_count = 1
+stream_0/stream = ExtResource("43_yha3l")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_relqx"]
+streams_count = 3
+random_pitch = 1.0
+random_volume_offset_db = 15.0
+stream_0/stream = ExtResource("10_cd25b")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("11_si5cl")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("12_87euf")
+stream_2/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_njk1k"]
+streams_count = 3
+random_pitch = 2.0
+stream_0/stream = ExtResource("13_fp056")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("14_ycxkk")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("15_p20se")
+stream_2/weight = 1.0
+
+[sub_resource type="Environment" id="Environment_77wus"]
+background_mode = 1
+background_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6riqy"]
+shader = ExtResource("5_svvf4")
+shader_parameter/blur_amount = 3.0
+shader_parameter/signal_quality = 0.0
+shader_parameter/bottom_strenth = 3.0
+
+[node name="Game" type="Node3D"]
+
+[node name="Level" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16159, 0)
+script = ExtResource("1_ilwlf")
+map_scene = ExtResource("2_5cq4m")
+
+[node name="Player" type="CharacterBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0266459, -0.79979)
+disable_mode = 1
+input_ray_pickable = false
+slide_on_ceiling = false
+script = ExtResource("3_ry55s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/Player"]
+transform = Transform3D(0.299989, -0.00261796, -1.14435e-10, 0, -1.31134e-08, 0.3, -0.00261796, -0.299989, -1.31129e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_wxu3q")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Player"]
+transform = Transform3D(0.299989, -0.00261796, -1.14435e-10, 0, -1.31134e-08, 0.3, -0.00261796, -0.299989, -1.31129e-08, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_m7ncn")
+
+[node name="PlayerCamera" type="Camera3D" parent="Level/Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0367851, -0.114186)
+current = true
+fov = 90.0
+script = ExtResource("4_cgkcr")
+
+[node name="FpsSprite" type="AnimatedSprite3D" parent="Level/Player/PlayerCamera"]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.092537, -0.0861719, -0.0993316)
+shaded = true
+double_sided = false
+sprite_frames = SubResource("SpriteFrames_6cy43")
+animation = &"shoot"
+frame = 1
+script = ExtResource("6_aki4w")
+
+[node name="Sfx_Gunshot" type="AudioStreamPlayer3D" parent="Level/Player/PlayerCamera/FpsSprite"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.165413, 0.821122, 1.26346)
+stream = ExtResource("33_4chuk")
+max_db = -3.0
+bus = &"SFX"
+
+[node name="Sfx_Tinnitus" type="AudioStreamPlayer3D" parent="Level/Player/PlayerCamera/FpsSprite"]
+stream = ExtResource("34_2p6as")
+
+[node name="Sfx_Dry" type="AudioStreamPlayer3D" parent="Level/Player/PlayerCamera/FpsSprite"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+stream = ExtResource("35_27uxu")
+
+[node name="Sfx_Pump" type="AudioStreamPlayer3D" parent="Level/Player/PlayerCamera/FpsSprite"]
+stream = ExtResource("36_s33y1")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="MuzzleFlash" type="OmniLight3D" parent="Level/Player/PlayerCamera/FpsSprite"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.164, 1, 0.065)
+light_color = Color(1, 0.792157, 0.356863, 1)
+light_energy = 5.0
+omni_range = 1.0
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Level/Player/PlayerCamera"]
+transform = Transform3D(0.999945, 0, 0.0104718, 0, 1, 0, -0.0104718, 0, 0.999945, 0.01838, -0.0311936, 0.159634)
+light_color = Color(1, 1, 0.847059, 1)
+light_energy = 2.0
+light_indirect_energy = 0.0
+light_bake_mode = 0
+spot_range = 2.0
+spot_attenuation = 0.0253828
+spot_angle = 20.0
+spot_angle_attenuation = 2.0
+
+[node name="Hitscan" type="Node3D" parent="Level/Player/PlayerCamera"]
+script = ExtResource("7_53guh")
+
+[node name="Monster" type="CharacterBody3D" parent="Level"]
+script = ExtResource("5_mvshg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/Monster"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_jrqrj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Monster"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_hy7yq")
+
+[node name="Pathfinding" type="Node3D" parent="Level/Monster"]
+script = ExtResource("5_omfdy")
+
+[node name="FootstepDistant" type="AudioStreamPlayer3D" parent="Level/Monster"]
+stream = SubResource("AudioStreamRandomizer_oboo1")
+unit_size = 2.0
+max_db = 0.0
+bus = &"SFX"
+
+[node name="FootstepClose" type="AudioStreamPlayer3D" parent="Level/Monster"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0266459, 0.79979)
+stream = SubResource("AudioStreamRandomizer_67fss")
+volume_db = 3.0
+unit_size = 2.0
+max_db = 6.0
+max_distance = 2.0
+
+[node name="Breathing" type="AudioStreamPlayer3D" parent="Level/Monster"]
+stream = SubResource("AudioStreamRandomizer_relqx")
+volume_db = 5.0
+unit_size = 2.0
+max_db = 6.0
+pitch_scale = 0.8
+autoplay = true
+max_distance = 2.0
+bus = &"SFX"
+
+[node name="Hurt" type="AudioStreamPlayer3D" parent="Level/Monster"]
+stream = SubResource("AudioStreamRandomizer_njk1k")
+volume_db = 3.0
+bus = &"SFX"
+
+[node name="FPSCounter" type="Label" parent="."]
+offset_right = 1.0
+offset_bottom = 23.0
+script = ExtResource("5_w3any")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_77wus")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_6riqy")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0

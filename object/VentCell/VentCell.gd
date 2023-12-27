@@ -13,7 +13,7 @@ const VentSection: PackedScene = preload("res://object/VentCell/VentSection.tscn
 const FLOOR_WIDTH: float = 0.6;
 const WALL_HEIGHT: float = 0.3;
 
-var direction: String = "";
+var direction: Enum.VentDirection = Enum.VentDirection.NONE;
 
 func _ready() -> void:
 	add_sections_to_tree();
@@ -93,19 +93,19 @@ func update_walls(map_data: Array[Vector2i]) -> void:
 	if(map_data_has_approx(map_data_v2, current_grid_pos + Vector2(0, -0.6))):
 		# Up
 		north_wall.queue_free();
-		direction = "north-south";
+		direction = Enum.VentDirection.NORTH_SOUTH;
 	if(map_data_has_approx(map_data_v2, current_grid_pos + Vector2(0, 0.6))):
 		# Down
 		south_wall.queue_free();
-		direction = "north-south";
+		direction = Enum.VentDirection.NORTH_SOUTH;
 	if(map_data_has_approx(map_data_v2, current_grid_pos + Vector2(-0.6, 0))):
 		# Left
 		west_wall.queue_free();
-		direction = "east-west";
+		direction = Enum.VentDirection.EAST_WEST;
 	if(map_data_has_approx(map_data_v2, current_grid_pos + Vector2(0.6, 0))):
 		# Right
 		east_wall.queue_free();
-		direction = "east-west";
+		direction = Enum.VentDirection.EAST_WEST;
 
 func map_data_has_approx(map_data: Array[Vector2], target: Vector2) -> bool:
 	var has: bool = false;
