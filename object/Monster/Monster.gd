@@ -4,8 +4,8 @@ const SPEED: float = 2.0;
 
 var path_index: int = 0;
 var path: Array[Vector2i];
-var footsteps_in_period: int = 0;
-var footstep_delay: float = 0;
+var travel_distance_in_cells: int = -1;
+var is_moving: bool = false;
 
 @onready var parent: Level = get_parent();
 @onready var pathfinder: Pathfinding = $Pathfinding;
@@ -18,31 +18,51 @@ var footstep_delay: float = 0;
 @onready var hurt: AudioStreamPlayer3D = $Hurt;
 
 # Timers
-@onready var footstep_timer: Timer = Timer.new();
-@onready var footstep_delay_timer: Timer = Timer.new();
-@onready var path_find_timer: Timer = Timer.new();
-@onready var breathing_timer: Timer = Timer.new();
+@onready var footstep_timer: Timer = Timer.new(); # The time it takes between footsteps
+@onready var travel_delay_timer: Timer = Timer.new(); # The time it takes between stopping and starting during pathfinding
+@onready var path_travel_timer: Timer = Timer.new(); # The time it takes to move one cell
+@onready var breathing_timer: Timer = Timer.new(); # The time it takes between breaths
 
 func _ready() -> void:
-#	init_path_find_timer();
-#	path_find_timer.start();
+	init_timers();
+	randomize_travel_distance();
+	start_breathing();
+	hitscan.bullet_hit.connect(is_hit_by_bullet); # Connect signal to check if player has shot at monster
+	pass;
 	
+func _process(delta: float):
+	# HACK: Replace this with a proper button bro
+	if(Input.is_action_just_pressed("shoot")):
+		start_moving();
+
+func init_timers() -> void:
+	init_path_travel_timer();
 	init_footstep_timer();
+	init_travel_delay_timer();
+
+func start_moving() -> void:
 	footstep_timer.start();
+	path_travel_timer.start();
+	find_and_travel_on_path();
+
+func stop_moving() -> void:
+	footstep_timer.stop();
+	path_travel_timer.stop();
 	
-	init_footstep_delay_timer();
-	randomize_footsteps_in_period();
+	travel_delay_timer.start();
+	travel_delay_timer.wait_time = randi_range(5, 10);
 	
+	randomize_footstep_delay();
+	randomize_travel_distance();
+	
+func start_breathing() -> void:
 	init_breathing_timer();
 	breathing_timer.start();
-	
-	hitscan.bullet_hit.connect(is_hit_by_bullet); # Check if player has shot at monster
-	pass;
 
-func init_path_find_timer() -> void:
-	path_find_timer.wait_time = 5;
-	add_child(path_find_timer);
-	path_find_timer.timeout.connect(on_path_find_timeout);
+func init_path_travel_timer() -> void:
+	path_travel_timer.wait_time = 1;
+	add_child(path_travel_timer);
+	path_travel_timer.timeout.connect(find_and_travel_on_path);
 	
 func init_footstep_timer() -> void:
 	randomize_footstep_delay();
@@ -54,11 +74,11 @@ func init_breathing_timer() -> void:
 	add_child(breathing_timer);
 	breathing_timer.timeout.connect(play_breathing_sound);
 	
-func init_footstep_delay_timer() -> void:
-	add_child(footstep_delay_timer);
-	footstep_delay_timer.timeout.connect(play_footstep_sound);
+func init_travel_delay_timer() -> void:
+	add_child(travel_delay_timer);
+	travel_delay_timer.timeout.connect(start_moving);
 
-func on_path_find_timeout() -> void:
+func find_and_travel_on_path() -> void:
 	if(not path):
 		path = pathfinder.get_astar_path();
 		print("Path: ", path); 
@@ -72,6 +92,11 @@ func on_path_find_timeout() -> void:
 		if(path.size() > 0):
 			position.x = path[path_index].x * 0.6;
 			position.z = path[path_index].y * 0.6;
+			if(travel_distance_in_cells == 0):
+				stop_moving();
+			else:
+				travel_distance_in_cells -= 1;
+			print("Travel Distance remaining: ", travel_distance_in_cells);
 			print("Monster Coords: ", Vector2(path[path_index].x, path[path_index].y));
 
 func is_hit_by_bullet(collider: Object) -> void:
@@ -79,36 +104,22 @@ func is_hit_by_bullet(collider: Object) -> void:
 		# Handle monster hurt
 		play_hurt_sound();
 		footstep_timer.stop();
-		path_find_timer.stop();
+		path_travel_timer.stop();
 		breathing_timer.stop();
 
-# How many iterations of the footstep timer before there is a pause
-func randomize_footsteps_in_period() -> void:
-	footsteps_in_period = randi_range(1, 10);
+# Randomize travel distance (in cells)
+func randomize_travel_distance() -> void:
+	travel_distance_in_cells = randi_range(1, 10);
 	
 func randomize_footstep_delay() -> void:
-	footstep_delay = randf_range(0.2, 1.0);
-	footstep_timer.wait_time = footstep_delay;
+	footstep_timer.wait_time = randf_range(0.2, 1.0);
 	
 func play_footstep_sound() -> void:
 	footstep_timer.start();
-	footstep_delay_timer.stop();
+	travel_delay_timer.stop();
 	
 	footstep_distant.play();
 	footstep_close.play();
-	
-	footsteps_in_period -= 1;
-	print(footsteps_in_period);
-	
-	# TODO: If the monster is near the player, don't run this
-	# TODO: Make this its own function
-	# Check to see if the footstep period is over
-	if(footsteps_in_period == 0):
-		footstep_timer.stop();
-		footstep_delay_timer.wait_time = randi_range(5, 10);
-		footstep_delay_timer.start();
-		randomize_footsteps_in_period();
-		randomize_footstep_delay();
 
 func play_breathing_sound() -> void:
 	breathing.play();

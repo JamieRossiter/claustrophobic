@@ -109,4 +109,5 @@ func get_target_vent_cell_pos(orientation: MonsterTeleportOrientation, valid_pos
 	return target_vector;
 
 func teleport_monster_near_player() -> void:
-	teleport_monster_to_player(1, MonsterTeleportOrientation.BEHIND);
+	pass;
+#	teleport_monster_to_player(1, MonsterTeleportOrientation.IN_FRONT);
