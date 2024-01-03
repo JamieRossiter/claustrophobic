@@ -43,11 +43,14 @@ func init_timers() -> void:
 func start_moving() -> void:
 	footstep_timer.start();
 	path_travel_timer.start();
+	play_footstep_sound_raw(); # Play initial footstep sound before starting to move
+	
 	find_and_travel_on_path();
 
 func stop_moving() -> void:
 	footstep_timer.stop();
 	path_travel_timer.stop();
+	play_footstep_sound_raw(); # Play final footstep sound before stopping movement
 	
 	travel_delay_timer.start();
 	travel_delay_timer.wait_time = randi_range(5, 10);
@@ -112,12 +115,20 @@ func randomize_travel_distance() -> void:
 	travel_distance_in_cells = randi_range(1, 10);
 	
 func randomize_footstep_delay() -> void:
-	footstep_timer.wait_time = randf_range(0.2, 1.0);
+	var randomized_delay: float = randf_range(0.2, 1.0);
+	# Match the path travel time with the footstep time
+	path_travel_timer.wait_time = randomized_delay; 
+	footstep_timer.wait_time = randomized_delay;
 	
 func play_footstep_sound() -> void:
 	footstep_timer.start();
 	travel_delay_timer.stop();
 	
+	footstep_distant.play();
+	footstep_close.play();
+	
+# Play footstep sounds without starting the footstep timer or travel delay timer
+func play_footstep_sound_raw() -> void:
 	footstep_distant.play();
 	footstep_close.play();
 

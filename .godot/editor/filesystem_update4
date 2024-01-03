@@ -1,5 +1,3 @@
 res://default_bus_layout.tres
 res://object/Level.tscn
-res://object/Level.gd
 res://object/Monster/Monster.gd
-res://object/Monster/Pathfinding.gd
