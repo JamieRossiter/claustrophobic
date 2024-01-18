@@ -6,6 +6,8 @@ var path_index: int = 0;
 var path: Array[Vector2i];
 var travel_distance_in_cells: int = -1;
 var is_moving: bool = false;
+#TODO: Add button to toggle between aggro and roam states
+var is_aggro: bool = false; # Indicates that the monster is deliberately seeking out the player
 
 @onready var parent: Level = get_parent();
 @onready var pathfinder: Pathfinding = $Pathfinding;
@@ -30,10 +32,14 @@ func _ready() -> void:
 	hitscan.bullet_hit.connect(is_hit_by_bullet); # Connect signal to check if player has shot at monster
 	pass;
 	
-func _process(delta: float):
+func _process(delta: float) -> void:
 	# HACK: Replace this with a proper button bro
 	if(Input.is_action_just_pressed("shoot")):
 		start_moving();
+
+func set_speed() -> void:
+	pass;
+	
 
 func init_timers() -> void:
 	init_path_travel_timer();
@@ -52,10 +58,14 @@ func stop_moving() -> void:
 	path_travel_timer.stop();
 	play_footstep_sound_raw(); # Play final footstep sound before stopping movement
 	
-	travel_delay_timer.start();
-	travel_delay_timer.wait_time = randi_range(5, 10);
+	if(is_aggro): # if aggro, hard set footstep delay to running speed and ignore travel delay
+		set_footstep_delay(0.3);
+		travel_delay_timer.stop();
+	else:
+		randomize_footstep_delay();
+		travel_delay_timer.start();
+		travel_delay_timer.wait_time = randi_range(5, 10);
 	
-	randomize_footstep_delay();
 	randomize_travel_distance();
 	
 func start_breathing() -> void:
@@ -68,7 +78,10 @@ func init_path_travel_timer() -> void:
 	path_travel_timer.timeout.connect(find_and_travel_on_path);
 	
 func init_footstep_timer() -> void:
-	randomize_footstep_delay();
+	if(is_aggro): # if aggro, hard set footstep delay to running speed
+		set_footstep_delay(0.3);
+	else:
+		randomize_footstep_delay();
 	add_child(footstep_timer);
 	footstep_timer.timeout.connect(play_footstep_sound);
 	
@@ -88,6 +101,7 @@ func find_and_travel_on_path() -> void:
 	else:
 		if(path_index >= path.size() - 1):
 			path_index = 0;
+			pathfinder.set_target(); # Reset the target, this re-randomizes a target if not aggro
 			path = pathfinder.get_astar_path();
 			print("Path: ", path); 
 		else:
@@ -96,7 +110,8 @@ func find_and_travel_on_path() -> void:
 			position.x = path[path_index].x * 0.6;
 			position.z = path[path_index].y * 0.6;
 			if(travel_distance_in_cells == 0):
-				stop_moving();
+				if(not is_aggro): # if aggro, ignore cell travel distance
+					stop_moving();
 			else:
 				travel_distance_in_cells -= 1;
 			print("Travel Distance remaining: ", travel_distance_in_cells);
@@ -113,7 +128,11 @@ func is_hit_by_bullet(collider: Object) -> void:
 # Randomize travel distance (in cells)
 func randomize_travel_distance() -> void:
 	travel_distance_in_cells = randi_range(1, 10);
-	
+
+func set_footstep_delay(delay: float) -> void:
+	path_travel_timer.wait_time = delay;
+	footstep_timer.wait_time = delay;
+
 func randomize_footstep_delay() -> void:
 	var randomized_delay: float = randf_range(0.2, 1.0);
 	# Match the path travel time with the footstep time
