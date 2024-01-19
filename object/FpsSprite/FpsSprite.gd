@@ -61,12 +61,14 @@ func _process(delta: float) -> void:
 		deactivate_tinnitus();
 
 func handle_aim() -> void:
+	player.is_aiming = true;
 	play_aim_animation();
 	var aim_tween: Tween = create_tween();
 	aim_tween.tween_property(self, "position:y", TARGET_POS, 0.5);
 	gun_shake_data.is_shaking = true;
 	
 func handle_lower() -> void:
+	player.is_aiming = false;
 	var lower_tween: Tween = create_tween();
 	lower_tween.tween_property(self, "position:y", INITIAL_POS, 0.5);
 	gun_shake_data.is_shaking = false;

@@ -7,6 +7,7 @@ enum MonsterTeleportOrientation {
 
 var vent_cells: Array[VentCell] = [];
 var tile_map: TileMap;
+var game_over: bool = false; # TESTING: Game over toggle
 
 @export var map_scene: PackedScene;
 @onready var player: Player = $Player;
@@ -16,7 +17,7 @@ func _ready() -> void:
 	tile_map = map_scene.instantiate();
 	var map_data: Array[Vector2i] = get_map_data(); 
 	generate_map(map_data);
-	set_player_position(Vector3(0,3,0));
+	set_player_position(Vector3(0,0,0));
 	spawn_monster_furthest_from_player();
 	
 func _process(delta):

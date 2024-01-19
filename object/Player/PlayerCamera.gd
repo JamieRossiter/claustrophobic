@@ -9,7 +9,7 @@ func _process(delta: float) -> void:
 	determine_camera_direction(); # Determined player's direction (north or south) based on camera global transform z
 	
 	# Handle camera bobble
-	if(player.is_moving()):
+	if(player.is_moving() and not player.is_aiming):
 		if(not is_bobbling):
 			is_bobbling = true;
 			bobble_up();

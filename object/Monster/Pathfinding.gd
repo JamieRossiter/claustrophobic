@@ -28,8 +28,8 @@ func set_target() -> void:
 # Gets a random vent cell target (for indiscriminate roaming)
 func get_random_vent_cell_target() -> Vector3:
 	var vent_cells: Array[VentCell] = level.vent_cells;
-	var target_vc: VentCell = vent_cells[randi() % vent_cells.size()];
-	return level.get_closest_vent_cell_position_to_position(target_vc.position);
+	var target_vc_pos: Vector3 = vent_cells[randi() % vent_cells.size()].position;
+	return level.get_closest_vent_cell_position_to_position(target_vc_pos);
 
 func get_astar_path() -> Array[Vector2i]:
 	# HACK: Monster's true position does not correlate to TileMap position. 

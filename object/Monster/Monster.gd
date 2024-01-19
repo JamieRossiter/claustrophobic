@@ -31,6 +31,13 @@ func _ready() -> void:
 	init_breathing_timer();
 	hitscan.bullet_hit.connect(is_hit_by_bullet); # Connect signal to check if player has shot at monster
 	pass;
+	
+func _process(delta: float) -> void:
+	# If the monster is in the player's vicinity, trigger a game over
+	if(not parent.game_over and is_in_player_vicinity()):
+		OS.alert("Game Over!");
+		stun();
+		parent.game_over = true;
 
 func toggle_aggro() -> void:
 	is_aggro = not is_aggro;
@@ -52,6 +59,7 @@ func start_moving() -> void:
 	breathing_timer.start();
 	play_footstep_sound_raw(); # Play initial footstep sound before starting to move
 	find_and_travel_on_path();
+	randomize_footstep_delay();
 
 func stop_moving() -> void:
 	footstep_timer.stop();
@@ -92,6 +100,7 @@ func init_travel_delay_timer() -> void:
 
 func find_and_travel_on_path() -> void:
 	if(not path):
+		pathfinder.set_target(); # Resets the target if the path is invalid
 		path = pathfinder.get_astar_path();
 		print("Path: ", path); 
 	else:
@@ -103,8 +112,10 @@ func find_and_travel_on_path() -> void:
 		else:
 			path_index += 1;
 		if(path.size() > 0):
+			# Change monster position
 			position.x = path[path_index].x * 0.6;
 			position.z = path[path_index].y * 0.6;
+				
 			if(travel_distance_in_cells == 0):
 				if(not is_aggro): # if aggro, ignore cell travel distance
 					stop_moving();
@@ -113,6 +124,12 @@ func find_and_travel_on_path() -> void:
 			print("Travel Distance remaining: ", travel_distance_in_cells);
 			print("Monster Path Pos: ", Vector2(path[path_index].x, path[path_index].y));
 			print("Monster True Coords: ", Vector2(position.x, position.z));
+
+# Check vicinity by comparing monster position to closest valid vent cell position to player
+func is_in_player_vicinity() -> bool:
+	var in_x_vicinity: bool = position.x == parent.get_closest_vent_cell_position_to_position(parent.player.position).x;
+	var in_z_vicinity: bool = position.z == parent.get_closest_vent_cell_position_to_position(parent.player.position).z;
+	return in_x_vicinity and in_z_vicinity;
 
 func is_hit_by_bullet(collider: Object) -> void:
 	if(collider == self):
