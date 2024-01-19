@@ -190,14 +190,15 @@ stream_1/weight = 1.0
 stream_2/stream = ExtResource("15_p20se")
 stream_2/weight = 1.0
 
+[sub_resource type="Environment" id="Environment_77wus"]
+background_mode = 1
+background_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6riqy"]
 shader = ExtResource("5_svvf4")
 shader_parameter/blur_amount = 3.0
 shader_parameter/signal_quality = 0.0
 shader_parameter/bottom_strenth = 3.0
-
-[sub_resource type="Environment" id="Environment_77wus"]
-background_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
 
 [node name="Game" type="Node3D"]
 
@@ -319,8 +320,10 @@ stream = SubResource("AudioStreamRandomizer_njk1k")
 volume_db = 3.0
 bus = &"SFX"
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_77wus")
+
 [node name="NTSCShader" type="ColorRect" parent="."]
-visible = false
 material = SubResource("ShaderMaterial_6riqy")
 anchors_preset = 15
 anchor_right = 1.0
@@ -356,9 +359,6 @@ offset_top = 43.0
 offset_right = 1111.0
 offset_bottom = 74.0
 text = "Monster Start Moving"
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_77wus")
 
 [connection signal="toggled" from="ToggleAggro" to="Level/Monster" method="_on_toggle_aggro_toggled"]
 [connection signal="pressed" from="StartMonsterMove" to="Level/Monster" method="_on_start_monster_move_pressed"]

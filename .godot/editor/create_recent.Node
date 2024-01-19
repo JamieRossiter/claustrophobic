@@ -1,3 +1,6 @@
+Button
+Label
+CheckButton
 GridMap
 AudioStreamPlayer3D
 TextureRect
@@ -12,7 +15,6 @@ ColorRect
 OmniLight3D
 SpotLight3D
 WorldEnvironment
-Label
 Label3D
 TileMap
 StaticBody3D

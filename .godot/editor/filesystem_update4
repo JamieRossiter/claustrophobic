@@ -1,6 +1,7 @@
 res://default_bus_layout.tres
 res://object/Level.tscn
+res://object/Monster/Monster.gd
 res://object/Level.gd
 res://util/Util.gd
-res://object/Monster/Monster.gd
 res://object/Monster/Pathfinding.gd
+res://object/Player/Player.gd

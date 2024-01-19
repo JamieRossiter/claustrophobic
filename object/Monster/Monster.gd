@@ -6,7 +6,6 @@ var path_index: int = 0;
 var path: Array[Vector2i];
 var travel_distance_in_cells: int = -1;
 var is_moving: bool = false;
-#TODO: Add button to toggle between aggro and roam states
 var is_aggro: bool = false; # Indicates that the monster is deliberately seeking out the player
 
 @onready var parent: Level = get_parent();
@@ -24,21 +23,22 @@ var is_aggro: bool = false; # Indicates that the monster is deliberately seeking
 @onready var travel_delay_timer: Timer = Timer.new(); # The time it takes between stopping and starting during pathfinding
 @onready var path_travel_timer: Timer = Timer.new(); # The time it takes to move one cell
 @onready var breathing_timer: Timer = Timer.new(); # The time it takes between breaths
+# TODO: Add stun timer
 
 func _ready() -> void:
 	init_timers();
 	randomize_travel_distance();
-	start_breathing();
+	init_breathing_timer();
 	hitscan.bullet_hit.connect(is_hit_by_bullet); # Connect signal to check if player has shot at monster
 	pass;
-	
-func _process(delta: float) -> void:
-	# HACK: Replace this with a proper button bro
-	if(Input.is_action_just_pressed("shoot")):
-		start_moving();
 
-func set_speed() -> void:
-	pass;
+func toggle_aggro() -> void:
+	is_aggro = not is_aggro;
+	pathfinder.set_target(); # Change target based on aggro state
+	if(is_aggro): # if aggro, hard set footstep delay to running speed and ignore travel delay
+		set_footstep_delay(0.3);
+	else:
+		randomize_footstep_delay();
 	
 
 func init_timers() -> void:
@@ -49,29 +49,25 @@ func init_timers() -> void:
 func start_moving() -> void:
 	footstep_timer.start();
 	path_travel_timer.start();
+	breathing_timer.start();
 	play_footstep_sound_raw(); # Play initial footstep sound before starting to move
-	
 	find_and_travel_on_path();
 
 func stop_moving() -> void:
 	footstep_timer.stop();
 	path_travel_timer.stop();
-	play_footstep_sound_raw(); # Play final footstep sound before stopping movement
-	
-	if(is_aggro): # if aggro, hard set footstep delay to running speed and ignore travel delay
-		set_footstep_delay(0.3);
-		travel_delay_timer.stop();
-	else:
-		randomize_footstep_delay();
-		travel_delay_timer.start();
-		travel_delay_timer.wait_time = randi_range(5, 10);
-	
-	randomize_travel_distance();
-	
-func start_breathing() -> void:
-	init_breathing_timer();
-	breathing_timer.start();
+	play_footstep_sound_raw(); # Play final footstep sound before stopping movement	
+	travel_delay_timer.wait_time = randi_range(5, 10); # Ignored if aggro
+	travel_delay_timer.start();
+	randomize_travel_distance(); # Ignored if aggro
 
+func stun() -> void:
+	footstep_timer.stop();
+	path_travel_timer.stop();
+	play_footstep_sound_raw(); # Play final footstep sound before stopping movement	
+	travel_delay_timer.stop();
+	breathing_timer.stop();
+	
 func init_path_travel_timer() -> void:
 	path_travel_timer.wait_time = 1;
 	add_child(path_travel_timer);
@@ -115,15 +111,14 @@ func find_and_travel_on_path() -> void:
 			else:
 				travel_distance_in_cells -= 1;
 			print("Travel Distance remaining: ", travel_distance_in_cells);
-			print("Monster Coords: ", Vector2(path[path_index].x, path[path_index].y));
+			print("Monster Path Pos: ", Vector2(path[path_index].x, path[path_index].y));
+			print("Monster True Coords: ", Vector2(position.x, position.z));
 
 func is_hit_by_bullet(collider: Object) -> void:
 	if(collider == self):
 		# Handle monster hurt
 		play_hurt_sound();
-		footstep_timer.stop();
-		path_travel_timer.stop();
-		breathing_timer.stop();
+		stun();
 
 # Randomize travel distance (in cells)
 func randomize_travel_distance() -> void:
@@ -157,3 +152,11 @@ func play_breathing_sound() -> void:
 func play_hurt_sound() -> void:
 	hurt.play();
 	
+# TESTING: Aggro toggle button
+func _on_toggle_aggro_toggled(button_pressed: bool) -> void:
+	toggle_aggro();
+	print("Aggro is ", is_aggro);
+
+# TESTING: Monster start move button
+func _on_start_monster_move_pressed():
+	start_moving();

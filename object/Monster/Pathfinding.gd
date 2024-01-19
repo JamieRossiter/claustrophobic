@@ -32,7 +32,11 @@ func get_random_vent_cell_target() -> Vector3:
 	return level.get_closest_vent_cell_position_to_position(target_vc.position);
 
 func get_astar_path() -> Array[Vector2i]:
-	# HACK: Monster's true position does not correlate to TileMap position. Dividing the monster and player positions by 0.6 appears to fix the issue, however because get_id_path requires Vector2i, the floats in the supplied Vector2s are being implicitly cast to ints, which adds some error and makes this fix imperfect.
+	# HACK: Monster's true position does not correlate to TileMap position. 
+	# Dividing the monster and player positions by 0.6 appears to fix the issue, 
+	# however because get_id_path requires Vector2i, the floats in the supplied 
+	# Vector2s are being implicitly cast to ints, which adds some error and makes 
+	# this fix imperfect. THIS COULD AFFECT PATHING LATER DOWN THE TRACK.
 	return astar_grid.get_id_path(
 		Vector2(monster.position.x / 0.6, monster.position.z / 0.6), 
 		Vector2(target.x / 0.6, target.z / 0.6)

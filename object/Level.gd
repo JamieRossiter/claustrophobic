@@ -16,13 +16,8 @@ func _ready() -> void:
 	tile_map = map_scene.instantiate();
 	var map_data: Array[Vector2i] = get_map_data(); 
 	generate_map(map_data);
-	set_player_position(Vector3(0,0,0));
-	
-	# BUG: Monster position is randomly invalid, causing the path array to be 
-	#empty as a path from the position cannot be determined. 
-	#This also affects generation of a path to a random vent cell during the 
-	#monster's roam state, presumably because the random vc's position is invalid  
-	randomize_monster_position();
+	set_player_position(Vector3(0,3,0));
+	spawn_monster_furthest_from_player();
 	
 func _process(delta):
 	teleport_monster_near_player();
@@ -61,13 +56,21 @@ func get_closest_vent_cell_position_to_position(position: Vector3) -> Vector3:
 func set_player_position(vent_cell_pos: Vector3) -> void:
 	player.position = get_closest_vent_cell_position_to_position(vent_cell_pos);
 
-func randomize_monster_position() -> void:
-	var target_position: Vector3 = Vector3();
-	target_position.x = vent_cells[randi() % vent_cells.size()].position.x
-	target_position.y = vent_cells[randi() % vent_cells.size()].position.y + 0.15;
-	target_position.z = vent_cells[randi() % vent_cells.size()].position.z;
-	monster.position = get_closest_vent_cell_position_to_position(target_position);
-	
+#func randomize_monster_position() -> void:
+#	var target_position: Vector3 = Vector3();
+#	target_position.x = vent_cells[randi() % vent_cells.size()].position.x
+#	target_position.y = vent_cells[randi() % vent_cells.size()].position.y + 0.15;
+#	target_position.z = vent_cells[randi() % vent_cells.size()].position.z;
+#	var new_position: Vector3 = get_closest_vent_cell_position_to_position(target_position);
+#	print("New Randomized Monster Position", new_position);
+#	monster.position = new_position;
+
+func spawn_monster_furthest_from_player() -> void:
+	var vc_positions: Array = vent_cells.map(func(vc): return vc.position);
+	var pos = Util.find_largest_vector(vc_positions)
+#	monster.position = Vector3(8.4, 0, 10.2);
+	monster.position = pos;
+
 func teleport_monster_to_player(distance: int, orientation: MonsterTeleportOrientation) -> void:
 	var valid_player_pos: Vector3 = get_closest_vent_cell_position_to_position(player.position);
 	var current_vent_cell: VentCell = get_vent_cell_from_position(valid_player_pos);
