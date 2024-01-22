@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://bi70an8m3t0hn"]
+[gd_scene load_steps=62 format=3 uid="uid://bi70an8m3t0hn"]
 
 [ext_resource type="Script" path="res://object/Level.gd" id="1_ilwlf"]
 [ext_resource type="PackedScene" uid="uid://j4s07atbdw1w" path="res://object/Map/Map.tscn" id="2_5cq4m"]
@@ -48,6 +48,8 @@
 [ext_resource type="AudioStream" uid="uid://dywq8qv6m737k" path="res://sfx/shotgun/dry.wav" id="35_27uxu"]
 [ext_resource type="AudioStream" uid="uid://c5fsjukya7pba" path="res://sfx/shotgun/pump.wav" id="36_s33y1"]
 [ext_resource type="AudioStream" uid="uid://bea1l61lnd041" path="res://sfx/monster/footstep_close/monster_footstep.wav" id="43_yha3l"]
+[ext_resource type="Script" path="res://object/Level/LevelIntroScreen.gd" id="47_0mcwc"]
+[ext_resource type="Script" path="res://util/Debug.gd" id="48_6waov"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_wxu3q"]
 
@@ -197,6 +199,7 @@ shader_parameter/signal_quality = 0.0
 shader_parameter/bottom_strenth = 3.0
 
 [sub_resource type="Environment" id="Environment_77wus"]
+background_mode = 1
 background_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
 
 [node name="Game" type="Node3D"]
@@ -319,6 +322,34 @@ stream = SubResource("AudioStreamRandomizer_njk1k")
 volume_db = 3.0
 bus = &"SFX"
 
+[node name="SplashScreen" type="ColorRect" parent="Level"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("47_0mcwc")
+
+[node name="IntroLabel" type="Label" parent="Level/SplashScreen"]
+visible = false
+offset_left = 449.0
+offset_top = 280.0
+offset_right = 694.0
+offset_bottom = 350.0
+theme_override_font_sizes/font_size = 48
+text = "Find Noah"
+
+[node name="GameOverLabel" type="Label" parent="Level/SplashScreen"]
+visible = false
+layout_mode = 0
+offset_left = 429.0
+offset_top = 280.0
+offset_right = 705.0
+offset_bottom = 350.0
+theme_override_font_sizes/font_size = 48
+text = "GAME OVER"
+
 [node name="NTSCShader" type="ColorRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_6riqy")
@@ -332,33 +363,36 @@ offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FPSCounter" type="Label" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_77wus")
+
+[node name="Debug" type="Node" parent="."]
+script = ExtResource("48_6waov")
+
+[node name="FPSCounter" type="Label" parent="Debug"]
 offset_right = 1.0
 offset_bottom = 23.0
 script = ExtResource("5_w3any")
 
-[node name="ToggleAggro" type="CheckButton" parent="."]
-offset_left = 1086.0
-offset_top = 13.0
-offset_right = 1130.0
-offset_bottom = 37.0
-
-[node name="Label" type="Label" parent="ToggleAggro"]
-layout_mode = 0
-offset_left = -166.0
-offset_right = 3.0
-offset_bottom = 26.0
-text = "Toggle Monster Aggro"
-
-[node name="StartMonsterMove" type="Button" parent="."]
+[node name="StartMonsterMove" type="Button" parent="Debug"]
 offset_left = 935.0
 offset_top = 43.0
 offset_right = 1111.0
 offset_bottom = 74.0
 text = "Monster Start Moving"
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_77wus")
+[node name="ToggleAggro" type="CheckButton" parent="Debug"]
+offset_left = 1086.0
+offset_top = 13.0
+offset_right = 1130.0
+offset_bottom = 37.0
 
-[connection signal="toggled" from="ToggleAggro" to="Level/Monster" method="_on_toggle_aggro_toggled"]
-[connection signal="pressed" from="StartMonsterMove" to="Level/Monster" method="_on_start_monster_move_pressed"]
+[node name="Label" type="Label" parent="Debug/ToggleAggro"]
+layout_mode = 0
+offset_left = -166.0
+offset_right = 3.0
+offset_bottom = 26.0
+text = "Toggle Monster Aggro"
+
+[connection signal="pressed" from="Debug/StartMonsterMove" to="Level/Monster" method="_on_start_monster_move_pressed"]
+[connection signal="toggled" from="Debug/ToggleAggro" to="Level/Monster" method="_on_toggle_aggro_toggled"]

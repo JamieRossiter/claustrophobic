@@ -5,8 +5,8 @@ const SPEED: float = 2.0;
 var path_index: int = 0;
 var path: Array[Vector2i];
 var travel_distance_in_cells: int = -1;
-var is_moving: bool = false;
 var is_aggro: bool = false; # Indicates that the monster is deliberately seeking out the player
+var is_stunned: bool = false;
 
 @onready var parent: Level = get_parent();
 @onready var pathfinder: Pathfinding = $Pathfinding;
@@ -23,35 +23,35 @@ var is_aggro: bool = false; # Indicates that the monster is deliberately seeking
 @onready var travel_delay_timer: Timer = Timer.new(); # The time it takes between stopping and starting during pathfinding
 @onready var path_travel_timer: Timer = Timer.new(); # The time it takes to move one cell
 @onready var breathing_timer: Timer = Timer.new(); # The time it takes between breaths
-# TODO: Add stun timer
+@onready var stun_timer: Timer = Timer.new(); # The time it takes for the monster to wake up from a stun
 
 func _ready() -> void:
 	init_timers();
 	randomize_travel_distance();
 	init_breathing_timer();
 	hitscan.bullet_hit.connect(is_hit_by_bullet); # Connect signal to check if player has shot at monster
-	pass;
 	
 func _process(delta: float) -> void:
 	# If the monster is in the player's vicinity, trigger a game over
-	if(not parent.game_over and is_in_player_vicinity()):
-		OS.alert("Game Over!");
-		stun();
-		parent.game_over = true;
+	if(is_in_player_vicinity() and not is_stunned and is_aggro):
+		parent.handle_game_over();
 
-func toggle_aggro() -> void:
-	is_aggro = not is_aggro;
+func toggle_aggro(activate = null) -> void:
+	if(activate):
+		is_aggro = activate;
+	else:
+		is_aggro = not is_aggro;
 	pathfinder.set_target(); # Change target based on aggro state
 	if(is_aggro): # if aggro, hard set footstep delay to running speed and ignore travel delay
 		set_footstep_delay(0.3);
 	else:
 		randomize_footstep_delay();
 	
-
 func init_timers() -> void:
 	init_path_travel_timer();
 	init_footstep_timer();
 	init_travel_delay_timer();
+	init_stun_timer();
 
 func start_moving() -> void:
 	footstep_timer.start();
@@ -59,7 +59,11 @@ func start_moving() -> void:
 	breathing_timer.start();
 	play_footstep_sound_raw(); # Play initial footstep sound before starting to move
 	find_and_travel_on_path();
-	randomize_footstep_delay();
+	if(is_aggro):
+		set_footstep_delay(0.3);
+	else:
+		randomize_footstep_delay();
+	is_stunned = false;
 
 func stop_moving() -> void:
 	footstep_timer.stop();
@@ -69,12 +73,17 @@ func stop_moving() -> void:
 	travel_delay_timer.start();
 	randomize_travel_distance(); # Ignored if aggro
 
-func stun() -> void:
+func stop() -> void:
 	footstep_timer.stop();
 	path_travel_timer.stop();
-	play_footstep_sound_raw(); # Play final footstep sound before stopping movement	
 	travel_delay_timer.stop();
 	breathing_timer.stop();
+
+func stun() -> void:
+	stop();
+	is_stunned = true;
+	stun_timer.start();
+	play_footstep_sound_raw(); # Play final footstep sound before stopping movement	
 	
 func init_path_travel_timer() -> void:
 	path_travel_timer.wait_time = 1;
@@ -97,6 +106,12 @@ func init_breathing_timer() -> void:
 func init_travel_delay_timer() -> void:
 	add_child(travel_delay_timer);
 	travel_delay_timer.timeout.connect(start_moving);
+	travel_delay_timer.start();
+	
+func init_stun_timer() -> void:
+	stun_timer.wait_time = 30;
+	add_child(stun_timer);
+	stun_timer.timeout.connect(start_moving); 
 
 func find_and_travel_on_path() -> void:
 	if(not path):
@@ -132,10 +147,12 @@ func is_in_player_vicinity() -> bool:
 	return in_x_vicinity and in_z_vicinity;
 
 func is_hit_by_bullet(collider: Object) -> void:
-	if(collider == self):
+	if(collider == self and not is_stunned):
 		# Handle monster hurt
 		play_hurt_sound();
 		stun();
+	else:
+		toggle_aggro(true); # If the shot has missed, trigger monster aggro
 
 # Randomize travel distance (in cells)
 func randomize_travel_distance() -> void:
@@ -177,3 +194,4 @@ func _on_toggle_aggro_toggled(button_pressed: bool) -> void:
 # TESTING: Monster start move button
 func _on_start_monster_move_pressed():
 	start_moving();
+	

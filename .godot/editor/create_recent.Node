@@ -1,5 +1,7 @@
-Button
 Label
+ColorRect
+Node
+Button
 CheckButton
 GridMap
 AudioStreamPlayer3D
@@ -11,7 +13,6 @@ CollisionShape3D
 MeshInstance3D
 CharacterBody3D
 BackBufferCopy
-ColorRect
 OmniLight3D
 SpotLight3D
 WorldEnvironment

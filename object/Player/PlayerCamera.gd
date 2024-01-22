@@ -32,12 +32,12 @@ func _input(event: InputEvent) -> void:
 
 func bobble_up() -> void:
 	var bobble_up_tween: Tween = get_tree().create_tween();
-	bobble_up_tween.tween_property(self, "v_offset", 0.03, 0.5);
+	bobble_up_tween.tween_property(self, "v_offset", 0.03, 0.7);
 	bobble_up_tween.connect("finished", bobble_down);
 
 func bobble_down() -> void:
 	var bobble_down_tween: Tween = get_tree().create_tween();
-	bobble_down_tween.tween_property(self, "v_offset", 0, 0.5);
+	bobble_down_tween.tween_property(self, "v_offset", 0, 0.7);
 	
 	if(is_bobbling):
 		bobble_down_tween.connect("finished", bobble_up);

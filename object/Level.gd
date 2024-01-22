@@ -7,18 +7,23 @@ enum MonsterTeleportOrientation {
 
 var vent_cells: Array[VentCell] = [];
 var tile_map: TileMap;
-var game_over: bool = false; # TESTING: Game over toggle
+var is_game_over: bool = false; # TESTING: Game over toggle
 
 @export var map_scene: PackedScene;
 @onready var player: Player = $Player;
 @onready var monster: Monster = $Monster;
+@onready var splash_screen: SplashScreen = $SplashScreen;
+
+#TODO: First playable demo = player moves around while monster roams,
+# then monster suddenly starts chasing them, resulting in game ove
 
 func _ready() -> void:
 	tile_map = map_scene.instantiate();
 	var map_data: Array[Vector2i] = get_map_data(); 
 	generate_map(map_data);
-	set_player_position(Vector3(0,0,0));
+	spawn_player();
 	spawn_monster_furthest_from_player();
+	splash_screen.show_intro_screen();
 	
 func _process(delta):
 	teleport_monster_near_player();
@@ -36,6 +41,14 @@ func generate_map(map_data: Array[Vector2i]) -> void:
 		vent_cells.append(vent_cell);
 		for cell in vent_cells:
 			cell.update_walls(map_data);
+
+func reset_level() -> void:
+	spawn_player();
+	spawn_monster_furthest_from_player();
+	pass;
+
+func spawn_player() -> void:
+	set_player_position(Vector3(0,0,0));
 
 func get_vent_cell_from_position(position: Vector3) -> VentCell:
 	var target_cell: VentCell = null;
@@ -108,3 +121,9 @@ func get_target_vent_cell_pos(orientation: MonsterTeleportOrientation, valid_pos
 func teleport_monster_near_player() -> void:
 	pass;
 #	teleport_monster_to_player(1, MonsterTeleportOrientation.IN_FRONT);
+
+func handle_game_over() -> void:
+	is_game_over = true;
+	monster.stop();
+	splash_screen.show_gameover_screen();
+	reset_level();
