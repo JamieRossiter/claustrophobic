@@ -13,13 +13,9 @@ func show_intro_screen() -> void:
 	fade_tween.tween_property(intro_label, "self_modulate", Color.TRANSPARENT, 0.5);
 
 func show_gameover_screen() -> void:
-	self_modulate = Color.TRANSPARENT;
-	gameover_label.self_modulate = Color.TRANSPARENT;
+	self_modulate = Color.BLACK;
 	hide_all_labels_except(gameover_label);
 	show();
-	var fade_tween: Tween = create_tween();
-	fade_tween.tween_property(self, "self_modulate", Color.BLACK, 1.0);
-	fade_tween.tween_property(gameover_label, "self_modulate", Color.WHITE, 0.5);
 	
 
 func hide_all_labels_except(label: Label) -> void:

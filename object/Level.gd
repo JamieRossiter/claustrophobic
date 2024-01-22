@@ -14,8 +14,12 @@ var is_game_over: bool = false; # TESTING: Game over toggle
 @onready var monster: Monster = $Monster;
 @onready var splash_screen: SplashScreen = $SplashScreen;
 
-#TODO: First playable demo = player moves around while monster roams,
-# then monster suddenly starts chasing them, resulting in game ove
+# Sounds
+@onready var metal_impact_timer: Timer = Timer.new();
+@onready var metal_creak_timer: Timer = Timer.new();
+@onready var vent_ambience: AudioStreamPlayer = $VentAmbience;
+@onready var metal_impact: AudioStreamPlayer = $VentAmbience/MetalImpact;
+@onready var metal_creak: AudioStreamPlayer = $VentAmbience/MetalCreak;
 
 func _ready() -> void:
 	tile_map = map_scene.instantiate();
@@ -24,6 +28,7 @@ func _ready() -> void:
 	spawn_player();
 	spawn_monster_furthest_from_player();
 	splash_screen.show_intro_screen();
+	init_ambience();
 	
 func _process(delta):
 	teleport_monster_near_player();
@@ -127,3 +132,26 @@ func handle_game_over() -> void:
 	monster.stop();
 	splash_screen.show_gameover_screen();
 	reset_level();
+
+func init_ambience() -> void:
+	vent_ambience.play();
+	init_metal_impact_timer();
+	init_metal_creak_timer();
+	
+func init_metal_impact_timer() -> void:
+	metal_impact_timer.wait_time = 10;
+	add_child(metal_impact_timer);
+	metal_impact_timer.timeout.connect(play_metal_impact_sound);
+	metal_impact_timer.start();
+
+func init_metal_creak_timer() -> void:
+	metal_creak_timer.wait_time = 13.5;
+	add_child(metal_creak_timer);
+	metal_creak_timer.timeout.connect(play_metal_creak_sound);
+	metal_creak_timer.start();
+
+func play_metal_impact_sound() -> void:
+	metal_impact.play();
+
+func play_metal_creak_sound() -> void:
+	metal_creak.play();

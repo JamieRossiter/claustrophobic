@@ -10,12 +10,30 @@ var dir: Enum.Direction = Enum.Direction.NONE; # Direction enum
 var ammo: int = 1;
 var is_aiming: bool = false; # If player is aiming gun
 
-func _physics_process(delta: float):
-		
-	if(Input.is_action_pressed("dash")):
-		speed = DASH_SPEED;
+# Crawl
+@onready var crawl_sound: AudioStreamPlayer = $Crawl;
+@onready var crawl_timer: Timer = Timer.new();
+var crawl_speed: float = 1.4;
+
+func _ready() -> void:
+	init_crawl_timer();
+
+func _process(delta: float) -> void:	
+	# Handle footstep sounds
+	if(is_moving() and not is_aiming):
+		if(not crawl_sound.playing):
+			play_crawl_sound();
 	else:
-		speed = WALK_SPEED;
+		stop_crawl_sound();
+		
+		
+
+func _physics_process(delta: float) -> void:
+		
+#	if(Input.is_action_pressed("dash")):
+#		speed = DASH_SPEED;
+#	else:
+#		speed = WALK_SPEED;
 				
 	var input_dir = Input.get_vector("move_west", "move_east", "move_north", "move_south");
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized();
@@ -31,3 +49,15 @@ func _physics_process(delta: float):
 	
 func is_moving() -> bool:
 	return velocity.x != 0 or velocity.y != 0 or velocity.z != 0
+
+func init_crawl_timer() -> void:
+	add_child(crawl_timer);
+	crawl_timer.wait_time = crawl_speed;
+	crawl_timer.timeout.connect(play_crawl_sound);
+
+func play_crawl_sound() -> void:
+	crawl_timer.start();
+	crawl_sound.play();
+
+func stop_crawl_sound() -> void:
+	crawl_timer.stop();

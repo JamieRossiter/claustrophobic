@@ -17,6 +17,7 @@ var is_stunned: bool = false;
 @onready var footstep_close: AudioStreamPlayer3D = $FootstepClose;
 @onready var breathing: AudioStreamPlayer3D = $Breathing;
 @onready var hurt: AudioStreamPlayer3D = $Hurt;
+@onready var attack: AudioStreamPlayer = $Attack;
 
 # Timers
 @onready var footstep_timer: Timer = Timer.new(); # The time it takes between footsteps
@@ -35,6 +36,7 @@ func _process(delta: float) -> void:
 	# If the monster is in the player's vicinity, trigger a game over
 	if(is_in_player_vicinity() and not is_stunned and is_aggro):
 		parent.handle_game_over();
+		attack.play();
 
 func toggle_aggro(activate = null) -> void:
 	if(activate):
@@ -46,6 +48,7 @@ func toggle_aggro(activate = null) -> void:
 		set_footstep_delay(0.3);
 	else:
 		randomize_footstep_delay();
+	print("Aggro is ", is_aggro);
 	
 func init_timers() -> void:
 	init_path_travel_timer();
@@ -115,7 +118,9 @@ func init_stun_timer() -> void:
 
 func find_and_travel_on_path() -> void:
 	if(not path):
-		pathfinder.set_target(); # Resets the target if the path is invalid
+		# If the path is invalid
+		pathfinder.set_target(); # Resets the target
+		stop_moving();
 		path = pathfinder.get_astar_path();
 		print("Path: ", path); 
 	else:
@@ -142,8 +147,8 @@ func find_and_travel_on_path() -> void:
 
 # Check vicinity by comparing monster position to closest valid vent cell position to player
 func is_in_player_vicinity() -> bool:
-	var in_x_vicinity: bool = position.x == parent.get_closest_vent_cell_position_to_position(parent.player.position).x;
-	var in_z_vicinity: bool = position.z == parent.get_closest_vent_cell_position_to_position(parent.player.position).z;
+	var in_x_vicinity: bool = parent.get_closest_vent_cell_position_to_position(position).x == parent.get_closest_vent_cell_position_to_position(parent.player.position).x;
+	var in_z_vicinity: bool = parent.get_closest_vent_cell_position_to_position(position).z == parent.get_closest_vent_cell_position_to_position(parent.player.position).z;
 	return in_x_vicinity and in_z_vicinity;
 
 func is_hit_by_bullet(collider: Object) -> void:
@@ -189,7 +194,6 @@ func play_hurt_sound() -> void:
 # TESTING: Aggro toggle button
 func _on_toggle_aggro_toggled(button_pressed: bool) -> void:
 	toggle_aggro();
-	print("Aggro is ", is_aggro);
 
 # TESTING: Monster start move button
 func _on_start_monster_move_pressed():

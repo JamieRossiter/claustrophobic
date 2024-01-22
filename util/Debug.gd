@@ -1,21 +1,24 @@
-class_name Debug extends Node
+class_name CustomDebug extends Node
 
 @onready var fps_counter: FPSCounter = $FPSCounter;
 @onready var start_monster_move_button: Button = $StartMonsterMove;
 @onready var toggle_aggro_button: Button = $ToggleAggro;
-var is_showing: bool = false;
+var active: bool = false;
 
 func _ready() -> void:
 	hide_all();
 
 func _process(delta: float) -> void:
 	if(Input.is_action_just_pressed("debug")):
-		if(is_showing):
+		if(active):
 			hide_all();
 		else:
 			show_all()
-		is_showing = not is_showing;
-		
+		toggle_debug();
+
+func toggle_debug() -> void:
+	active = not active;		
+
 func hide_all() -> void:
 	fps_counter.hide();
 	start_monster_move_button.hide();

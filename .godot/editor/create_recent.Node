@@ -1,13 +1,14 @@
+AudioStreamPlayer
+AudioStreamPlayer3D
+AudioListener3D
 Label
 ColorRect
 Node
 Button
 CheckButton
 GridMap
-AudioStreamPlayer3D
 TextureRect
 Node3D
-AudioStreamPlayer
 Pathfinding
 CollisionShape3D
 MeshInstance3D
