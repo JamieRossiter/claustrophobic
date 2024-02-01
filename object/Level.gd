@@ -8,11 +8,12 @@ enum MonsterTeleportOrientation {
 var vent_cells: Array[VentCell] = [];
 var tile_map: TileMap;
 var is_game_over: bool = false; # TESTING: Game over toggle
+var is_game_started: bool = false; # TESTING: Make this a global variable
 
 @export var map_scene: PackedScene;
 @onready var player: Player = $Player;
 @onready var monster: Monster = $Monster;
-@onready var splash_screen: SplashScreen = $SplashScreen;
+@onready var level_start_screen: LevelStartScreenContainer = $LevelStartScreenContainer;
 
 # Sounds
 @onready var metal_impact_timer: Timer = Timer.new();
@@ -25,13 +26,6 @@ func _ready() -> void:
 	tile_map = map_scene.instantiate();
 	var map_data: Array[Vector2i] = get_map_data(); 
 	generate_map(map_data);
-	spawn_player();
-	spawn_monster_furthest_from_player();
-	splash_screen.show_intro_screen();
-	init_ambience();
-	
-func _process(delta):
-	teleport_monster_near_player();
 
 func get_map_data() -> Array[Vector2i]:
 	if(not map_scene is PackedScene): return [];
@@ -46,6 +40,14 @@ func generate_map(map_data: Array[Vector2i]) -> void:
 		vent_cells.append(vent_cell);
 		for cell in vent_cells:
 			cell.update_walls(map_data);
+
+func start_game() -> void:
+	spawn_player();
+	level_start_screen.show_intro_screen();
+	init_ambience();
+	spawn_monster_furthest_from_player();
+	monster.init_travel_delay_timer();
+	is_game_started = true;
 
 func reset_level() -> void:
 	spawn_player();
@@ -123,14 +125,10 @@ func get_target_vent_cell_pos(orientation: MonsterTeleportOrientation, valid_pos
 			
 	return target_vector;
 
-func teleport_monster_near_player() -> void:
-	pass;
-#	teleport_monster_to_player(1, MonsterTeleportOrientation.IN_FRONT);
-
 func handle_game_over() -> void:
 	is_game_over = true;
 	monster.stop();
-	splash_screen.show_gameover_screen();
+	level_start_screen.show_gameover_screen(); # TODO: Move this to another screen container (e.g. game over screen container)
 	reset_level();
 
 func init_ambience() -> void:
@@ -155,3 +153,6 @@ func play_metal_impact_sound() -> void:
 
 func play_metal_creak_sound() -> void:
 	metal_creak.play();
+
+func _on_start_game_button_pressed() -> void:
+	start_game();

@@ -1,10 +1,12 @@
-AudioStreamPlayer
-AudioStreamPlayer3D
-AudioListener3D
+VBoxContainer
+HBoxContainer
+Button
 Label
 ColorRect
 Node
-Button
+AudioStreamPlayer
+AudioStreamPlayer3D
+AudioListener3D
 CheckButton
 GridMap
 TextureRect

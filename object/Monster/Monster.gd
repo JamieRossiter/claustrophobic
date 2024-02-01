@@ -53,7 +53,7 @@ func toggle_aggro(activate = null) -> void:
 func init_timers() -> void:
 	init_path_travel_timer();
 	init_footstep_timer();
-	init_travel_delay_timer();
+#	init_travel_delay_timer();
 	init_stun_timer();
 
 func start_moving() -> void:
@@ -152,6 +152,7 @@ func is_in_player_vicinity() -> bool:
 	return in_x_vicinity and in_z_vicinity;
 
 func is_hit_by_bullet(collider: Object) -> void:
+	if(not parent.is_game_started): return;
 	if(collider == self and not is_stunned):
 		# Handle monster hurt
 		play_hurt_sound();
