@@ -5,7 +5,7 @@ const RAY_RANGE: int = 2000;
 signal bullet_hit(collider: Object);
 
 func _input(event: InputEvent) -> void:
-	if(event.is_action_pressed("shoot")):
+	if(event.is_action_pressed("aim") and event.is_action_pressed("shoot")):
 		get_camera_collision();
 
 func get_camera_collision()-> void:

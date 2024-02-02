@@ -13,7 +13,7 @@ var is_game_started: bool = false; # TESTING: Make this a global variable
 @export var map_scene: PackedScene;
 @onready var player: Player = $Player;
 @onready var monster: Monster = $Monster;
-@onready var level_start_screen: LevelStartScreenContainer = $LevelStartScreenContainer;
+@onready var menu: Menu = get_node("../Menu");
 
 # Sounds
 @onready var metal_impact_timer: Timer = Timer.new();
@@ -43,7 +43,7 @@ func generate_map(map_data: Array[Vector2i]) -> void:
 
 func start_game() -> void:
 	spawn_player();
-	level_start_screen.show_intro_screen();
+	menu.show_intro_screen();
 	init_ambience();
 	spawn_monster_furthest_from_player();
 	monster.init_travel_delay_timer();
@@ -128,7 +128,7 @@ func get_target_vent_cell_pos(orientation: MonsterTeleportOrientation, valid_pos
 func handle_game_over() -> void:
 	is_game_over = true;
 	monster.stop();
-	level_start_screen.show_gameover_screen(); # TODO: Move this to another screen container (e.g. game over screen container)
+	menu.show_gameover_screen(); # TODO: Move this to another screen container (e.g. game over screen container)
 	reset_level();
 
 func init_ambience() -> void:

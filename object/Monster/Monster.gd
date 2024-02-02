@@ -8,6 +8,7 @@ var travel_distance_in_cells: int = -1;
 var is_aggro: bool = false; # Indicates that the monster is deliberately seeking out the player
 var is_stunned: bool = false;
 
+@onready var menu: Menu = get_node("../../Menu"); # TESTING: Get menu node
 @onready var parent: Level = get_parent();
 @onready var pathfinder: Pathfinding = $Pathfinding;
 @onready var hitscan: Hitscan = get_node("../Player/PlayerCamera/Hitscan");
@@ -25,6 +26,7 @@ var is_stunned: bool = false;
 @onready var path_travel_timer: Timer = Timer.new(); # The time it takes to move one cell
 @onready var breathing_timer: Timer = Timer.new(); # The time it takes between breaths
 @onready var stun_timer: Timer = Timer.new(); # The time it takes for the monster to wake up from a stun
+@onready var aggro_timer: Timer = Timer.new(); # TESTING: The time it takes before the monster goes aggro, attacking the player
 
 func _ready() -> void:
 	init_timers();
@@ -55,6 +57,7 @@ func init_timers() -> void:
 	init_footstep_timer();
 #	init_travel_delay_timer();
 	init_stun_timer();
+	init_aggro_timer(); # TESTING: Init_aggro_timer
 
 func start_moving() -> void:
 	footstep_timer.start();
@@ -115,6 +118,14 @@ func init_stun_timer() -> void:
 	stun_timer.wait_time = 30;
 	add_child(stun_timer);
 	stun_timer.timeout.connect(start_moving); 
+	
+#TESTING: init aggro timer
+func init_aggro_timer() -> void:
+	aggro_timer.wait_time = randi_range(30, 60);
+	add_child(aggro_timer);
+	aggro_timer.timeout.connect(toggle_aggro.bind(true));
+	aggro_timer.start();
+	
 
 func find_and_travel_on_path() -> void:
 	if(not path):
@@ -157,6 +168,8 @@ func is_hit_by_bullet(collider: Object) -> void:
 		# Handle monster hurt
 		play_hurt_sound();
 		stun();
+		parent.reset_level(); # TESTING: reset the level when successfully hit the monster
+		menu.show_youwon_screen(); # TESTING: Show You Won Screen when successfully hitting the monster
 	else:
 		toggle_aggro(true); # If the shot has missed, trigger monster aggro
 
