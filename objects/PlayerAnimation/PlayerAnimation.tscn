@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3 uid="uid://kxk2173652br"]
+
+[ext_resource type="PackedScene" uid="uid://cbj4o55yk1bvc" path="res://meshes/PlayerModel/pistol.glb" id="1_1avq5"]
+[ext_resource type="Script" path="res://objects/PlayerAnimation/PlayerAnimation.gd" id="2_mnajf"]
+
+[node name="PlayerAnimation" instance=ExtResource("1_1avq5")]
+transform = Transform3D(-0.3, 0, -2.62268e-08, 0, 0.3, 0, 2.62268e-08, 0, -0.3, 0, 0, 0)
+script = ExtResource("2_mnajf")
+
+[node name="Skeleton3D" parent="Sketchfab_model/pistolanim_fbx/Object_2/RootNode/Armature/Object_5" index="0"]
+bones/2/rotation = Quaternion(0.116205, -0.0821939, -0.509262, 0.84876)
+bones/3/rotation = Quaternion(0.534008, -0.31917, 0.195387, 0.758149)
+bones/4/rotation = Quaternion(0.243184, 0.103361, 0.698746, 0.664779)
+bones/6/rotation = Quaternion(0.490817, 0.332336, -0.246247, 0.76682)
+bones/7/rotation = Quaternion(0.251795, -0.0576236, -0.604397, 0.753647)
+bones/8/position = Vector3(0.0326404, 0.109308, -0.565664)
+bones/9/position = Vector3(-0.00931631, 0.314946, -0.265516)
+bones/10/position = Vector3(-0.0526576, -0.176785, -0.0250977)
+bones/10/rotation = Quaternion(0.462553, -0.462479, 0.534839, 0.534888)
+bones/12/rotation = Quaternion(-0.00166962, -0.109648, -0.379346, 0.918734)
+bones/13/rotation = Quaternion(0.0499092, -0.00194796, 0.249156, 0.967175)
+bones/14/rotation = Quaternion(0.0645073, -0.0990427, 0.221022, 0.96808)
+bones/15/rotation = Quaternion(-0.149872, -0.0119246, 0.0987523, 0.983689)
+bones/16/rotation = Quaternion(0.760336, 0.000419927, 0.000347816, 0.64953)
+bones/17/rotation = Quaternion(0.491214, -0.000243372, -0.000408475, 0.871039)
+bones/21/rotation = Quaternion(0.561369, 0.0437062, 0.119708, 0.817694)
+bones/22/rotation = Quaternion(0.635309, -0.000609616, -0.000733649, 0.772257)
+bones/23/rotation = Quaternion(0.387165, 0.00355031, -0.00926836, 0.921957)
+bones/24/rotation = Quaternion(0.483193, 0.107284, 0.0459064, 0.867702)
+bones/25/rotation = Quaternion(0.639756, -0.000661886, -0.000756139, 0.768577)
+bones/26/rotation = Quaternion(0.38721, 0.0248518, -0.0386553, 0.920845)
+bones/27/position = Vector3(-0.0125899, -0.187774, -0.0440404)
+bones/27/rotation = Quaternion(0.434573, 0.551631, -0.580164, 0.412624)
+bones/29/rotation = Quaternion(0.004011, 0.247425, 0.128814, 0.960298)
+bones/30/rotation = Quaternion(0.0123934, -0.0100457, -0.0627086, 0.997904)
+bones/31/rotation = Quaternion(-0.00141257, -0.0135436, 0.0544835, 0.998422)
+bones/32/position = Vector3(-0.0334262, 0.0899289, 0.00103874)
+bones/32/rotation = Quaternion(0.385181, 0.0673366, -0.0703861, 0.917686)
+bones/33/rotation = Quaternion(0.452532, -0.00101364, -0.00210739, 0.891745)
+bones/34/rotation = Quaternion(0.375249, 6.69087e-06, 1.4889e-05, 0.926924)
+bones/35/position = Vector3(-0.00940778, 0.0895486, -0.00193305)
+bones/35/rotation = Quaternion(0.413373, 0.0311702, 0.0261539, 0.909652)
+bones/36/rotation = Quaternion(0.490439, -0.000970149, -0.0018315, 0.871473)
+bones/37/rotation = Quaternion(0.404247, 2.04411e-05, 3.85191e-05, 0.91465)
+bones/38/position = Vector3(0.0110613, 0.089947, -0.00215412)
+bones/38/rotation = Quaternion(0.413799, -0.037702, 0.0423447, 0.908601)
+bones/39/rotation = Quaternion(0.498804, -0.000746606, -0.00138511, 0.866713)
+bones/40/rotation = Quaternion(0.384011, 7.34857e-05, 0.00013277, 0.923329)
+bones/41/position = Vector3(0.0315944, 0.0849535, -0.000330223)
+bones/41/rotation = Quaternion(0.421138, -0.156265, 0.0502965, 0.892017)
+bones/42/rotation = Quaternion(0.438281, -0.000353118, -0.00074053, 0.898838)
+bones/43/rotation = Quaternion(0.38886, 2.84739e-05, 5.87979e-05, 0.921297)
+
+[node name="MuzzleFlash" type="OmniLight3D" parent="Sketchfab_model/pistolanim_fbx/Object_2/RootNode/Armature/Object_5/Skeleton3D/Object_51" index="0"]
+transform = Transform3D(0.984032, 0, -7.10543e-15, -7.10543e-15, -1.17306e-07, -0.984032, 0, 0.984032, -1.17306e-07, -0.0416617, -0.413256, 0.027116)
+light_color = Color(1, 0.792157, 0.356863, 1)
+light_energy = 100.0
+omni_range = 0.0
+
+[node name="Skeleton3D" parent="Sketchfab_model/pistolanim_fbx/Object_2/RootNode/Armature_001/Object_54" index="0"]
+bones/1/position = Vector3(-0.03944, -0.29532, 0.0270739)
+bones/1/rotation = Quaternion(0.999996, 8.29138e-06, -6.2433e-05, -0.00278537)
+bones/2/rotation = Quaternion(0.635143, -9.20688e-08, -2.27118e-07, 0.772395)
+bones/3/position = Vector3(2.11535e-09, -0.0249182, -0.0100449)
+bones/4/rotation = Quaternion(0.999436, -1.83933e-05, -0.000202896, 0.0335693)
+bones/5/position = Vector3(2.61862e-08, -0.0535899, 0.0876805)
+bones/5/rotation = Quaternion(-0.605054, -4.09406e-09, 1.54054e-07, 0.796185)

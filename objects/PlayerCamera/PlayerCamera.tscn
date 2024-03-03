@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://6rpsfa1iredf"]
+
+[ext_resource type="Script" path="res://objects/PlayerCamera/PlayerCamera.gd" id="1_kwaen"]
+[ext_resource type="PackedScene" uid="uid://kxk2173652br" path="res://objects/PlayerAnimation/PlayerAnimation.tscn" id="2_uj138"]
+
+[node name="PlayerCamera" type="Camera3D"]
+transform = Transform3D(-0.999199, 0, -0.0400271, 0, 1, 0, 0.0400271, 0, -0.999199, 3.52778, 0.237266, -6.14513)
+current = true
+fov = 90.0
+script = ExtResource("1_kwaen")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021874, 0, 0)
+light_color = Color(1, 0.992157, 0.741176, 1)
+light_energy = 5.0
+spot_range = 2.0
+spot_angle = 40.0
+
+[node name="PlayerAnimation" parent="." instance=ExtResource("2_uj138")]
+transform = Transform3D(-0.199997, 0.000909224, -0.000520688, 0.000909763, 0.199998, -0.00020635, 0.000519747, -0.000208715, -0.199999, 0.0177283, -0.215896, 0.016746)
