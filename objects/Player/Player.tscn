@@ -14,13 +14,15 @@ slide_on_ceiling = false
 script = ExtResource("1_em2np")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.01, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, 3.55117, 0.21112, -6.46129)
+transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_xqsyh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1.01, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, 3.55117, 0.21112, -6.46129)
+transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_c6s0s")
 
 [node name="PlayerCamera" parent="." instance=ExtResource("2_heise")]
+transform = Transform3D(-0.999199, 0, -0.0400271, 0, 1, 0, 0.0400271, 0, -0.999199, 0, 0.12903, 0)
+cull_mask = 1
 
 [node name="PlayerAudio" parent="." instance=ExtResource("4_p6iqh")]

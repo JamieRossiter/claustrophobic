@@ -1,17 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://4h75e3e40ox8"]
+[gd_scene load_steps=9 format=3 uid="uid://4h75e3e40ox8"]
 
 [ext_resource type="PackedScene" uid="uid://bl502ykhm45sx" path="res://levels/LevelGrid/LevelGrid.tscn" id="1_gkogb"]
 [ext_resource type="MeshLibrary" uid="uid://e0t5fjktseoc" path="res://meshes/VentPieces/VentPieces.tres" id="2_u6ai4"]
 [ext_resource type="PackedScene" uid="uid://cbaekbxgv3ud1" path="res://objects/Player/Player.tscn" id="3_h6lbi"]
+[ext_resource type="Script" path="res://levels/LevelGrid/LevelGrid.gd" id="3_ljx8d"]
+[ext_resource type="Script" path="res://levels/Minimap/MinimapLightRT.gd" id="5_rxhyf"]
+[ext_resource type="Script" path="res://levels/Minimap/MinimapCamera.gd" id="6_scwhw"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qel1a"]
 
-[node name="TestLevel" type="Node3D"]
+[sub_resource type="Environment" id="Environment_1ua7x"]
+background_color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+background_energy_multiplier = 0.0
 
-[node name="MinimapCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.173648, 0.984808, 0, -0.984808, -0.173648, 2.96082, 12.5684, -1.23478)
-visible = false
-cull_mask = 524288
+[node name="TestLevel" type="Node3D"]
 
 [node name="LevelGrid" parent="." instance=ExtResource("1_gkogb")]
 mesh_library = ExtResource("2_u6ai4")
@@ -19,8 +21,60 @@ physics_material = SubResource("PhysicsMaterial_qel1a")
 cell_size = Vector3(1, 1, 1)
 cell_center_y = false
 data = {
-"cells": PackedInt32Array(3, 65529, 4, 3, 65530, 4, 3, 65531, 3, 4, 65531, 1441796)
+"cells": PackedInt32Array(0, 3, 4, 0, 4, 1, 0, 5, 2, 1, 4, 1048579, 0, 2, 4, 0, 1, 655362, 65535, 4, 1441794)
 }
+script = ExtResource("3_ljx8d")
 
-[node name="Player" parent="." instance=ExtResource("3_h6lbi")]
+[node name="PlayerViewportContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="PlayerViewport" type="SubViewport" parent="PlayerViewportContainer"]
+handle_input_locally = false
+audio_listener_enable_2d = true
+audio_listener_enable_3d = true
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Player" parent="PlayerViewportContainer/PlayerViewport" instance=ExtResource("3_h6lbi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.487202, 0.268666, 1.51689)
 input_ray_pickable = false
+
+[node name="MinimapCameraRT" type="RemoteTransform3D" parent="PlayerViewportContainer/PlayerViewport/Player"]
+transform = Transform3D(-1, 8.74228e-08, 0, 3.82137e-15, 4.37114e-08, 1, 8.74228e-08, 1, -4.37114e-08, 0, 6.03966, 0)
+remote_path = NodePath("../../../../MinimapViewportContainer/MinimapViewport/MinimapCamera")
+
+[node name="MinimapLightRT" type="RemoteTransform3D" parent="PlayerViewportContainer/PlayerViewport/Player"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0853367, 0)
+remote_path = NodePath("../../../../MinimapViewportContainer/MinimapViewport/MinimapLight")
+script = ExtResource("5_rxhyf")
+
+[node name="MinimapViewportContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -234.0
+offset_bottom = 219.0
+grow_horizontal = 0
+stretch = true
+
+[node name="MinimapViewport" type="SubViewport" parent="MinimapViewportContainer"]
+handle_input_locally = false
+size = Vector2i(234, 219)
+render_target_update_mode = 4
+
+[node name="MinimapCamera" type="Camera3D" parent="MinimapViewportContainer/MinimapViewport"]
+transform = Transform3D(-1, 8.74228e-08, 0, 3.82137e-15, 4.37114e-08, 1, 8.74228e-08, 1, -4.37114e-08, 0.487202, 6.30833, 1.51689)
+cull_mask = 524288
+environment = SubResource("Environment_1ua7x")
+current = true
+script = ExtResource("6_scwhw")
+
+[node name="MinimapLight" type="SpotLight3D" parent="MinimapViewportContainer/MinimapViewport"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.487202, 0.354003, 1.51689)
+layers = 524288
+spot_angle = 40.0

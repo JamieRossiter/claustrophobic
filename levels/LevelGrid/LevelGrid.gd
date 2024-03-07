@@ -6,7 +6,7 @@ that determines the layout of each level in the game.
 class_name LevelGrid extends GridMap
 
 func _ready() -> void:
-	create_minimap_meshes(get_used_cells_by_item(5));
+	create_minimap_meshes(get_used_cells());
 	
 func create_minimap_meshes(used_cells: Array[Vector3i]) -> void:
 	for uc in used_cells:
