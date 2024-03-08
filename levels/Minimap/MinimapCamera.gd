@@ -1,1 +1,0 @@
-class_name MinimapCamera extends Camera3D

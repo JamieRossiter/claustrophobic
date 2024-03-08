@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://ywtwl8uvguu4"]
+
+[sub_resource type="Environment" id="Environment_1ua7x"]
+background_color = Color(0.843137, 0.843137, 0.843137, 1)
+background_energy_multiplier = 0.0
+
+[node name="MinimapViewportContainer" type="SubViewportContainer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -234.0
+offset_bottom = 219.0
+grow_horizontal = 0
+stretch = true
+
+[node name="MinimapViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(234, 219)
+render_target_update_mode = 4
+
+[node name="MinimapCamera" type="Camera3D" parent="MinimapViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.391096, 8.13717, 1.51586)
+cull_mask = 524288
+environment = SubResource("Environment_1ua7x")
+v_offset = 2.0
+current = true
+fov = 30.0
+
+[node name="MinimapLight" type="SpotLight3D" parent="MinimapViewport"]
+transform = Transform3D(0.999199, 0, -0.040027, 0, 1, 0, 0.040027, 0, 0.999199, 0.391096, 0.323545, 1.51586)
+layers = 524288
+spot_angle = 40.0

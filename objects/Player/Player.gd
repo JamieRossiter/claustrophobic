@@ -28,7 +28,10 @@ func _process(delta: float) -> void:
 	handle_reload();
 
 func _physics_process(delta: float) -> void:
-	
+	handle_movement(delta);
+
+
+func handle_movement(delta: float) -> void:
 	# Inputs for determining direction	
 	var input_dir = Input.get_vector("move_west", "move_east", "move_north", "move_south");
 	
@@ -49,7 +52,7 @@ func _physics_process(delta: float) -> void:
 	velocity.y = velocity_y;
 	
 	# Move
-	if(not Input.is_action_pressed("aim")):
+	if(not self.is_aiming()):
 		move_and_slide();
 
 func handle_shoot():
@@ -75,3 +78,9 @@ func handle_reload():
 	):
 		self.emit_signal("reload");
 		ammo = 3;
+
+func is_moving() -> bool:
+	return velocity.x != 0 or velocity.y != 0 or velocity.z != 0
+
+func is_aiming() -> bool:
+	return Input.is_action_pressed("aim");
