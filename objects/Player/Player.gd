@@ -30,7 +30,6 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	handle_movement(delta);
 
-
 func handle_movement(delta: float) -> void:
 	# Inputs for determining direction	
 	var input_dir = Input.get_vector("move_west", "move_east", "move_north", "move_south");

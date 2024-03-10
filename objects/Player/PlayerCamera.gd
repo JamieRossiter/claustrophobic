@@ -6,7 +6,7 @@ Author: Jamie Rossiter
 class_name PlayerCamera extends Camera3D
 
 @onready var player: Player = get_parent();
-@onready var flashlight: SpotLight3D = $PlayerFlashlight;
+@onready var flashlight: SpotLight3D = $Flashlight;
 @onready var is_bobbling: bool = false;
 const LOOK_SENSITIVITY: float = 5.0;
 

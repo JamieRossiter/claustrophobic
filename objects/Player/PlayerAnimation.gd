@@ -12,7 +12,7 @@ const TARGET_Y_POS: float = -0.050;
 # Onready variables
 @onready var player: Player = get_parent().get_parent();
 @onready var camera: Camera3D = get_parent();
-@onready var muzzle_flash: OmniLight3D = $Sketchfab_model/pistolanim_fbx/Object_2/RootNode/Armature/Object_5/Skeleton3D/Object_51/MuzzleFlash;
+@onready var muzzle_flash: OmniLight3D = $MuzzleFlash;
 
 # Shake data - for player and screen shaking
 class ShakeData:
@@ -56,7 +56,7 @@ func _process(delta: float) -> void:
 	if(camera_shake_data.is_shaking):
 		handle_shake_camera(camera_shake_data, delta)
 	handle_animation_pause();
-	print(str(snapped(anim.current_animation_position, 0.1)));
+#	print(str(snapped(anim.current_animation_position, 0.1)));
 	
 	# Test anim
 	if(anim_at_position(7.7) or anim_at_position(11.5)):
