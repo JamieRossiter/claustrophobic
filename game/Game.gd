@@ -5,7 +5,7 @@ class_name Game extends Node3D
 @onready var level: Level = $Level;
 
 func _ready() -> void:
-	monster.has_moved.connect(minimap_monster_light.toggle_light);
+	monster.has_moved.connect(minimap_monster_light.toggle_flash);
 	monster.has_moved.connect(move_monster);
 
 func move_monster() -> void:
