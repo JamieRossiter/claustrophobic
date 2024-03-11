@@ -7,7 +7,8 @@ class_name Level extends GridMap
 
 func _ready() -> void:
 	create_minimap_meshes(get_used_cells());
-	
+#	print(get_used_cells());
+
 func create_minimap_meshes(used_cells: Array[Vector3i]) -> void:
 	for uc in used_cells:
 		var pm: PlaneMesh = PlaneMesh.new();
@@ -22,5 +23,4 @@ func create_minimap_meshes(used_cells: Array[Vector3i]) -> void:
 
 func get_random_cell() -> Vector3i:
 	var rand = self.get_used_cells()[randi_range(0, self.get_used_cells().size() - 1)];
-	print(rand);
 	return rand;

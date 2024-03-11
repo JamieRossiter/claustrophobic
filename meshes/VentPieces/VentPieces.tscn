@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b0d3ye2dfp2go"]
+[gd_scene load_steps=15 format=3 uid="uid://b0d3ye2dfp2go"]
 
 [ext_resource type="ArrayMesh" uid="uid://dh1ob3ao2oedj" path="res://meshes/VentPieces/pieces/StraightPiece/StraightPiece.res" id="1_ma1gt"]
 [ext_resource type="ArrayMesh" uid="uid://dh3ltq2dc5dde" path="res://meshes/VentPieces/pieces/OpenDirectionPiece/OpenDirectionPiece.res" id="2_jgx6v"]
@@ -9,14 +9,22 @@
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_g0lsq"]
 data = PackedVector3Array(-1, 0, 1, 1, 0, -1, 1, 0, 1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 1, 1, 1, 0, 1, 1, 0, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1)
 
+[sub_resource type="NavigationMesh" id="NavigationMesh_g8nno"]
+
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_pky2k"]
 data = PackedVector3Array(-1, 0, 1, 1, 0, -1, 1, 0, 1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_35hhj"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3xmk1"]
 data = PackedVector3Array(-1, 0, 1, 1, 0, -1, 1, 0, 1, -1, 0, 1, -1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 1, -1, -1, 0, -1, -1, 0, 1, -1, 1, 1, -1, 1, -1, 1, 0, -1, 1, 1, 1, 1, 0, 1, 1, 0, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1, -1, 0, 1, 1, 1, 1, -1, 1, 1, -1, 0, 1, 1, 0, 1, 1, 1, 1)
 
+[sub_resource type="NavigationMesh" id="NavigationMesh_vyver"]
+
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7ybgx"]
 data = PackedVector3Array(-1, 0, 1, 1, 0, -1, 1, 0, 1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 1, 1, 1, 0, 1, 1, 0, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1, -1, 0, 1, 1, 1, 1, -1, 1, 1, -1, 0, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_6kvx1"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_yy4ko"]
 data = PackedVector3Array(-1, 0, 1, 1, 0, -1, 1, 0, 1, -1, 0, 1, -1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 1, -1, -1, 0, -1, -1, 0, 1, -1, 1, 1, -1, 1, -1, 1, 0, -1, 1, 1, 1, 1, 0, 1, 1, 0, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1)
@@ -32,6 +40,9 @@ mesh = ExtResource("2_jgx6v")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OpenDirectionPiece/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_g0lsq")
 
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="OpenDirectionPiece"]
+navigation_mesh = SubResource("NavigationMesh_g8nno")
+
 [node name="FullOpenPiece" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = ExtResource("3_oprpi")
@@ -40,6 +51,9 @@ mesh = ExtResource("3_oprpi")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FullOpenPiece/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_pky2k")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="FullOpenPiece"]
+navigation_mesh = SubResource("NavigationMesh_35hhj")
 
 [node name="EndPiece" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
@@ -50,6 +64,9 @@ mesh = ExtResource("4_unjhu")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="EndPiece/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_3xmk1")
 
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="EndPiece"]
+navigation_mesh = SubResource("NavigationMesh_vyver")
+
 [node name="ClosedDirectionPiece" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = ExtResource("5_j86o8")
@@ -59,6 +76,9 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ClosedDirectionPiece/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_7ybgx")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="ClosedDirectionPiece"]
+navigation_mesh = SubResource("NavigationMesh_6kvx1")
 
 [node name="StraightPiece" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
