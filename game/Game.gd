@@ -1,19 +1,35 @@
 class_name Game extends Node3D
 
-@onready var player: Player = $Player;
-@onready var monster: Monster = $Monster;
-@onready var minimap_monster_light: MinimapMonsterLight = $MinimapViewportContainer/MinimapViewport/MinimapMonsterLight;
-@onready var level: Level = $Level;
-
-var curr_cell_index: int = 0;
+@onready var level: Level = preload("res://levels/TestLevel.tscn").instantiate(); 
 
 func _ready() -> void:
-	monster.has_moved.connect(minimap_monster_light.toggle_flash);
-	monster.has_moved.connect(move_monster);
+	# Add level to scene tree
+	self.add_child(level);
+	
+	# When enemy moves, toggle minimap light flash
+	$CharacterContainer/Enemy.has_moved.connect(
+		$MinimapViewportContainer/MinimapViewport/MinimapEnemyLight.toggle_flash
+	);
+	
+	# When enemy moves, move enemy toward target index
+	$CharacterContainer/Enemy.has_moved.connect(move_enemy_toward_target_index);
 
-func move_monster() -> void:
-	monster.move(level.get_used_cells()[curr_cell_index]);
-	curr_cell_index += 1;
+func move_enemy_toward_target_index() -> void:
+	# Setup variables
+	var enemy: Enemy = $CharacterContainer/Enemy;
+	var target_index: int = level.find_position_index($CharacterContainer/Player.position);
+	var used_cells: Array = level.get_used_cells();
+	
+	# Check if enemy is at target index pos, if not move toward target index pos
+	if(enemy.current_position_index == target_index): return;
+	enemy.move_to_position(used_cells[enemy.current_position_index]);
+	
+	# If target index is more than enemy's current index, increase curr index (move forward), otherwise decrease curr index (move backwards)
+	if(target_index > enemy.current_position_index):
+		enemy.current_position_index += 1;
+	else:
+		enemy.current_position_index -= 1;
 
-func _process(delta: float) -> void:
-	print("Player Position", Vector3i(player.position));
+#func _process(delta: float) -> void:
+#	print("Player Position ", Vector3i($CharacterContainer/Player.position));
+#	print("Player Position Index ", level.find_position_index($CharacterContainer/Player.position));

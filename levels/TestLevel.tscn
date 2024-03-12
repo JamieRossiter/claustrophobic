@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://xf6ugkfsf1f3"]
+
+[ext_resource type="MeshLibrary" uid="uid://c5pmbiu1d17yp" path="res://meshes/VentPieces/VentPieces.tres" id="1_qvc6b"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qel1a"]
+
+[sub_resource type="GDScript" id="GDScript_itfsf"]
+script/source = "extends \"res://objects/Level/Level.gd\"
+"
+
+[node name="Level" type="GridMap"]
+mesh_library = ExtResource("1_qvc6b")
+physics_material = SubResource("PhysicsMaterial_qel1a")
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+bake_navigation = true
+data = {
+"cells": PackedInt32Array(0, 1, 4, 0, 2, 4, 0, 3, 4, 0, 4, 4, 0, 5, 4, 0, 6, 4, 0, 7, 4, 0, 8, 4, 0, 9, 1441795, 1, 9, 1441796, 2, 9, 1441796, 3, 9, 1441796, 4, 9, 1441796, 5, 9, 1441796, 6, 9, 1441796, 7, 9, 1441796, 8, 9, 1441796, 9, 9, 3, 9, 8, 4, 9, 7, 4, 9, 6, 4, 9, 5, 4, 9, 4, 4, 9, 3, 4, 9, 2, 4, 9, 1, 4, 9, 0, 1048579, 8, 0, 1048580, 6, 0, 1048580, 7, 0, 1048580, 5, 0, 1048580, 4, 0, 1048580, 3, 0, 1048580, 2, 0, 1048580, 1, 0, 1048580, 0, 0, 655363)
+}
+script = SubResource("GDScript_itfsf")
