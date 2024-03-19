@@ -9,6 +9,7 @@ func _ready() -> void:
 	create_minimap_meshes(get_used_cells());
 
 func create_minimap_meshes(used_cells: Array[Vector3i]) -> void:
+	print(used_cells);
 	for uc in used_cells:
 		var pm: PlaneMesh = PlaneMesh.new();
 		pm.size.x = 1;
@@ -25,3 +26,7 @@ func find_position_index(pos: Vector3) -> int:
 	for i in range(self.get_used_cells().size()):
 		if(self.get_used_cells()[i] == Vector3i(pos)): posIndex = i;
 	return posIndex;
+
+func get_random_position() -> Vector3:
+	var uc: Array = get_used_cells();
+	return get_used_cells()[randi_range(0, uc.size() - 1)];
