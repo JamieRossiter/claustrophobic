@@ -26,6 +26,9 @@ func find_position_index(pos: Vector3) -> int:
 	for i in range(self.get_used_cells().size()):
 		if(self.get_used_cells()[i] == Vector3i(pos)): posIndex = i;
 	return posIndex;
+	
+func find_index_position(idx: int) -> Vector3:
+	return self.get_used_cells()[idx];
 
 func get_random_position() -> Vector3:
 	var uc: Array = get_used_cells();

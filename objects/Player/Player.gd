@@ -13,6 +13,7 @@ const ACCELERATION: float = 100.0;
 var speed: float = WALK_SPEED;
 var velocity_y: float = 0.0;
 var ammo: int = 3;
+var direction: Enums.Direction;
 
 # Onready variables
 @onready var camera: PlayerCamera = $PlayerCamera;
@@ -26,6 +27,8 @@ signal reload;
 func _process(delta: float) -> void:
 	handle_shoot();
 	handle_reload();
+	handle_camera_bobble();
+	determine_camera_direction();
 
 func _physics_process(delta: float) -> void:
 	handle_movement(delta);
@@ -41,10 +44,10 @@ func handle_movement(delta: float) -> void:
 		speed = WALK_SPEED;
 	
 	# Direction	
-	var direction = (camera.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized();
-	if direction:
-		velocity.x = direction.x * (speed * (ACCELERATION * delta));
-		velocity.z = direction.z * (speed * (ACCELERATION * delta));
+	var dir = (camera.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized();
+	if dir:
+		velocity.x = dir.x * (speed * (ACCELERATION * delta));
+		velocity.z = dir.z * (speed * (ACCELERATION * delta));
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed * (ACCELERATION * delta));
 		velocity.z = move_toward(velocity.z, 0, speed * (ACCELERATION * delta));
@@ -77,6 +80,33 @@ func handle_reload():
 	):
 		self.emit_signal("reload");
 		ammo = 3;
+
+func handle_camera_bobble() -> void:
+	# Handle camera bobble
+	if(is_moving() and not is_aiming()):
+		if(not camera.is_bobbling):
+			camera.is_bobbling = true;
+			camera.bobble_up();
+	else:
+		camera.is_bobbling = false;
+		camera.bobble_down();
+
+func determine_camera_direction() -> void:
+	var rounded_camera_x = round(camera.global_transform.basis.x.x)
+	var rounded_camera_z = round(camera.global_transform.basis.x.z);
+	# Determine direction
+	if(rounded_camera_x == 0 and rounded_camera_z == 1):
+		direction = Enums.Direction.NORTH;
+		print("north")
+	elif(rounded_camera_x == -1 and rounded_camera_z == 0):
+		direction = Enums.Direction.WEST;
+		print("west")
+	elif(rounded_camera_x == 0 and rounded_camera_z == -1):
+		direction = Enums.Direction.SOUTH;
+		print("south")
+	elif(rounded_camera_x == 1 and rounded_camera_z == 0):
+		direction = Enums.Direction.EAST;
+		print("east")
 
 func is_moving() -> bool:
 	return velocity.x != 0 or velocity.y != 0 or velocity.z != 0
