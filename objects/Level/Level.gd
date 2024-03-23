@@ -33,3 +33,9 @@ func find_index_position(idx: int) -> Vector3:
 func get_random_position() -> Vector3:
 	var uc: Array = get_used_cells();
 	return get_used_cells()[randi_range(0, uc.size() - 1)];
+	
+func is_index_at_end_of_level(index: int) -> bool:
+	return index == get_used_cells().size();
+
+func is_index_at_start_of_level(index: int) -> bool:
+	return index == 0;

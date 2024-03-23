@@ -1,8 +1,4 @@
-"""
-Player.gd
-Contains the Player class, which houses the master logic for everything player-related
-Author: Jamie Rossiter
-"""
+## The parent that controls everything player-related.
 class_name Player extends CharacterBody3D
 
 # Constants
@@ -13,7 +9,7 @@ const ACCELERATION: float = 100.0;
 var speed: float = WALK_SPEED;
 var velocity_y: float = 0.0;
 var ammo: int = 3;
-var direction: Enums.Direction;
+var direction: Enums.Direction; ## The direction the player is facing (e.g. North, South, East, West)
 
 # Onready variables
 @onready var camera: PlayerCamera = $PlayerCamera;
@@ -97,16 +93,12 @@ func determine_camera_direction() -> void:
 	# Determine direction
 	if(rounded_camera_x == 0 and rounded_camera_z == 1):
 		direction = Enums.Direction.NORTH;
-		print("north")
 	elif(rounded_camera_x == -1 and rounded_camera_z == 0):
 		direction = Enums.Direction.WEST;
-		print("west")
 	elif(rounded_camera_x == 0 and rounded_camera_z == -1):
 		direction = Enums.Direction.SOUTH;
-		print("south")
 	elif(rounded_camera_x == 1 and rounded_camera_z == 0):
 		direction = Enums.Direction.EAST;
-		print("east")
 
 func is_moving() -> bool:
 	return velocity.x != 0 or velocity.y != 0 or velocity.z != 0

@@ -13,3 +13,8 @@ enum Direction {
 	EAST,
 	WEST
 }
+
+enum EnemyDirection {
+	BACKWARDS,
+	FORWARDS
+}
