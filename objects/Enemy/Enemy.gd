@@ -13,7 +13,7 @@ var direction: Enums.EnemyDirection = 0;
 var target_index: int; ## The position index towards which the enemy should be moving
 
 # Footstep speed
-var min_footstep_speed: float = 0.3;
+var min_footstep_speed: float = 0.1;
 var max_footstep_speed: float = 1.0;
 @onready var footstep_speed: float = max_footstep_speed;
 
@@ -80,9 +80,15 @@ func emit_step() -> void:
 ## Start a series of steps
 func start_moving() -> void:
 	is_moving = true;
+	if(current_state != Enums.EnemyState.AGGRO):
+		randomize_footstep_count();
+		randomize_footstep_speed()
+	else:
+		# When in aggro mode, enemy should move as quickly as possible and move without interruption
+		set_footstep_count(999);
+		set_footstep_speed(min_footstep_speed);
 	time_to_next_move.stop();
 	time_to_next_footstep.start();
-	randomize_footstep_count();
 	print("Started moving");
 
 ## Stop moving, but trigger another series of steps shortly, after a delay
@@ -95,6 +101,9 @@ func stop_moving() -> void:
 ## Stop moving and don't trigger another series of steps after a delay
 func stop_moving_completely() -> void:
 	is_moving = false;
+	time_to_next_move.stop();
+	time_to_next_footstep.stop();
+	time_to_jumpscare.stop();
 	print("Stopped moving completely");
 
 func perform_jumpscare() -> void:
@@ -124,26 +133,26 @@ func set_move_delay(delay: float) -> void:
 func set_footstep_count(count: int) -> void:
 	footstep_count = count;
 
-func set_current_state(state: Enums.EnemyState) -> void:
+func _set_current_state(state: Enums.EnemyState) -> void:
 	current_state = state;
 	
 func set_target_index(index: int) -> void:
 	target_index = index;
 
 func set_aggro() -> void:
-	set_current_state(Enums.EnemyState.AGGRO);
+	_set_current_state(Enums.EnemyState.AGGRO);
 	start_moving();
 
 func set_idle() -> void:
-	set_current_state(Enums.EnemyState.IDLE);
+	_set_current_state(Enums.EnemyState.IDLE);
 	stop_moving_completely();
 
 func set_roaming() -> void:
-	set_current_state(Enums.EnemyState.ROAMING);
+	_set_current_state(Enums.EnemyState.ROAMING);
 	start_moving();
 	roaming_state_set.emit();
 
 func set_jumpscare() -> void:
-	set_current_state(Enums.EnemyState.JUMPSCARE);
+	_set_current_state(Enums.EnemyState.JUMPSCARE);
 	time_to_jumpscare.start();
 	stop_moving_completely();

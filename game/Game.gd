@@ -4,6 +4,7 @@ class_name Game extends Node3D
 @onready var level: Level = preload("res://levels/TestLevel.tscn").instantiate(); ## The current level
 @export var enemy: Enemy; ## The enemy object
 @export var player: Player; ## The player object
+@export var debug: Debug; ## The debug object
 
 func _ready() -> void:
 	set_level(level);
@@ -16,6 +17,9 @@ func connect_signals() -> void:
 	enemy.jumpscare.connect(teleport_enemy);
 	# When enemy enters a ROAMING state
 	enemy.roaming_state_set.connect(handle_roaming_state_set)
+	# When the state is changed via debug
+	debug.state_change.connect(handle_debug_state_change);
+	
 
 func set_level(level: Level) -> void:
 	self.add_child(level);
@@ -40,13 +44,11 @@ func progress_enemy_index(target_index: int) -> void:
 		print("Current Enemy Index ", enemy.current_position_index);
 		enemy.current_position_index += 1;
 		enemy.direction = Enums.EnemyDirection.FORWARDS;
-		print("Enemy Direction", enemy.direction);
 	# Otherwise decrease curr index (move backwards)
 	else:
 		print("Current Enemy Index ", enemy.current_position_index);
 		enemy.current_position_index -= 1;
 		enemy.direction = Enums.EnemyDirection.BACKWARDS;
-		print("Enemy Direction", enemy.direction);
 
 # Check if enemy is at target index pos, if not move toward target index pos
 func handle_enemy_at_target_index() -> void:
@@ -98,3 +100,16 @@ func get_position_in_front_of_player(distance: int, in_front: bool) -> Vector3:
 
 func handle_roaming_state_set() -> void:
 	enemy.set_target_index(level.find_position_index(level.get_random_position()));
+
+func handle_debug_state_change(state: Enums.EnemyState) -> void:
+	var states = Enums.EnemyState;
+	match(state):
+		states.IDLE:
+			enemy.set_idle();
+		states.AGGRO:
+			enemy.set_aggro();
+		states.ROAMING:
+			enemy.set_roaming();
+		states.JUMPSCARE:
+			enemy.set_jumpscare();
+	
