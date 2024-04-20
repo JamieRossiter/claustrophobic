@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqcd76r3cqo51"]
+
+[ext_resource type="PackedScene" uid="uid://ctkjleksayrx3" path="res://scenes/Player.tscn" id="1_yaisc"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nr3i4"]
+
+[node name="TestWorld" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource("1_yaisc")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+mesh = SubResource("CapsuleMesh_nr3i4")
