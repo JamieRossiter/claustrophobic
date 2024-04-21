@@ -3,32 +3,54 @@
 # Last Updated: 20/04/24
 # Autoload script that handles all inputs globally
 extends Node
-    
+	
 func _physics_process(_delta: float) -> void:
-    # Movement 
-    handle_movement_input();
+	# Movement 
+	_emit_movement_input();
 
-    # Try shoot
-    if (Input.is_action_just_pressed("shoot") and Input.is_action_pressed("aim")):
-        Signals.try_shoot.emit();
+	# Try shoot
+	_emit_try_shoot_input();
 
-    # Try reload
-    if(Input.is_action_just_pressed("reload") and Input.is_action_pressed("aim")):
-        Signals.try_reload.emit();
+	# Try lowering
+	_emit_lower_input();
 
-func handle_movement_input() -> void:
-    
-    # Check is moving
-    var is_moving: bool = (
-        Input.is_action_pressed("move_south") or 
-        Input.is_action_pressed("move_north") or
-        Input.is_action_pressed("move_east") or
-        Input.is_action_pressed("move_west")
-    );
+	# Aim
+	if(Input.is_action_pressed("aim")):
+		Signals.aim.emit();
 
-    # Check if aiming
-    var is_aiming: bool = Input.is_action_pressed("aim"); 
+	# Try reload
+	_emit_try_reload_input();
 
-    # Emit signal if moving and not aiming
-    if(is_moving and not is_aiming):
-        Signals.move.emit();    
+func _emit_try_shoot_input() -> void:
+	var is_shooting = Input.is_action_just_pressed("shoot");
+	var is_aiming = Input.is_action_pressed("aim");
+	if(is_shooting and is_aiming):
+		Signals.try_shoot.emit();
+
+func _emit_movement_input() -> void:
+	
+	# Check is moving
+	var is_moving: bool = (
+		Input.is_action_pressed("move_south") or 
+		Input.is_action_pressed("move_north") or
+		Input.is_action_pressed("move_east") or
+		Input.is_action_pressed("move_west")
+	);
+
+	# Check if aiming
+	var is_aiming: bool = Input.is_action_pressed("aim"); 
+
+	# Emit signal if moving and not aiming
+	if(is_moving and not is_aiming):
+		Signals.move.emit();    
+
+func _emit_lower_input() -> void:
+	var is_lowering = Input.is_action_just_released("aim");
+	if(is_lowering):
+		Signals.try_lower.emit();
+
+func _emit_try_reload_input() -> void:
+	var is_reloading: bool = Input.is_action_just_pressed("reload");
+	var is_aiming: bool = Input.is_action_pressed("aim");
+	if(is_reloading and is_aiming):
+		Signals.try_reload.emit();

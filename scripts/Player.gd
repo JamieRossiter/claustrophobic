@@ -5,7 +5,7 @@
 
 class_name Player extends CharacterBody3D
 
-var ammo: int = 0; # TESTING: Temp ammo variable. Will be represented as an item.
+var ammo: int = 1; # TESTING: Temp ammo variable. Will be represented as an item.
 
 func _ready() -> void:
 	_connect_signals();
@@ -23,7 +23,8 @@ func _handle_try_shoot() -> void:
 		return;
 
 	# Shoot
-	Signals.shoot.emit();
+	Signals.shoot.emit(ammo);
+	ammo -= 1;
 	print("Shoot");
 
 func _handle_try_reload() -> void:

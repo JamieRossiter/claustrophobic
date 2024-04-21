@@ -8,8 +8,10 @@ extends Node
 signal move # When any one or more of WASD is pressed
 signal try_shoot # When LMB and RMB are pressed simultaneously
 signal try_reload # When 'R' key is pressed
+signal aim # When RMB is pressed
+signal try_lower # When RMB is released
 
 # Player
-signal shoot
+signal shoot(ammo: int)
 signal dry_fire
 signal reload
