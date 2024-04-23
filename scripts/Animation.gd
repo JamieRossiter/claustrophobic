@@ -1,7 +1,7 @@
 extends AnimationPlayer
 
 var INITIAL_Y_POS: float = get_parent().position.y;
-const TARGET_Y_POS: float = -1.5;
+const TARGET_Y_POS: float = -0.4;
 var is_reloading: bool;
 
 func _ready() -> void:

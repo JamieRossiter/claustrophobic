@@ -5,7 +5,7 @@
 class_name Movement extends Node
 
 # Export variables
-@export var MOVEMENT_SPEED: float = 10.0;
+@export var MOVEMENT_SPEED: float = 10.0 / 10;
 @export var character: CharacterBody3D = null;
 @export var camera: Camera3D = null;
 
