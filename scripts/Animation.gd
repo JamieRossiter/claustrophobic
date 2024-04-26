@@ -1,8 +1,13 @@
+# Animation.gd
+# Author: Jamie Rossiter
+# Last Updated: 26/04/24
+# Handles all data and logic for player animations
 extends AnimationPlayer
 
-var INITIAL_Y_POS: float = get_parent().position.y;
-const TARGET_Y_POS: float = -0.4;
 var is_reloading: bool;
+@export var parent: Node3D;
+@onready var INITIAL_Y_POS: float = parent.position.y;
+const TARGET_Y_POS: float = -0.4;
 
 func _ready() -> void:
 	_connect_signals();
@@ -11,10 +16,10 @@ func _process(_delta: float) -> void:
 	self.is_reloading = (self.current_animation == _get_animation_string("reload"));
 
 func _connect_signals() -> void:
-	Signals.shoot.connect(_shoot);
-	Signals.reload.connect(_reload);
-	Signals.aim.connect(_aim);
-	Signals.try_lower.connect(_try_lower);
+	Signals.player_shoot.connect(_shoot);
+	Signals.player_reload.connect(_reload);
+	Signals.player_aim.connect(_aim);
+	Signals.player_try_lower.connect(_try_lower);
 	self.animation_finished.connect(_on_animation_finished);
 
 func _shoot(ammo: int) -> void:
@@ -30,7 +35,7 @@ func _reload() -> void:
 
 func _aim() -> void:
 	var aim_tween: Tween = create_tween();
-	aim_tween.tween_property(get_parent(), "position:y", TARGET_Y_POS, 0.25);
+	aim_tween.tween_property(parent, "position:y", TARGET_Y_POS, 0.25);
 
 # Try lowering the pistol, e.g. depending on if the player is reloading
 func _try_lower() -> void:
@@ -39,7 +44,7 @@ func _try_lower() -> void:
 		
 func _lower() -> void:
 	var lower_tween: Tween = create_tween();
-	lower_tween.tween_property(get_parent(), "position:y", INITIAL_Y_POS, 0.25);
+	lower_tween.tween_property(parent, "position:y", INITIAL_Y_POS, 0.25);
 
 func _on_animation_finished(anim_name: String) -> void:
 	# Lower pistol if reloading finished

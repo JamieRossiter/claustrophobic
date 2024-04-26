@@ -108,9 +108,10 @@ bones/46/rotation = Quaternion(0.195088, 8.36202e-07, -1.99789e-06, 0.980786)
 bones/47/position = Vector3(-0.591662, -0.22963, 12.1049)
 bones/47/rotation = Quaternion(-2.20129e-06, 1.15206e-06, -0.481756, 0.876306)
 
-[node name="AnimationPlayer" parent="Camera/Animation" index="1"]
+[node name="AnimationPlayer" parent="Camera/Animation" index="1" node_paths=PackedStringArray("parent")]
 speed_scale = 1.5
 script = ExtResource("5_30ge3")
+parent = NodePath("..")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Camera"]
 transform = Transform3D(1, -0.000221678, -7.76431e-05, 0.000234722, 0.930926, 0.365209, -8.67899e-06, -0.365209, 0.930926, 0, 0.407432, -0.0124745)

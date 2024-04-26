@@ -16,7 +16,7 @@ func _physics_process(_delta: float) -> void:
 
 	# Aim
 	if(Input.is_action_pressed("aim")):
-		Signals.aim.emit();
+		Signals.player_aim.emit();
 
 	# Try reload
 	_emit_try_reload_input();
@@ -25,7 +25,7 @@ func _emit_try_shoot_input() -> void:
 	var is_shooting = Input.is_action_just_pressed("shoot");
 	var is_aiming = Input.is_action_pressed("aim");
 	if(is_shooting and is_aiming):
-		Signals.try_shoot.emit();
+		Signals.player_try_shoot.emit();
 
 func _emit_movement_input() -> void:
 	
@@ -42,15 +42,15 @@ func _emit_movement_input() -> void:
 
 	# Emit signal if moving and not aiming
 	if(is_moving and not is_aiming):
-		Signals.move.emit();    
+		Signals.player_move.emit();    
 
 func _emit_lower_input() -> void:
 	var is_lowering = Input.is_action_just_released("aim");
 	if(is_lowering):
-		Signals.try_lower.emit();
+		Signals.player_try_lower.emit();
 
 func _emit_try_reload_input() -> void:
 	var is_reloading: bool = Input.is_action_just_pressed("reload");
 	var is_aiming: bool = Input.is_action_pressed("aim");
 	if(is_reloading and is_aiming):
-		Signals.try_reload.emit();
+		Signals.player_try_reload.emit();

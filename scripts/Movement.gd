@@ -10,11 +10,9 @@ class_name Movement extends Node
 @export var camera: Camera3D = null;
 
 func _ready() -> void:
-	Signals.move.connect(_handle_move);
+	Signals.player_move.connect(_handle_move);
 
 func _handle_move() -> void:
-	
-	print("Moving");
 	
 	# Determine direction based on input
 	var input_dir = Input.get_vector("move_west", "move_east", "move_north", "move_south");
