@@ -1,3 +1,7 @@
+# EnemyAI.gd
+# Author: Jamie Rossiter
+# Last Updated: 28/04/24
+# Handles all logic related to the enemy pathfinding AI
 extends Node
 
 # Export vars
@@ -33,9 +37,12 @@ const MAX_MOVE_INTERVAL: float = 10.0;
 @onready var time_to_next_move: Timer = Timer.new(); # Interval timer between a series of steps
 
 func _ready() -> void:
+	# Set default state to idle
 	current_state = Enums.EnemyState.IDLE;
-	current_position_index = level.get_index_from_position(enemy.position);
+	# Set the current target index based on default state (should be idle)
 	current_target_index = self._get_target_index();
+	# Set current position index to enemy's current position during init
+	current_position_index = level.get_index_from_position(enemy.position);
 	_init_timers();
 	_start_moving();
 
@@ -63,9 +70,11 @@ func _get_target_index() -> int:
 			index = level.get_index_from_position(player.position); # Player index
 	return index;
 
+# Initiates enemy movement for a total move start (e.g. from IDLE to ROAMING or AGGRO) or "series of steps" start
 func _start_moving() -> void:
+	# If enemy state idle, stop moving enemy and prevent the rest of this function from running
 	if(current_state == Enums.EnemyState.IDLE): 
-		_stop_moving();
+		self._stop_moving();
 		return;
 	is_moving = true;
 	# Get the target index based on state
@@ -97,6 +106,10 @@ func _step_toward_target_index() -> void:
 	print("Current Target Index ", current_target_index);
 	print("Current step count ", current_step_count);
 
+	# Permanently stop if the enemy has entered an IDLE state
+	if(current_state == Enums.EnemyState.IDLE):
+		self._stop_moving();
+
 	# Temporarily stop if the target index has been reached or if current step count is depleted
 	if(not is_moving or self._target_index_reached() or current_step_count <= 0):
 		self._stop_stepping();
@@ -113,12 +126,14 @@ func _step_toward_target_index() -> void:
 			if(level.is_index_at_end_of_level(current_position_index)):
 				current_position_index = 0;
 			else:
+				# Move forwards normally if not at level end/start border
 				current_position_index += 1;
 		Enums.EnemyDirection.BACKWARDS: 
 			# Persist backwards momentum when crossing the level start/end border
 			if(level.is_index_at_start_of_level(current_position_index)):
 				current_position_index = level.get_used_cells().size();
 			else:
+				# Move backwards normally if not at level start/end border
 				current_position_index -= 1;
 			
 	# Emit enemy_step signal, passing new position as argument
@@ -133,24 +148,24 @@ func _step_toward_target_index() -> void:
 
 func _get_direction() -> Enums.EnemyDirection:
 	var direction: Enums.EnemyDirection;
+	var backwards: Enums.EnemyDirection = Enums.EnemyDirection.BACKWARDS;
+	var forwards: Enums.EnemyDirection = Enums.EnemyDirection.FORWARDS;
 
-	# INVERSE DIRECTION METHOD
-	# TODO: Make this a function
-	# If player idx more than half and enemy idx less than half of level start index, maintain backwards direction for momentum persistence
+	# Handle inverse direction logic for if the enemy needs direction persistence
 	if(current_state == Enums.EnemyState.AGGRO):
-		if([0,1,2,3,4,5,6,7,8,9,10].has(current_position_index) and [29,28,27,26,25,24,23,22,21,20].has(level.get_index_from_position(player.position))):
-			return Enums.EnemyDirection.BACKWARDS;
-		elif([29,28,27,26,25,24,23,22,21,20].has(current_position_index) and [0,1,2,3,4,5,6,7,8,9,10].has(level.get_index_from_position(player.position))):
-			return Enums.EnemyDirection.FORWARDS;
+		if(_is_inverse_direction(backwards)):
+			return backwards;
+		elif(_is_inverse_direction(forwards)):
+			return forwards;
 		else:
 			pass;
-		
+
 	# If target index is more than enemy's current index, set direction forwards
 	if(current_target_index > current_position_index):
-		direction = Enums.EnemyDirection.FORWARDS;
-	# Otherwise set direction backwards
+		direction = forwards;
 	else:
-		direction = Enums.EnemyDirection.BACKWARDS;
+		# Otherwise set direction backwards
+		direction = backwards;
 	return direction;
 
 # Determine how long the interval is between a series of steps
@@ -182,6 +197,31 @@ func _determine_step_count() -> int:
 		Enums.EnemyState.ROAMING:
 			count = _get_random_step_count();
 	return count;
+
+func _is_inverse_direction(inverse_direction: Enums.EnemyDirection) -> bool:
+	# Get first half of level's total grid cell indices and array-ize
+	var max_1_idx_count: int = floor((level.get_used_cells().size()) / 2);
+	var level_half_1_indices: Array;
+	for i in range(max_1_idx_count):
+		level_half_1_indices.push_back(i);
+
+	# Get second half of level's total grid cell indices and array-ize
+	var max_2_idx_count: int = level.get_used_cells().size() - max_1_idx_count;
+	var level_half_2_indices: Array;
+	for i in range(max_1_idx_count, (max_1_idx_count + max_2_idx_count)):
+		level_half_2_indices.push_back(i);
+
+	# Determine whether the inverse direction argument is required by checking if
+	# the player is on one of the first half indices and the enemy is on one of the
+	# second half indices, or vice versa
+	var required: bool = false;
+	match(inverse_direction):
+		Enums.EnemyDirection.BACKWARDS:
+			required = level_half_1_indices.has(current_position_index) and level_half_2_indices.has(level.get_index_from_position(player.position));
+		Enums.EnemyDirection.FORWARDS:
+			required = level_half_2_indices.has(current_position_index) and level_half_1_indices.has(level.get_index_from_position(player.position));
+	
+	return required;
 
 func _target_index_reached() -> bool:
 	return current_position_index == self.current_target_index;

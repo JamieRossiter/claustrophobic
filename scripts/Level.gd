@@ -1,7 +1,26 @@
+# Level.gd
+# Author: Jamie Rossiter
+# Last Updated: 28/04/24
+# Handles all data and logic for Levels
+
 class_name Level extends GridMap
 
 func _ready():
-	print(self.get_used_cells());
+	create_minimap_meshes(get_used_cells());
+	pass;
+
+func create_minimap_meshes(used_cells: Array[Vector3i]) -> void:
+	print(used_cells);
+	for uc in used_cells:
+		var pm: PlaneMesh = PlaneMesh.new();
+		pm.size.x = 2;
+		pm.size.y = 2;
+		var mi: MeshInstance3D = MeshInstance3D.new();
+		mi.mesh = pm;
+		mi.position = map_to_local(uc);
+		mi.set_layer_mask_value(1, false);
+		mi.set_layer_mask_value(10, true);
+		add_child(mi);
 
 # Takes a Vector3 position, finds the closes vent cell position and returns the corresponding level's cell index
 func get_index_from_position(pos: Vector3) -> int:
