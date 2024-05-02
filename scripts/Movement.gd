@@ -1,7 +1,3 @@
-# Movement.gd
-# Author: Jamie Rossiter
-# Last Updated: 20/04/24
-# Handles all user-related movement and collision
 class_name Movement extends Node
 
 # Export variables
@@ -12,6 +8,14 @@ class_name Movement extends Node
 func _ready() -> void:
 	Signals.player_move.connect(_handle_move);
 
+func _physics_process(delta: float) -> void:
+	# Handle camera bobble
+	if(self.is_moving()):
+		camera.start_bobble();
+	else:
+		camera.end_bobble();
+
+# BUG: The player randomly speeds up at certain times or points in the map
 func _handle_move() -> void:
 	
 	# Determine direction based on input
@@ -29,3 +33,11 @@ func _handle_move() -> void:
 
 	# Move
 	character.move_and_slide();
+
+# Is the player moving based on movement inputs and (lack of) aim input
+func is_moving() -> bool:
+	return (
+		Input.get_vector("move_west", "move_east", "move_north", "move_south") != Vector2.ZERO
+		and not
+		Input.is_action_pressed("aim")
+	);

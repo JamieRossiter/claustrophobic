@@ -1,7 +1,3 @@
-# EnemyAI.gd
-# Author: Jamie Rossiter
-# Last Updated: 28/04/24
-# Handles all logic related to the enemy pathfinding AI
 extends Node
 
 # Export vars

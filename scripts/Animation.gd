@@ -1,7 +1,3 @@
-# Animation.gd
-# Author: Jamie Rossiter
-# Last Updated: 26/04/24
-# Handles all data and logic for player animations
 extends AnimationPlayer
 
 var is_reloading: bool;

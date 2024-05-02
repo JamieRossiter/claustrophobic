@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dqu237tl074t5"]
+
+[ext_resource type="Texture2D" uid="uid://dudv7k8cnmm54" path="res://textures/creepy_doll/textures/Leg.jpg" id="1_a2tue"]
+[ext_resource type="Texture2D" uid="uid://cffmfhnf5c5fk" path="res://textures/creepy_doll/textures/LegNRM.jpg" id="2_ytjts"]
+
+[resource]
+resource_name = "Legs"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_a2tue")
+metallic = 1.0
+normal_enabled = true
+normal_texture = ExtResource("2_ytjts")

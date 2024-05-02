@@ -1,7 +1,3 @@
-# Signals.gd
-# Author: Jamie Rossiter
-# Last Updated: 20/04/24
-# Autoload script that contains all signals
 extends Node
 
 # Inputs

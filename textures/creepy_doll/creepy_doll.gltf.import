@@ -1,0 +1,59 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://ddhopmqqu8jpx"
+path="res://.godot/imported/creepy_doll.gltf-dae37a904bc178f3450010ad15bdd4ed.scn"
+
+[deps]
+
+source_file="res://textures/creepy_doll/creepy_doll.gltf"
+dest_files=["res://.godot/imported/creepy_doll.gltf-dae37a904bc178f3450010ad15bdd4ed.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+import_script/path=""
+_subresources={
+"materials": {
+"Body": {
+"use_external/enabled": true,
+"use_external/path": "res://textures/creepy_doll/textures/Body.tres"
+},
+"Eye": {
+"use_external/enabled": true,
+"use_external/path": "res://textures/creepy_doll/textures/Eye.tres"
+},
+"Head": {
+"use_external/enabled": true,
+"use_external/path": "res://textures/creepy_doll/textures/Head.tres"
+},
+"L Arm": {
+"use_external/enabled": true,
+"use_external/path": "res://textures/creepy_doll/textures/L Arm.tres"
+},
+"Legs": {
+"use_external/enabled": true,
+"use_external/path": "res://textures/creepy_doll/textures/Legs.tres"
+},
+"R.Arm": {
+"use_external/enabled": true,
+"use_external/path": "res://textures/creepy_doll/textures/R.Arm.tres"
+}
+}
+}
+gltf/embedded_image_handling=1

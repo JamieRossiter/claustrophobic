@@ -1,15 +1,12 @@
-# Player.gd
-# Author: Jamie Rossiter
-# Last Updated: 20/04/24
-# Handles all data and logic for the Player
-
 class_name Player extends CharacterBody3D
 
+# TODO: The player itself should rotate based on mouse movement not the camera. Replace current mesh instance with a proper cylinder
+
 @export var original_position: Vector3 = Vector3(2, 0.5, -1);
-var ammo: int = 1; # TESTING: Temp ammo variable. Will be represented as an item.
+var ammo: int = 3; # TESTING: Temp ammo variable. Will be represented as an item.
 
 func _ready() -> void:
-	_connect_signals();
+	self._connect_signals();
 
 func _connect_signals() -> void:
 	Signals.player_try_shoot.connect(_handle_try_shoot); # Shoot

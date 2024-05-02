@@ -1,8 +1,3 @@
-# Level.gd
-# Author: Jamie Rossiter
-# Last Updated: 28/04/24
-# Handles all data and logic for Levels
-
 class_name Level extends GridMap
 
 func _ready():

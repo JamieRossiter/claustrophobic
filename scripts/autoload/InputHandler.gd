@@ -1,7 +1,3 @@
-# InputHandler.gd
-# Author: Jamie Rossiter
-# Last Updated: 20/04/24
-# Autoload script that handles all inputs globally
 extends Node
 	
 func _physics_process(_delta: float) -> void:
