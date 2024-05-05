@@ -21,6 +21,7 @@ Signals="*res://scripts/autoload/Signals.gd"
 InputHandler="*res://scripts/autoload/InputHandler.gd"
 Enums="*res://scripts/autoload/Enums.gd"
 Globals="*res://scripts/autoload/Globals.gd"
+Utils="*res://scripts/autoload/Utils.gd"
 
 [editor]
 

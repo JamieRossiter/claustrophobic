@@ -13,8 +13,6 @@ var shake_power: float = DEFAULT_SHAKE_POWER;
 
 func _ready() -> void:
 	self._connect_signals();
-	# TODO: Make this a util function
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED; 
 
 func _connect_signals() -> void:
 	Signals.player_aim.connect(_nervous_shake);
@@ -27,12 +25,12 @@ func _physics_process(delta: float) -> void:
 	if(is_shaking):
 		self._shake(delta);
 
-func _input(event: InputEvent) -> void:
-	
-	# Rotation
-	if(event is InputEventMouseMotion):
-		rotation.y = rotation.y - (event.relative.x / 1000) * Globals.CAMERA_LOOK_SENSITIVITY.y ;
-		rotation.x = clamp(rotation.x - (event.relative.y / 1000) * Globals.CAMERA_LOOK_SENSITIVITY.x, -1.5, 1.5);
+#func _input(event: InputEvent) -> void:
+#
+#	# Rotation
+#	if(event is InputEventMouseMotion):
+#		rotation.y = rotation.y - (event.relative.x / 1000) * Globals.CAMERA_LOOK_SENSITIVITY.y ;
+#		rotation.x = clamp(rotation.x - (event.relative.y / 1000) * Globals.CAMERA_LOOK_SENSITIVITY.x, -1.5, 1.5);
 
 func _determine_camera_direction() -> void:
 
@@ -108,4 +106,18 @@ func start_bobble() -> void:
 func end_bobble() -> void:
 	is_bobbling = false;
 	self._bobble_down();
-		
+
+#func _get_camera_collision()-> void:
+#	# Get screen point
+#	var centre: Vector2 = get_viewport().get_size() / 2;
+#	# Create rays
+#	var ray_origin: Vector3 = project_ray_origin(centre);
+#	var ray_end: Vector3 = ray_origin + project_ray_normal(centre) * 2000;
+#	# Create intersections
+#	var new_intersection: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(ray_origin, ray_end);
+#	var intersection: Dictionary = get_world_3d().direct_space_state.intersect_ray(new_intersection);
+#	# Check for intersection
+#	if(intersection.is_empty()):
+#		print("no hit");
+#	else:
+#		print("looking at ", intersection.collider)

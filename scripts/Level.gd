@@ -37,10 +37,10 @@ func get_random_index() -> int:
 	return self.get_index_from_position(self.get_random_position());
 
 func is_index_at_end_of_level(index: int) -> bool:
-	return index == get_used_cells().size() - 1;
+	return index >= get_used_cells().size() - 1;
 
 func is_index_at_start_of_level(index: int) -> bool:
-	return index == 0;
+	return index <= 0;
 
 # Returns the closest valid vent cell position to the position provided as an argument
 func _find_closest_vent_cell_position_to_position(pos: Vector3) -> Vector3:
@@ -53,6 +53,12 @@ func _find_closest_vent_cell_position_to_position(pos: Vector3) -> Vector3:
 	var vent_cell_zs: Array = get_used_cells().map(func(vc): return vc.z);
 	
 	return Vector3(find_closest(snapped_position.x, vent_cell_xs), snapped_position.y, find_closest(snapped_position.z, vent_cell_zs));
+
+func is_index_at_level_boundaries(index: int) -> bool:
+	return is_index_at_start_of_level(index) or is_index_at_end_of_level(index);
+
+func get_cell_direction_from_position(position: Vector3) -> int:
+	return get_cell_item_orientation(self.get_position_from_index(self.get_index_from_position(position)));
 
 # TODO: Make this a util function
 func find_closest(num, array):

@@ -1,21 +1,25 @@
-[gd_scene load_steps=12 format=3 uid="uid://dqcd76r3cqo51"]
+[gd_scene load_steps=13 format=3 uid="uid://dqcd76r3cqo51"]
 
 [ext_resource type="PackedScene" uid="uid://ctkjleksayrx3" path="res://scenes/Player.tscn" id="1_yaisc"]
 [ext_resource type="PackedScene" uid="uid://d4fh75vgy62r0" path="res://scenes/TestLevel.tscn" id="2_3dt81"]
 [ext_resource type="MeshLibrary" uid="uid://vfnrfdp7v5ww" path="res://textures/vent_pieces/VentPieces.tres" id="2_utfft"]
 [ext_resource type="Script" path="res://scripts/Level.gd" id="3_rll2r"]
 [ext_resource type="Script" path="res://scripts/Enemy.gd" id="5_6oajw"]
-[ext_resource type="Script" path="res://scripts/MinimapRT.gd" id="5_sleny"]
 [ext_resource type="Script" path="res://scripts/EnemyAI.gd" id="6_nn3ox"]
 [ext_resource type="PackedScene" uid="uid://ddhopmqqu8jpx" path="res://textures/creepy_doll/creepy_doll.gltf" id="8_jcv02"]
+[ext_resource type="Script" path="res://scenes/EnemyMinimapLight.gd" id="8_yc8pk"]
 
 [sub_resource type="Environment" id="Environment_ei365"]
 background_mode = 1
+background_color = Color(1, 1, 1, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g0rjb"]
 
 [sub_resource type="Sky" id="Sky_m57rc"]
 
 [sub_resource type="Environment" id="Environment_uog4n"]
 background_mode = 1
+background_color = Color(0.109804, 0.109804, 0.109804, 1)
 sky = SubResource("Sky_m57rc")
 sky_custom_fov = 70.1
 
@@ -33,33 +37,44 @@ script = ExtResource("3_rll2r")
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="Player" parent="." instance=ExtResource("1_yaisc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, -1)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.908, 0.529, 1.932)
 
 [node name="MinimapCameraRT" type="RemoteTransform3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 1)
 remote_path = NodePath("../../MinimapViewportContainer/MinimapViewport/MinimapCamera")
-script = ExtResource("5_sleny")
-
-[node name="MinimapPlayerLightRT" type="RemoteTransform3D" parent="Player"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
-remote_path = NodePath("../../MinimapViewportContainer/MinimapViewport/MinimapPlayerLight")
-script = ExtResource("5_sleny")
 
 [node name="Environment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ei365")
 
 [node name="Enemy" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13014, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.02497, -0.159855, -0.965)
 script = ExtResource("5_6oajw")
 
-[node name="creepy_doll" parent="Enemy" instance=ExtResource("8_jcv02")]
+[node name="Model" parent="Enemy" instance=ExtResource("8_jcv02")]
 transform = Transform3D(-1.00536e-08, 0, 0.23, 0, 0.23, 0, -0.23, 0, -1.00536e-08, 0, -0.146286, 0)
 
-[node name="EnemyAI" type="Node" parent="." node_paths=PackedStringArray("enemy", "level", "player")]
+[node name="MinimapLight" type="OmniLight3D" parent="Enemy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0121078, 0.442461, -0.0136213)
+layers = 512
+light_color = Color(1, 0, 0, 1)
+light_energy = 0.0
+omni_range = 0.0
+script = ExtResource("8_yc8pk")
+
+[node name="EnemyAI" type="Node" parent="Enemy" node_paths=PackedStringArray("enemy", "level", "player")]
 script = ExtResource("6_nn3ox")
-enemy = NodePath("../Enemy")
-level = NodePath("../Level")
-player = NodePath("../Player")
+enemy = NodePath("..")
+level = NodePath("../../Level")
+player = NodePath("../../Player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.501737, 0)
+shape = SubResource("CapsuleShape3D_g0rjb")
+disabled = true
+
+[node name="VisibleOnScreenEnabler3D" type="VisibleOnScreenNotifier3D" parent="Enemy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.036005, 0.159855, -0.0538526)
+aabb = AABB(-0.5, 0, -0.5, 1, 1, 1)
 
 [node name="MinimapViewportContainer" type="SubViewportContainer" parent="."]
 anchors_preset = 1
@@ -78,15 +93,10 @@ size = Vector2i(208, 205)
 render_target_update_mode = 4
 
 [node name="MinimapCamera" type="Camera3D" parent="MinimapViewportContainer/MinimapViewport"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2, 5.5, 0)
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 6.908, 5.529, 1.932)
 cull_mask = 512
 environment = SubResource("Environment_uog4n")
-h_offset = -5.0
-current = true
+h_offset = -2.0
 
-[node name="MinimapPlayerLight" type="SpotLight3D" parent="MinimapViewportContainer/MinimapViewport"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 0.5, -1)
-layers = 512
-light_color = Color(0.992157, 1, 0.803922, 1)
-light_indirect_energy = 4.995
-spot_range = 20.0
+[connection signal="screen_entered" from="Enemy/VisibleOnScreenEnabler3D" to="Enemy/EnemyAI" method="_on_visible_on_screen_enabler_3d_screen_entered"]
+[connection signal="screen_exited" from="Enemy/VisibleOnScreenEnabler3D" to="Enemy/EnemyAI" method="_on_visible_on_screen_enabler_3d_screen_exited"]

@@ -1,9 +1,10 @@
 extends Node
 	
 func _physics_process(_delta: float) -> void:
-	# Movement 
-	_emit_movement_input();
-
+	# DEBUG Toggle cursor
+	if(Input.is_action_just_pressed("ui_cancel")):
+		Signals.DEBUG_toggle_cursor.emit();
+	
 	# Try shoot
 	_emit_try_shoot_input();
 
@@ -22,23 +23,6 @@ func _emit_try_shoot_input() -> void:
 	var is_aiming = Input.is_action_pressed("aim");
 	if(is_shooting and is_aiming):
 		Signals.player_try_shoot.emit();
-
-func _emit_movement_input() -> void:
-	
-	# Check is moving
-	var is_moving: bool = (
-		Input.is_action_pressed("move_south") or 
-		Input.is_action_pressed("move_north") or
-		Input.is_action_pressed("move_east") or
-		Input.is_action_pressed("move_west")
-	);
-
-	# Check if aiming
-	var is_aiming: bool = Input.is_action_pressed("aim"); 
-
-	# Emit signal if moving and not aiming
-	if(is_moving and not is_aiming):
-		Signals.player_move.emit();    
 
 func _emit_lower_input() -> void:
 	var is_lowering = Input.is_action_just_released("aim");
