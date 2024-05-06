@@ -22,7 +22,7 @@ func _input(event: InputEvent) -> void:
 		character.rotation.y = character.rotation.y - (event.relative.x / 1000) * Globals.CAMERA_LOOK_SENSITIVITY.y;
 		camera.rotation.x = clamp(camera.rotation.x - (event.relative.y / 1000) * Globals.CAMERA_LOOK_SENSITIVITY.x, -1.5, 1.5);
 
-# BUG: Player moves faster than normal at certain points in the map
+# BUG: Player moves faster than normal at certain points in the map (suspect this has something to do with framerate)
 func _handle_movement(delta: float) -> void:
 	var input: Vector2 = Input.get_vector("move_north", "move_south", "move_east", "move_west");
 	var speed: float = MOVEMENT_SPEED;

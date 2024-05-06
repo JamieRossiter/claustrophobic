@@ -14,6 +14,7 @@ var is_visible_onscreen: bool = false;
 
 var current_direction: Enums.EnemyDirection = Enums.EnemyDirection.FORWARDS;
 var current_state: Enums.EnemyState;
+var current_aggro_state: Enums.AggroState;
 var current_position_index: int;
 var current_target_index: int;
 var current_step_count: int = 0;
@@ -39,7 +40,9 @@ const MAX_MOVE_INTERVAL: float = 10.0;
 
 func _ready() -> void:
 	# Set default state to idle
-	current_state = Enums.EnemyState.ROAMING;
+	current_state = Enums.EnemyState.AGGRO;
+	# Set default aggro state to ambush
+	current_aggro_state = Enums.AggroState.AMBUSH;
 	# Set the current target index based on default state (should be idle)
 	current_target_index = self._get_target_index();
 	# Set current position index to enemy's current position during init
@@ -110,11 +113,7 @@ func _step() -> void:
 	print("Current step count ", current_step_count);
 	print("Last player index ", last_player_position_index);
 	print("Current player index ", level.get_index_from_position(player.position));
-	
-	# If the player is looking at enemy, stop moving for the duration the player is looking
-	if(is_visible_onscreen and current_state == Enums.EnemyState.AGGRO):
-		return;
-	
+		
 	# Temporarily stop if the target index has been reached or if current step count is depleted
 	if(not is_moving or self._target_index_reached() or current_step_count <= 0):
 		self._stop_stepping();
@@ -125,7 +124,14 @@ func _step() -> void:
 		Enums.EnemyState.IDLE:
 			self._stop_moving();
 		Enums.EnemyState.AGGRO:
-			self._chase_player();
+			if(is_visible_onscreen): return;
+			match(current_aggro_state):
+				Enums.AggroState.AMBUSH:
+					self._ambush_player();
+				Enums.AggroState.PREPARE_CHASE:
+					self._prepare_chase();
+				Enums.AggroState.CHASE:
+					self._chase_player();	
 		Enums.EnemyState.ROAMING:
 			self._step_toward_target_index();
 			
@@ -145,6 +151,28 @@ func _step_toward_target_index() -> void:
 			current_position_index += 1;
 		Enums.EnemyDirection.BACKWARDS: 
 			current_position_index -= 1;
+
+# TODO: Handle chase cooldown
+# TODO: Handle game over
+# When enemy becomes visible in ambush state, prepare to chase once player turns around to run
+func _prepare_chase() -> void:
+	# Once the player turns around the enemy is no longer in sight
+	if(not is_visible_onscreen):
+		current_aggro_state = Enums.AggroState.CHASE;
+	# Stop moving temporarily before entering chase state
+	self._stop_stepping();
+	print("Enemy chasing");
+
+# TODO: Handle enemy ambushing at level boundaries (first index or last index)
+# Spawn in front of the player once they are within a certain distance of the enemy
+func _ambush_player() -> void:
+	var current_player_position_index: int = level.get_index_from_position(player.position);
+	var in_front: bool = (current_player_position_index > current_position_index and current_player_position_index < current_position_index + 3);
+	var behind: bool = (current_player_position_index > current_position_index - 3 and current_player_position_index < current_position_index);
+	if(in_front or behind):
+		enemy.show();
+		current_aggro_state = Enums.AggroState.PREPARE_CHASE;
+		print("Enemy preparing to go into aggro chase...");
 
 # Continuously 'chase' the player by being one index in front or behind them
 func _chase_player() -> void:

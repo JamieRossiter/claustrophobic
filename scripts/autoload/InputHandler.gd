@@ -18,6 +18,7 @@ func _physics_process(_delta: float) -> void:
 	# Try reload
 	_emit_try_reload_input();
 
+# TODO: If player successfully hits enemy after shooting, show brief animation of enemy being hit then turn flashlight off. Then turn it back on, the enemy disappeared.
 func _emit_try_shoot_input() -> void:
 	var is_shooting = Input.is_action_just_pressed("shoot");
 	var is_aiming = Input.is_action_pressed("aim");

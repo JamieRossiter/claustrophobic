@@ -14,6 +14,13 @@ enum EnemyState {
 	JUMPSCARE  
 }
 
+enum AggroState {
+	NONE,
+	AMBUSH,
+	PREPARE_CHASE,
+	CHASE
+}
+
 enum EnemyDirection {
 	BACKWARDS,
 	FORWARDS

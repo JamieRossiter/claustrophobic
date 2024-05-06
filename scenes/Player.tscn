@@ -129,7 +129,7 @@ script = ExtResource("6_mwbkq")
 transform = Transform3D(1, -0.000221678, -7.76431e-05, 0.000234722, 0.930926, 0.365209, -8.67899e-06, -0.365209, 0.930926, 0, 0.407432, -0.0124745)
 light_color = Color(1, 1, 0.745098, 1)
 light_energy = 10.0
-spot_range = 8.0
+spot_range = 3.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-3.93403e-08, -0.5, 0, 0.9, -2.18557e-08, 0, 0, 0, 1.8, 0, 0, 0)
