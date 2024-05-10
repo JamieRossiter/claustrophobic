@@ -1,3 +1,4 @@
+# Camera.gd
 class_name Camera extends Camera3D
 
 @onready var original_position: Vector3 = position;
@@ -84,7 +85,6 @@ func _shake(delta: float) -> void:
 		h_offset = randf_range((-1.0 / 100), (1.0 / 100)) * shake_power;
 		v_offset = randf_range((-1.0 / 100), (1.0 / 100)) * shake_power;
 		elapsed_shake_time += delta;
-		print(elapsed_shake_time);
 	else:
 		self._stop_shake();
 
@@ -106,18 +106,3 @@ func start_bobble() -> void:
 func end_bobble() -> void:
 	is_bobbling = false;
 	self._bobble_down();
-
-#func _get_camera_collision()-> void:
-#	# Get screen point
-#	var centre: Vector2 = get_viewport().get_size() / 2;
-#	# Create rays
-#	var ray_origin: Vector3 = project_ray_origin(centre);
-#	var ray_end: Vector3 = ray_origin + project_ray_normal(centre) * 2000;
-#	# Create intersections
-#	var new_intersection: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(ray_origin, ray_end);
-#	var intersection: Dictionary = get_world_3d().direct_space_state.intersect_ray(new_intersection);
-#	# Check for intersection
-#	if(intersection.is_empty()):
-#		print("no hit");
-#	else:
-#		print("looking at ", intersection.collider)

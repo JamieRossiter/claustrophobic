@@ -1,3 +1,4 @@
+# Signals.gd
 extends Node
 
 # Inputs
@@ -13,4 +14,4 @@ signal player_dry_fire
 signal player_reload
 
 # Enemy
-signal enemy_step(position: Vector3)
+signal enemy_step();

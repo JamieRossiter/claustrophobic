@@ -1,4 +1,5 @@
-class_name Movement extends Node
+# Movement.gd
+extends Node
 
 # Export variables
 @export var MOVEMENT_SPEED: float = 1.5;

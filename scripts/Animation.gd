@@ -1,3 +1,4 @@
+# Animation.gd
 extends AnimationPlayer
 
 var is_reloading: bool;

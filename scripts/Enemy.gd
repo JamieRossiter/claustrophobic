@@ -1,17 +1,17 @@
 # Enemy.gd
-# Author: Jamie Rossiter
-# Last Updated: 26/04/24
-# Handles all data and logic for the Enemy
 class_name Enemy extends CharacterBody3D
 
 @onready var original_position: Vector3 = self.position;
+@onready var current_position_index: int;
+@onready var current_target_index: int = -1;
+@export var state_machine: EnemyStateMachine;
 
-func _ready():
-	_connect_signals();
+func _ready() -> void:
+	state_machine.set_state(Enums.EnemyState.ROAMING);
 
-func _connect_signals() -> void:
-	Signals.enemy_step.connect(_move_to_position);
-
+func at_target_index() -> bool:
+	return current_position_index == current_target_index;
+	
 func _move_to_position(new_position: Vector3) -> void:
-	self.position = new_position;
-	self.position.y = original_position.y; # Ensure that enemy doesn't clip through floor
+	position = new_position;
+	position.y = original_position.y; # Ensure enemy doesn't clip through floor

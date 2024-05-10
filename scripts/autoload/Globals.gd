@@ -1,3 +1,4 @@
+# Global.gd
 extends Node
 
 # Camera

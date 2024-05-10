@@ -1,3 +1,4 @@
+# MuzzleFlash.gd
 extends OmniLight3D
 
 var flash_timer: Timer = Timer.new();

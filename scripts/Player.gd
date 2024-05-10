@@ -1,7 +1,8 @@
+# Player.gd
 class_name Player extends CharacterBody3D
 
 @onready var original_position: Vector3 = self.position;
-var ammo: int = 3; # TESTING: Temp ammo variable. Will be represented as an item.
+var ammo: int = 3; # TODO: Temp ammo variable. Will be represented as an item.
 var direction: Enums.Direction;
 
 func _ready() -> void:

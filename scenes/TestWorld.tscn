@@ -1,13 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://dqcd76r3cqo51"]
+[gd_scene load_steps=15 format=3 uid="uid://hdj67dplvcak"]
 
 [ext_resource type="PackedScene" uid="uid://ctkjleksayrx3" path="res://scenes/Player.tscn" id="1_yaisc"]
 [ext_resource type="PackedScene" uid="uid://d4fh75vgy62r0" path="res://scenes/TestLevel.tscn" id="2_3dt81"]
 [ext_resource type="MeshLibrary" uid="uid://vfnrfdp7v5ww" path="res://textures/vent_pieces/VentPieces.tres" id="2_utfft"]
 [ext_resource type="Script" path="res://scripts/Level.gd" id="3_rll2r"]
 [ext_resource type="Script" path="res://scripts/Enemy.gd" id="5_6oajw"]
-[ext_resource type="Script" path="res://scripts/EnemyAI.gd" id="6_nn3ox"]
+[ext_resource type="Script" path="res://scripts/EnemyMinimapLight.gd" id="7_3yqb5"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachine.gd" id="8_cegip"]
 [ext_resource type="PackedScene" uid="uid://ddhopmqqu8jpx" path="res://textures/creepy_doll/creepy_doll.gltf" id="8_jcv02"]
-[ext_resource type="Script" path="res://scenes/EnemyMinimapLight.gd" id="8_yc8pk"]
+[ext_resource type="Script" path="res://scripts/RoamingState.gd" id="9_3xblc"]
+[ext_resource type="Script" path="res://scenes/AmbushState.gd" id="10_koddv"]
 
 [sub_resource type="Environment" id="Environment_ei365"]
 background_mode = 1
@@ -46,10 +48,10 @@ remote_path = NodePath("../../MinimapViewportContainer/MinimapViewport/MinimapCa
 [node name="Environment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ei365")
 
-[node name="Enemy" type="CharacterBody3D" parent="."]
+[node name="Enemy" type="CharacterBody3D" parent="." node_paths=PackedStringArray("state_machine")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.999531, -0.159855, -0.965)
-visible = false
 script = ExtResource("5_6oajw")
+state_machine = NodePath("StateMachine")
 
 [node name="Model" parent="Enemy" instance=ExtResource("8_jcv02")]
 transform = Transform3D(-1.00536e-08, 0, 0.23, 0, 0.23, 0, -0.23, 0, -1.00536e-08, 0, -0.146286, 0)
@@ -59,14 +61,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0121078, 0.442461, -0.01362
 layers = 512
 light_color = Color(1, 0, 0, 1)
 light_energy = 0.0
-omni_range = 0.0
-script = ExtResource("8_yc8pk")
-
-[node name="EnemyAI" type="Node" parent="Enemy" node_paths=PackedStringArray("enemy", "level", "player")]
-script = ExtResource("6_nn3ox")
-enemy = NodePath("..")
-level = NodePath("../../Level")
-player = NodePath("../../Player")
+omni_range = 1.0
+script = ExtResource("7_3yqb5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.501737, 0)
@@ -76,6 +72,19 @@ disabled = true
 [node name="VisibleOnScreenEnabler3D" type="VisibleOnScreenNotifier3D" parent="Enemy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.036005, 0.159855, -0.0538526)
 aabb = AABB(-0.5, 0, -0.5, 1, 1, 1)
+
+[node name="StateMachine" type="Node" parent="Enemy" node_paths=PackedStringArray("roaming_state", "ambush_state")]
+script = ExtResource("8_cegip")
+roaming_state = NodePath("RoamingState")
+ambush_state = NodePath("AmbushState")
+
+[node name="RoamingState" type="Node" parent="Enemy/StateMachine" node_paths=PackedStringArray("enemy", "level")]
+script = ExtResource("9_3xblc")
+enemy = NodePath("../..")
+level = NodePath("../../../Level")
+
+[node name="AmbushState" type="Node" parent="Enemy/StateMachine"]
+script = ExtResource("10_koddv")
 
 [node name="MinimapViewportContainer" type="SubViewportContainer" parent="."]
 anchors_preset = 1
@@ -98,6 +107,3 @@ transform = Transform3D(-1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.7422
 cull_mask = 512
 environment = SubResource("Environment_uog4n")
 h_offset = -2.0
-
-[connection signal="screen_entered" from="Enemy/VisibleOnScreenEnabler3D" to="Enemy/EnemyAI" method="_on_visible_on_screen_enabler_3d_screen_entered"]
-[connection signal="screen_exited" from="Enemy/VisibleOnScreenEnabler3D" to="Enemy/EnemyAI" method="_on_visible_on_screen_enabler_3d_screen_exited"]

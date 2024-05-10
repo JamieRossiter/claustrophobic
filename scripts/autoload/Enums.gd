@@ -1,3 +1,4 @@
+# Enums.gd
 extends Node
 
 enum Direction {
@@ -8,16 +9,9 @@ enum Direction {
 }
 
 enum EnemyState {
-	ROAMING,
 	IDLE,
-	AGGRO,
-	JUMPSCARE  
-}
-
-enum AggroState {
-	NONE,
+	ROAMING,
 	AMBUSH,
-	PREPARE_CHASE,
 	CHASE
 }
 
